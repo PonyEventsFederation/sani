@@ -1,1 +1,3 @@
-console.log("Hello World!");
+import bot from "./bot";
+
+bot.hallo();

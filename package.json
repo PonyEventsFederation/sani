@@ -4,11 +4,12 @@
    "description": "",
    "main": "build/index.js",
    "private": true,
+   "type": "module",
    "scripts": {
       "test": "echo im lazy lol",
       "build": "tsc",
       "postinstall": "npm run build",
-      "bot": "node build/env"
+      "bot": "node --es-module-specifier-resolution=node build"
    },
    "repository": {
       "type": "git",
