@@ -43,6 +43,9 @@ module.exports = {
       "space-unary-ops": "error",
       "spaced-comment": "error",
       "yoda": "error",
-      "@typescript-eslint/no-inferrable-types": 0
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/no-inferrable-types": 0,
+      "@typescript-eslint/explicit-module-boundary-types": 1,
+      "@typescript-eslint/no-var-requires": 1
    }
 };

@@ -1,8 +1,6 @@
 {
    "compilerOptions": {
       "outDir": "build",
-      "allowJs": true,
-      "checkJs": true,
       "removeComments": true,
       "lib": ["esnext"],
       "module": "commonjs",
