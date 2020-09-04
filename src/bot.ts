@@ -3,6 +3,7 @@ import { assertenv } from "./rando";
 import { Command } from "./commands/command";
 
 import { YeeEeET } from "./commands/yeet";
+import { YearAssignCommand } from "./commands/yearassign";
 
 export class SaniSoda {
    private bot: Client;
@@ -21,6 +22,9 @@ export class SaniSoda {
    }
    public setbusy(busy: boolean): void {
       this.busy = busy;
+   }
+   public getbot(): Client {
+      return this.bot;
    }
 
    public async start(): Promise<void> {
@@ -41,6 +45,8 @@ export class SaniSoda {
 
    private initcommands(): void {
       this.commandhandlers.push(new YeeEeET(this));
+      this.commandhandlers.push(new YearAssignCommand(this));
+
       this.bot.on("message", msg => {
          if (msg.author.bot) return;
          for (let i = 0; i < this.commandhandlers.length; i++) if (this.commandhandlers[i].shouldhandle(msg)) this.commandhandlers[i].handle(msg);
