@@ -1,12 +1,26 @@
 import { Client } from "discord.js";
 import { assertenv } from "./rando";
+import { Command } from "./commands/command";
 
-export class Bot {
+import { YeeEeET } from "./commands/yeet";
+
+export class SaniSoda {
    private bot: Client;
    private destroyed: boolean = false;
+   private busy: boolean = false;
+   private commandhandlers: Command[];
 
    public constructor() {
       this.bot = new Client();
+      this.commandhandlers = [];
+      this.initcommands();
+   }
+
+   public isbusy(): boolean {
+      return this.busy;
+   }
+   public setbusy(busy: boolean): void {
+      this.busy = busy;
    }
 
    public async start(): Promise<void> {
@@ -23,5 +37,13 @@ export class Bot {
       if (this.destroyed) return;
       this.bot.destroy();
       this.destroyed = true;
+   }
+
+   private initcommands(): void {
+      this.commandhandlers.push(new YeeEeET(this));
+      this.bot.on("message", msg => {
+         if (msg.author.bot) return;
+         for (let i = 0; i < this.commandhandlers.length; i++) if (this.commandhandlers[i].shouldhandle(msg)) this.commandhandlers[i].handle(msg);
+      });
    }
 }

@@ -1,4 +1,4 @@
-import { Bot } from "./bot";
+import { SaniSoda } from "./bot";
 import { checkenv } from "./rando";
 
 // if NODE_ENV doesnt exist, assume development
@@ -6,4 +6,4 @@ import { checkenv } from "./rando";
 // then configure using dotenv
 if (!checkenv("NODE_ENV") || process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "development") require("dotenv").config();
 
-new Bot().start();
+new SaniSoda().start();
