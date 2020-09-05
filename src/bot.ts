@@ -4,6 +4,7 @@ import { Command } from "./commands/command";
 
 import { YeeEeET } from "./commands/yeet";
 import { YearAssignCommand } from "./commands/yearassign";
+// import { Test as lol } from "./commands/test";
 
 export class SaniSoda {
    private bot: Client;
@@ -46,6 +47,7 @@ export class SaniSoda {
    private initcommands(): void {
       this.commandhandlers.push(new YeeEeET(this));
       this.commandhandlers.push(new YearAssignCommand(this));
+      // this.commandhandlers.push(new lol(this));
 
       this.bot.on("message", msg => {
          if (msg.author.bot) return;
