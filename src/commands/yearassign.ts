@@ -26,6 +26,8 @@ export class YearAssignCommand extends Command {
       msgcontent = msgcontent.replace(MessageMentions.EVERYONE_PATTERN, "");
       msgcontent = msgcontent.replace(MessageMentions.ROLES_PATTERN, "");
       msgcontent = msgcontent.replace(MessageMentions.USERS_PATTERN, "");
+      // this fixes dinky bug but is clonky lol
+      msgcontent = msgcontent.replace(/\D/g, "  ");
 
       const beg: RegExpMatchArray | null = msgcontent.match(TESTBEGYEARS);
       const res: RegExpMatchArray | null = msgcontent.match(TESTFORYEARS);
@@ -36,7 +38,6 @@ export class YearAssignCommand extends Command {
       if (res) for (let i = 0; i < res.length; i++) {
          const twenty: number = res[i].indexOf("20");
          if (twenty !== 0 && twenty !== 1) {
-            console.log(twenty);
             continue;
          }
          all.push(res[i].substring(twenty, twenty + 4));
@@ -67,7 +68,6 @@ export class YearAssignCommand extends Command {
       let res: string = "";
       try {
          for (let i = 0; i < years.length; i++) {
-            console.log(years[i]);
             if (msg.member.roles.cache.has(yearids[i])) alreadyhave.push(years[i]);
             else {
                given.push(years[i]);
