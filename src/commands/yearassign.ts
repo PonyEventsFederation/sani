@@ -1,13 +1,9 @@
 import { Command } from "./command";
 import { ClientUser, Message, MessageMentions } from "discord.js";
-import { authorperson, getroleid, serversupportchannel, NOT_FOUND_STRING } from "./ids";
+import { authorperson, getroleid, serversupportchannel, NOT_FOUND_STRING, TESTBEGYEARS, TESTFORYEARS, TESTENDYEARS } from "./ids";
 import { Lang_en, stickitin } from "../lang";
 
 export class YearAssignCommand extends Command {
-   private static readonly testbegyears: RegExp = /^20(12|13|14|15|16|17|18|19|20)[^0-9]/
-   private static readonly testforyears: RegExp = /[^0-9]20(12|13|14|15|16|17|18|19|20)[^0-9]/g;
-   private static readonly testendyears: RegExp = /[^0-9]20(12|13|14|15|16|17|18|19|20)$/g;
-
    public shouldhandle(msg: Message): boolean {
       const botusr: ClientUser | null = this.sani.getbot().user;
       if (botusr) return msg.mentions.has(botusr) && msg.content.toLowerCase().includes("galacon");
@@ -31,9 +27,9 @@ export class YearAssignCommand extends Command {
       msgcontent = msgcontent.replace(MessageMentions.ROLES_PATTERN, "");
       msgcontent = msgcontent.replace(MessageMentions.USERS_PATTERN, "");
 
-      const beg: RegExpMatchArray | null = msgcontent.match(YearAssignCommand.testbegyears);
-      const res: RegExpMatchArray | null = msgcontent.match(YearAssignCommand.testforyears);
-      const end: RegExpMatchArray | null = msgcontent.match(YearAssignCommand.testendyears);
+      const beg: RegExpMatchArray | null = msgcontent.match(TESTBEGYEARS);
+      const res: RegExpMatchArray | null = msgcontent.match(TESTFORYEARS);
+      const end: RegExpMatchArray | null = msgcontent.match(TESTENDYEARS);
       let all: Array<string> = [];
 
       if (beg && beg[0]) all.push(beg[0].substring(0, 4));

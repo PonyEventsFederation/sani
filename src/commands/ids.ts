@@ -8,7 +8,6 @@ export function getroleid(year: string): string {
    if (year === "2017") return y2017;
    if (year === "2018") return y2018;
    if (year === "2019") return y2019;
-   if (year === "2020") return y2020;
    return NOT_FOUND_STRING;
 }
 
@@ -24,7 +23,6 @@ export const y2016 = "628136665721864202";
 export const y2017 = "628137097244442627";
 export const y2018 = "628136798299750421";
 export const y2019 = "628136797095854100";
-export const y2020 = "736666248494055554";
 
 
 // development role ids in my private server thing
@@ -36,6 +34,8 @@ export const y2020 = "736666248494055554";
 // export const y2017 = "740013259297652816";
 // export const y2018 = "740013246962073661";
 // export const y2019 = "740013228876365855";
-// export const y2020 = "740013182973640706";
 
 export const NOT_FOUND_STRING = "NOT FOUND LOL";
+export const TESTBEGYEARS: RegExp = /^20(12|13|14|15|16|17|18|19)[^0-9]/;
+export const TESTFORYEARS: RegExp = /[^0-9]20(12|13|14|15|16|17|18|19)[^0-9]/g;
+export const TESTENDYEARS: RegExp = /[^0-9]20(12|13|14|15|16|17|18|19)$/g;
