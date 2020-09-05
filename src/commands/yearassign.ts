@@ -1,7 +1,7 @@
 import { Command } from "./command";
 import { ClientUser, Message, MessageMentions } from "discord.js";
 import { authorperson, getroleid, serversupportchannel, NOT_FOUND_STRING } from "./ids";
-
+import { Lang_en, stickitin } from "../lang";
 
 export class YearAssignCommand extends Command {
    private static readonly testbegyears: RegExp = /^20(12|13|14|15|16|17|18|19|20)[^0-9]/
@@ -16,7 +16,7 @@ export class YearAssignCommand extends Command {
 
    public handle(msg: Message): void {
       const years: Array<string> = this.getyears(msg);
-      if (years.length === 0) return void msg.channel.send("sorry! I couldn't find any valid years.");
+      if (years.length === 0) return void msg.channel.send(Lang_en.yearAssign.noValidYearsFound);
 
       const yearids: Array<string> = this.getyearroleids(years);
 
@@ -62,27 +62,13 @@ export class YearAssignCommand extends Command {
    }
 
    private async applyroles(msg: Message, years: Array<string>, yearids: Array<string>): Promise<void> {
-      /*
-      const given: Array<string> = [];
-      try {
-         for (let i = 0; i < yearids.length; i++) {
-            if (yearids[i] === NOT_FOUND_STRING) continue;
-            given.push(years[i]);
-            msg.member.roles.set(yearids);
-         }
-         msg.channel.send(`Gave you the years ${years.join(", ")}~`);
-      } catch(e) {
-         console.warn(e);
-         msg.channel.send(`I got stuck on ${given[given.length - 1]}`);
-      }
-      */
-
-      if (years.length === 0) return void msg.channel.send("sorry! I couldn't find any valid years.");
-      if (msg.channel.type !== "text") return void msg.channel.send(`hi! can you try again in <#${serversupportchannel}>? thank you! ^^`);
-      if (!msg.member) return void msg.channel.send(`hello! sorry, something went horribly wrong. can you send a message to <@${authorperson}>? thank you! ^^`);
+      if (years.length === 0) return void msg.channel.send(Lang_en.yearAssign.noValidYearsFound);
+      if (msg.channel.type !== "text") return void msg.channel.send(stickitin(Lang_en.yearAssign.tryAgainInServerSupport, serversupportchannel));
+      if (!msg.member) return void msg.channel.send(stickitin(Lang_en.yearAssign.horriblyWrongAuthorPerson, authorperson));
 
       const given: Array<string> = [];
       const alreadyhave: Array<string> = [];
+      let res: string = "";
       try {
          for (let i = 0; i < years.length; i++) {
             console.log(years[i]);
@@ -92,18 +78,17 @@ export class YearAssignCommand extends Command {
                msg.member.roles.add(yearids[i]);
             }
          }
-
-         let res: string = "";
-         if (alreadyhave.length > 0) res = res + `\nYou already have ${alreadyhave.join(", ")}`;
-         if (given.length > 0) res = res + `\nGave you ${given.join(", ")}`;
-
-         if (res !== "") msg.channel.send(res.substring(1));
-         else msg.channel.send("sorry, something went wrong. Can you try again?");
       } catch (e) {
          console.warn(e);
-         await msg.channel.send(`sorry! I got stuck on ${given[given.length - 1]}`).catch(console.warn);
+         await msg.channel.send(stickitin(Lang_en.yearAssign.stuckOnRole, given[given.length - 1])).catch(console.warn);
          given.pop();
-         if (given.length !== 0) await msg.channel.send(`I finished giving you the roles ${given.join(", ")}`).catch(console.warn);
       }
+
+
+      if (alreadyhave.length > 0) res = res + stickitin(Lang_en.yearAssign.alreadyHaveYears, alreadyhave.join(", "));
+      if (given.length > 0) res = res + stickitin(Lang_en.yearAssign.givenYears, given.join(", "));
+
+      if (res !== "") msg.channel.send(res.substring(1)).catch(console.warn);
+      else msg.channel.send(Lang_en.yearAssign.somethingWrongTryAgain).catch(console.warn);
    }
 }

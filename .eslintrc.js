@@ -20,7 +20,6 @@ module.exports = {
       "max-nested-callbacks": ["error", { "max": 4 }],
       "max-statements-per-line": ["error", { "max": 2 }],
       "no-console": "off",
-      "no-empty-function": "warn",
       "no-floating-decimal": "error",
       "no-inline-comments": "error",
       "no-lonely-if": "error",
@@ -46,6 +45,7 @@ module.exports = {
       "@typescript-eslint/no-explicit-any": 0,
       "@typescript-eslint/no-inferrable-types": 0,
       "@typescript-eslint/explicit-module-boundary-types": 1,
-      "@typescript-eslint/no-var-requires": 1
+      "@typescript-eslint/no-var-requires": 1,
+      "@typescript-eslint/no-empty-function": 1
    }
 };
