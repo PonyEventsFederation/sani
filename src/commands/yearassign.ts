@@ -10,7 +10,18 @@ export class YearAssignCommand extends Command {
       return false;
    }
 
-   public handle(msg: Message): void {
+   public async handle(msg: Message): Promise<void> {
+      if (msg.channel.id !== serversupportchannel) {
+         let delet: boolean = false;
+         if (msg.guild && msg.deletable) {
+            delet = true;
+            await msg.delete();
+         }
+         const errmsg: Message = await msg.channel.send(stickitin(Lang_en.yearAssign.tryAgainInServerSupport, serversupportchannel));
+         if (delet) errmsg.delete({ timeout: 15000 });
+         return;
+      }
+
       const years: Array<string> = this.getyears(msg);
       if (years.length === 0) return void msg.channel.send(Lang_en.yearAssign.noValidYearsFound);
 
@@ -60,7 +71,6 @@ export class YearAssignCommand extends Command {
 
    private async applyroles(msg: Message, years: Array<string>, yearids: Array<string>): Promise<void> {
       if (years.length === 0) return void msg.channel.send(Lang_en.yearAssign.noValidYearsFound);
-      if (msg.channel.type !== "text") return void msg.channel.send(stickitin(Lang_en.yearAssign.tryAgainInServerSupport, serversupportchannel));
       if (!msg.member) return void msg.channel.send(stickitin(Lang_en.yearAssign.horriblyWrongAuthorPerson, authorperson));
 
       const given: Array<string> = [];
