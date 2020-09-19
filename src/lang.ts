@@ -1,38 +1,46 @@
-export interface Lang {
-   readonly yearAssign: {
-      readonly noValidYearsFound: string,
-      readonly tryAgainInServerSupport: string
-      readonly horriblyWrongAuthorPerson: string,
-
-      readonly alreadyHaveYears: string,
-      readonly givenYears: string,
-      readonly somethingWrongTryAgain: string,
-      readonly stuckOnRole: string,
-   }
-}
-export const placeholder = "|s";
+export const placeholder = "|ss";
 
 export const Lang_en: Lang = {
-   yearAssign: {
-      noValidYearsFound: "sorry! I couldn't find any valid years.",
-      tryAgainInServerSupport: `hi! can you try again in <#${placeholder}>? thank you! ^^`,
-      horriblyWrongAuthorPerson: `hello! sorry, something went horribly wrong. can you send a message to <@${placeholder}>? thank you! ^^`,
+   roleassign: {
+      novalidyearsfound: "sorry! I couldn't find any valid years.",
+      novalidrolesfound: "sorry! I couldn't find any valid roles.",
+      tryagaininserversupport: `hi! can you try again in <#${placeholder}>? thank you! ^^`,
+      horriblywrongauthorperson: `hello! sorry, something went horribly wrong. can you send a message to <@${placeholder}>? thank you! ^^`,
 
-      alreadyHaveYears: `\nYou already have ${placeholder}`,
-      givenYears: `\nGave you ${placeholder}`,
-      somethingWrongTryAgain: "sorry, something went wrong. Can you try again?",
-      stuckOnRole: `sorry! I got stuck on ${placeholder}`
+      alreadyhaveroles: `\nYou already have ${placeholder}`,
+      givenroles: `\nGave you ${placeholder}`,
+      somethingwrongtryagain: "sorry, something went wrong. Can you try again?",
+      stuckonrole: `sorry! I got stuck on ${placeholder}`
+   },
+   ping: {
+      response: "What?"
    }
 };
 
-export function stickitin(phrase: string, replacers: string[] | string): string {
+export function stickitin(phrase: string, replacers: Array<string> | string): string {
    if (typeof replacers === "string") return phrase.replace(placeholder, replacers);
 
-   for (let i = 0; i < replacers.length; i++) {
+   for (let i: number = 0; i < replacers.length; i++) {
       const iofphrase = phrase.indexOf(placeholder);
-      console.log(iofphrase);
       if (iofphrase === -1) return phrase;
-      phrase = phrase.substring(0, iofphrase) + replacers[i] + phrase.substring(iofphrase + 2);
+      phrase = phrase.replace(placeholder, replacers[i]);
    }
    return phrase;
+}
+
+export interface Lang {
+   readonly roleassign: {
+      readonly novalidyearsfound: string;
+      readonly novalidrolesfound: string;
+      readonly tryagaininserversupport: string;
+      readonly horriblywrongauthorperson: string
+
+      readonly alreadyhaveroles: string;
+      readonly givenroles: string;
+      readonly somethingwrongtryagain: string;
+      readonly stuckonrole: string;
+   }
+   readonly ping: {
+      readonly response: string;
+   }
 }

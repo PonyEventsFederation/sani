@@ -3,6 +3,7 @@
       "outDir": "build",
       "removeComments": true,
       "lib": ["esnext"],
+      "esModuleInterop": true,
       "module": "commonjs",
       "moduleResolution": "node",
       "noImplicitAny": true,

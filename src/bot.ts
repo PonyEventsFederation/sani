@@ -1,55 +1,70 @@
-import { Client } from "discord.js";
+import { Client, ClientUser } from "discord.js";
 import { assertenv } from "./rando";
-import { Command } from "./commands/command";
-
-import { YearAssignCommand } from "./commands/yearassign";
+import { Commandish } from "./commandsish/commandish";
+import { YearAssignCommandish } from "./commandsish/yearassign";
+import { Ping } from "./commandsish/pinggg";
+import { OtherRoleAssign } from "./commandsish/otherroleassign";
 
 export class SaniSoda {
    private bot: Client;
    private destroyed: boolean = false;
-   private busy: boolean = false;
-   private commandhandlers: Command[];
+   // private busy: boolean = false;
+   private token: string;
+   private commandishes: Array<Commandish>;
 
-   public constructor() {
+   public constructor(token?: string) {
       this.bot = new Client();
-      this.commandhandlers = [];
-      this.initcommands();
+      if (token) this.token = token;
+      else {
+         assertenv("TOKEN");
+         // h is to satisfy tsc
+         this.token = process.env.TOKEN || "h";
+      }
+
+      this.commandishes = [];
    }
 
-   public isbusy(): boolean {
-      return this.busy;
-   }
-   public setbusy(busy: boolean): void {
-      this.busy = busy;
-   }
    public getbot(): Client {
       return this.bot;
    }
+   public getuser(): ClientUser {
+      const botusr: ClientUser | null = this.bot.user;
+      if (botusr) return botusr;
+      throw new Error("this should never happen... ever ever ever ever ever.");
+   }
 
    public async start(): Promise<void> {
-      assertenv("TOKEN");
-      await this.bot.login(process.env.TOKEN);
+      await this.bot.login(this.token);
 
       const boundstop: () => void = this.stop.bind(this);
       process.on("exit", boundstop);
       process.on("SIGINT", boundstop);
       process.on("SIGTERM", boundstop);
-      this.bot.on("message", msg => console.log(msg.content));
+
+      this.initcommandishes();
    }
    public stop(): void {
       if (this.destroyed) return;
       this.bot.destroy();
+      // other shutdown tasks here
       this.destroyed = true;
    }
 
-   private initcommands(): void {
-      this.commandhandlers.push(new YearAssignCommand(this));
-      // this.commandhandlers.push(new YeeEeET(this));
-      // this.commandhandlers.push(new lol(this));
+   public initcommandishes(): void {
+      const pinger = new Ping(this);
+      this.commandishes.push(new YearAssignCommandish(this));
+      this.commandishes.push(new OtherRoleAssign(this));
 
       this.bot.on("message", msg => {
-         if (msg.author.bot) return;
-         for (let i = 0; i < this.commandhandlers.length; i++) if (this.commandhandlers[i].shouldhandle(msg)) this.commandhandlers[i].handle(msg);
+         let done: boolean = false;
+
+         this.commandishes.forEach(ishie => {
+            if (ishie.shouldhandle(msg)) {
+               done = true;
+               ishie.handle(msg);
+            }
+         });
+         if (!done) if (pinger.shouldhandle(msg)) return void pinger.handle(msg);
       });
    }
 }

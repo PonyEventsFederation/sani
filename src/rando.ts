@@ -8,3 +8,14 @@ export function assertenv(varname: string): void {
       process.exit(1);
    }
 }
+
+// if NODE_ENV doesnt exist, assume development
+// if it does, check for mode "dev" or "development"
+// then configure using dotenv
+export function envisdev(): boolean {
+   return !checkenv("NODE_ENV") || process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "development";
+}
+
+export function envisprod(): boolean {
+   return !envisdev();
+}
