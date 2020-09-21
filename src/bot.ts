@@ -1,9 +1,9 @@
 import { Client, ClientUser } from "discord.js";
 import { assertenv } from "./rando";
 import { Commandish } from "./commandsish/commandish";
+import { Pinggg } from "./commandsish/pinggg";
+import { OtherRoleAssignCommandish } from "./commandsish/otherroleassign";
 import { YearAssignCommandish } from "./commandsish/yearassign";
-import { Ping } from "./commandsish/pinggg";
-import { OtherRoleAssign } from "./commandsish/otherroleassign";
 
 export class SaniSoda {
    private bot: Client;
@@ -51,17 +51,18 @@ export class SaniSoda {
    }
 
    public initcommandishes(): void {
-      const pinger = new Ping(this);
+      const pinger: Pinggg = new Pinggg(this);
+      this.commandishes.push(new OtherRoleAssignCommandish(this));
+      // this.commandishes.push(new OtherRoleAssign(this));
       this.commandishes.push(new YearAssignCommandish(this));
-      this.commandishes.push(new OtherRoleAssign(this));
 
       this.bot.on("message", msg => {
          let done: boolean = false;
 
-         this.commandishes.forEach(ishie => {
-            if (ishie.shouldhandle(msg)) {
+         this.commandishes.forEach(commandishthing => {
+            if (commandishthing.shouldhandle(msg)) {
                done = true;
-               ishie.handle(msg);
+               commandishthing.handle(msg);
             }
          });
          if (!done) if (pinger.shouldhandle(msg)) return void pinger.handle(msg);

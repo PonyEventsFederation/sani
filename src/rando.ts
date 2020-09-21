@@ -19,3 +19,13 @@ export function envisdev(): boolean {
 export function envisprod(): boolean {
    return !envisdev();
 }
+
+export function randfromarray<T>(...arrs: Array<Array<T>>): Array<T> {
+   if (arrs.length === 0) return [];
+
+   const randnum: number = Math.floor(Math.random() * arrs[0].length);
+   const randarr: Array<T> = [];
+   for (let i = 0; i < arrs.length; i++) if (arrs[i] && arrs[i].length > randnum) randarr.push(arrs[i][randnum]);
+
+   return randarr;
+}

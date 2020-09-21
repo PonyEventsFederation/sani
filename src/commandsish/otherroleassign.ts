@@ -1,79 +1,38 @@
-import { Collection, GuildMemberRoleManager, Message } from "discord.js";
-import { authorperson, otherroles, roletest, serversupportchannel, yearroles } from "../ids";
-import { Lang_en, stickitin } from "../lang";
+import { Message } from "discord.js";
 import { Commandish } from "./commandish";
+import { getandapplyroles, RoleData } from "./randorolestuff";
+import { artist, cosplayer, meme, musician, rp, serversupportchannel } from "../ids";
+import { Lang_en } from "../lang";
 
-export class OtherRoleAssign extends Commandish {
+export class OtherRoleAssignCommandish extends Commandish {
    public shouldhandle(msg: Message): boolean {
       return msg.mentions.has(this.botusr) && roletest.test(msg.content);
    }
 
    public async handle(msg: Message): Promise<void> {
-      if (msg.channel.id !== serversupportchannel) {
-         let delet: boolean = false;
+      const response = await getandapplyroles(msg, otherroles, serversupportchannel);
+      if (response.errored) {
          if (msg.guild && msg.deletable) {
-            delet = true;
-            await msg.delete();
-         }
-         const errmsg: Message = await msg.channel.send(stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportchannel));
-         if (delet) errmsg.delete({ timeout: 15000 });
-         return;
+            msg.delete();
+            (await msg.channel.send(Lang_en.roleassign.tryagaininserversupport)).delete({ timeout: 15000 });
+         } else msg.channel.send(Lang_en.roleassign.tryagaininserversupport);
       }
-
-      const roles: Collection<string, string> = this.getroleidcollection(msg);
-      if (Object.keys(roles).length === 0) return void msg.channel.send(Lang_en.roleassign.novalidrolesfound);
-      await this.applyroles(msg, roles);
-   }
-
-   private getroleidcollection(msg: Message): Collection<string, string> {
-      const roles: Collection<string, string> = new Collection<string, string>();
-      otherroles.forEach(yearrole => {
-         if (yearrole.regex.test(msg.content)) roles.set(yearrole.name, yearrole.id);
-      });
-
-      return roles;
-   }
-
-   private async applyroles(msg: Message, roles: Collection<string, string>) {
-      if (!msg.member) return void msg.channel.send(stickitin(Lang_en.roleassign.horriblywrongauthorperson, authorperson));
-
-      const given: Array<string> = [];
-      const alreadyhave: Array<string> = [];
-      let res: string = "";
-
-      try {
-         const yearsandids: Array<roleobjectthing> = [];
-         // push them all into an array first so i can use await in a for loop
-         roles.each((id, rolename) => {
-            yearsandids.push({
-               rolename: rolename,
-               id: id
-            });
-         });
-
-         const rolemanager: GuildMemberRoleManager = msg.member.roles;
-         for (let i = 0; i < yearsandids.length; i++) {
-            if (rolemanager.cache.has(yearsandids[i].id)) alreadyhave.push(yearsandids[i].rolename);
-            else {
-               given.push(yearsandids[i].rolename);
-               await rolemanager.add(yearsandids[i].id);
-            }
-         }
-
-         console.log(alreadyhave);
-         console.log(given);
-         if (alreadyhave.length > 0) res = res + stickitin(Lang_en.roleassign.alreadyhaveroles, alreadyhave.sort().join(", "));
-         if (given.length > 0) res = res + stickitin(Lang_en.roleassign.givenroles, given.sort().join(", "));
-      } catch (e) {
-         console.warn(e);
-         res = res + Lang_en.roleassign.somethingwrongtryagain;
-      } finally {
-         msg.channel.send(res.substring(1) || Lang_en.roleassign.somethingwrongtryagain).catch(console.warn);
-      }
+      msg.channel.send(response.content || Lang_en.roleassign.novalidrolesfound);
    }
 }
 
-interface roleobjectthing {
-   readonly rolename: string;
-   readonly id: string;
-}
+// regex stuff for testing things
+export const artisttest: RegExp = /\b(art(s|ist)?)\b/im;
+export const musiciantest: RegExp = /\b(music(ians?)?)\b/im;
+export const cosplayertest: RegExp = /\b(cosplay(ers?)?)\b/im;
+export const memetest: RegExp = /\b((me){2,}(ist)?s?)\b/im;
+export const rptest: RegExp = /\b(rp|roleplay(er)?s?)\b/im;
+export const roletest: RegExp = /\broles?\b/im;
+
+export const otherroles: Array<RoleData> = [
+   { name: "artist", regex: artisttest, id: artist },
+   { name: "musician", regex: musiciantest, id: musician },
+   { name: "cosplayer", regex: cosplayertest, id: cosplayer },
+   { name: "meme", regex: memetest, id: meme },
+   { name: "rp", regex: rptest, id: rp }
+];

@@ -13,7 +13,7 @@ export const Lang_en: Lang = {
       stuckonrole: `sorry! I got stuck on ${placeholder}`
    },
    ping: {
-      response: "What?"
+      responses: ["What?", "why ping?"]
    }
 };
 
@@ -41,6 +41,6 @@ export interface Lang {
       readonly stuckonrole: string;
    }
    readonly ping: {
-      readonly response: string;
+      readonly responses: Array<string>;
    }
 }
