@@ -2,7 +2,6 @@
 // export const NOT_FOUND_STRING = "not found lol";
 
 // galacon role ids
-/*
 export const y2012 = "628136070642401280";
 export const y2013 = "628136127643123732";
 export const y2014 = "628136132701454346";
@@ -19,9 +18,10 @@ export const meme = "605454893620396060";
 export const rp = "755487852720291851";
 
 export const serversupportchannel = "613024393425059981";
-*/
+
 
 // development role ids in my private server thing
+/*
 export const y2012 = "740013333184381020";
 export const y2013 = "740013318751911979";
 export const y2014 = "740013297046257775";
@@ -38,6 +38,6 @@ export const meme = "755288031724044311";
 export const rp = "757007891109642392";
 
 export const serversupportchannel = "578740813912211457";
-
+*/
 
 export const authorperson = "379800645571575810";
