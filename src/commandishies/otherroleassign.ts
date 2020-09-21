@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import { Commandish } from "./commandish";
 import { getandapplyroles, RoleData } from "./randorolestuff";
 import { artist, cosplayer, meme, musician, rp, serversupportchannel } from "../ids";
-import { Lang_en } from "../lang";
+import { Lang_en, stickitin } from "../lang";
 
 export class OtherRoleAssignCommandish extends Commandish {
    public shouldhandle(msg: Message): boolean {
@@ -14,10 +14,9 @@ export class OtherRoleAssignCommandish extends Commandish {
       if (response.errored) {
          if (msg.guild && msg.deletable) {
             msg.delete();
-            (await msg.channel.send(Lang_en.roleassign.tryagaininserversupport)).delete({ timeout: 15000 });
-         } else msg.channel.send(Lang_en.roleassign.tryagaininserversupport);
-      }
-      msg.channel.send(response.content || Lang_en.roleassign.novalidrolesfound);
+            (await msg.channel.send(stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportchannel))).delete({ timeout: 15000 });
+         } else msg.channel.send(stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportchannel));
+      } else msg.channel.send(response.content || Lang_en.roleassign.novalidrolesfound);
    }
 }
 

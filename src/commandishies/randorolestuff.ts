@@ -8,7 +8,7 @@ export function getroles(msg: Message, roledata: Array<RoleData>): Array<RoleDat
 }
 
 export async function applyroles(msg: Message, roledata: Array<RoleData>, serversupportid: string): Promise<ApplyRolesReturnValue> {
-   if (!msg.member) return {
+   if (!msg.member || (msg.channel.id !== serversupportid)) return {
       errored: true,
       content: stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportid)
    };
