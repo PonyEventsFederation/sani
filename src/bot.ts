@@ -1,9 +1,9 @@
 import { Client, ClientUser } from "discord.js";
 import { assertenv } from "./rando";
-import { Commandish } from "./commandsish/commandish";
-import { Pinggg } from "./commandsish/pinggg";
-import { OtherRoleAssignCommandish } from "./commandsish/otherroleassign";
-import { YearAssignCommandish } from "./commandsish/yearassign";
+import { Commandish } from "./commandishies/commandish";
+import { Pinggg } from "./commandishies/pinggg";
+import { OtherRoleAssignCommandish } from "./commandishies/otherroleassign";
+import { YearAssignCommandish } from "./commandishies/yearassign";
 
 export class SaniSoda {
    private bot: Client;
