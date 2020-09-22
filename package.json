@@ -9,7 +9,8 @@
       "build": "tsc",
       "postinstall": "npm run build",
       "bot": "node build",
-      "buildandbot": "npm run build && npm run bot"
+      "buildandbot": "npm run build && npm run bot",
+      "docs": "typedoc --out docs src"
    },
    "repository": {
       "type": "git",
@@ -38,6 +39,7 @@
       "@typescript-eslint/parser": "^4.1.0",
       "dotenv": "^8.2.0",
       "eslint": "^7.9.0",
+      "typedoc": "^0.19.2",
       "typescript": "^4.0.2"
    }
 }
