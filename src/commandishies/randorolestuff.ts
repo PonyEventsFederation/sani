@@ -13,6 +13,7 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
       content: stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportid)
    };
 
+   msg.channel.startTyping();
    const given: Array<string> = [];
    const alreadyhave: Array<string> = [];
    let res: string = "";
@@ -36,7 +37,7 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
       console.warn(e);
       res = res + Lang_en.roleassign.somethingwrongtryagain;
    }
-
+   msg.channel.stopTyping();
    return {
       errored: false,
       content: res
