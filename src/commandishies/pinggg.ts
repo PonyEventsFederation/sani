@@ -4,6 +4,7 @@ import { randfromarray } from "../rando";
 // import { Lang_en } from "../lang";
 import { Commandish } from "./commandish";
 
+/** make sani respond to needless pings */
 export class Pinggg extends Commandish {
    public shouldhandle(msg: Message): boolean {
       return msg.mentions.has(this.botusr);

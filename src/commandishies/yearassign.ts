@@ -4,6 +4,11 @@ import { serversupportchannel, y2012, y2013, y2014, y2015, y2016, y2017, y2018, 
 import { Message } from "discord.js";
 import { Lang_en, stickitin } from "../lang";
 
+/**
+ * Responsible for assigning year roles (2012-2019) of the
+ * [GalaCon Discord server](https://discord.gg/galacon).
+ * These roles indicate your attendance to (physical) GalaCon conventions.
+ */
 export class YearAssignCommandish extends Commandish {
    public shouldhandle(msg: Message): boolean {
       return msg.mentions.has(this.botusr) && yeartest.test(msg.content);
@@ -11,7 +16,7 @@ export class YearAssignCommandish extends Commandish {
 
    public async handle(msg: Message): Promise<void> {
       const response = await getandapplyroles(msg, yearroles, serversupportchannel);
-      if (response.errored) {
+      if (response.delete) {
          if (msg.guild && msg.deletable) {
             msg.delete();
             (await msg.channel.send(stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportchannel))).delete({ timeout: 15000 });
