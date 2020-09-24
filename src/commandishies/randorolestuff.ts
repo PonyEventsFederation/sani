@@ -45,6 +45,7 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
 
          if (rolemanager.cache.has(selectedroledata[i].id)) alreadyhave.push(selectedroledata[i].name);
          else {
+            if (selectedroledata[i].specialmessage) await msg.channel.send(selectedroledata[i].specialmessage);
             await rolemanager.add(selectedroledata[i].id);
             given.push(selectedroledata[i].name);
          }
@@ -152,6 +153,8 @@ export interface RoleData {
    readonly regex: RegExp;
    /** discord id (snowflake) of the role */
    readonly id: string;
+   /** special message to send when someone requests this role */
+   readonly specialmessage?: string;
 }
 
 interface ModifyRolesReturnValue {

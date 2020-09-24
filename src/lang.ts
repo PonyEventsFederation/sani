@@ -24,7 +24,8 @@ export const Lang_en: Lang = {
       alreadyhaveroles: `\nYou already have ${placeholder}`,
       givenroles: `\nGave you ${placeholder}`,
       somethingwrongtryagain: "sorry, something went wrong. Can you try again?",
-      stuckonrole: `sorry! I got stuck on ${placeholder}`
+      stuckonrole: `sorry! I got stuck on ${placeholder}`,
+      memewarning: "Hi! You've requested the meme role. Keep in mind that this channel is more free than the rest of the server, so your discretion is advised."
    },
    ping: {
       responses: ["What?", "why ping?", "hi!"]
@@ -93,6 +94,9 @@ export interface Lang {
       readonly somethingwrongtryagain: string;
       /** phrase for when the bot errors on a role. (not used anymore, needs to be removed) */
       readonly stuckonrole: string;
+      /** warning for people who request the meme role */
+      readonly memewarning: string;
+
    }
 
    /** phrases for the ping response command thing */

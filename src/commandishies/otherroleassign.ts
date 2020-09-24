@@ -45,6 +45,6 @@ export const otherroles: Array<RoleData> = [
    { name: "artist", regex: artisttest, id: artist },
    { name: "musician", regex: musiciantest, id: musician },
    { name: "cosplayer", regex: cosplayertest, id: cosplayer },
-   { name: "meme", regex: memetest, id: meme },
+   { name: "meme", regex: memetest, id: meme, specialmessage: Lang_en.roleassign.memewarning },
    { name: "rp", regex: rptest, id: rp }
 ];
