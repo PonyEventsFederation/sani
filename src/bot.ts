@@ -143,6 +143,7 @@ export class SaniSoda {
       this.bot.on("message", msg => {
          let done: boolean = false;
 
+         if (msg.author.bot) return;
          this.commandishes.forEach(commandishthing => {
             if (commandishthing.shouldhandle(msg)) {
                done = true;
