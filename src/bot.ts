@@ -4,6 +4,7 @@ import { Commandish } from "./commandishies/commandish";
 import { Pinggg } from "./commandishies/pinggg";
 import { OtherRoleAssignCommandish } from "./commandishies/otherroleassign";
 import { YearAssignCommandish } from "./commandishies/yearassign";
+import { HelpCommandish } from "./commandishies/help";
 
 /**
  * The main SaniSoda Client thing
@@ -139,6 +140,7 @@ export class SaniSoda {
       this.commandishes.push(new OtherRoleAssignCommandish(this));
       // this.commandishes.push(new OtherRoleAssign(this));
       this.commandishes.push(new YearAssignCommandish(this));
+      this.commandishes.push(new HelpCommandish(this));
 
       this.bot.on("message", msg => {
          let done: boolean = false;
