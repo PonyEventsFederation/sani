@@ -51,11 +51,25 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
          }
       }
 
-      if (alreadyhave.length > 0) res = res + stickitin(Lang_en.roleassign.alreadyhaveroles, alreadyhave.sort().join(", "));
-      if (given.length > 0) res = res + stickitin(Lang_en.roleassign.givenroles, given.sort().join(", "));
+      if (alreadyhave.length == 1) {
+         res = res + stickitin(Lang_en.roleassign.alreadyhaveroles, [msg.author.id, alreadyhave.sort().join(", ")]);
+      }
+
+      if (alreadyhave.length > 1) {
+         res = res + parseMultipleRolesReply(Lang_en.roleassign.alreadyhaverolesmultiple, alreadyhave, msg.author.id);
+      }
+
+      if (given.length == 1) {
+         res = res + stickitin(Lang_en.roleassign.givenroles, [msg.author.id, given.sort().join(", ")]);
+      }
+
+      if (given.length > 1) {
+         res = res + parseMultipleRolesReply(Lang_en.roleassign.givenrolesmultiple, given, msg.author.id);
+      }
+
    } catch (e: unknown) {
       console.warn(e);
-      res = res + Lang_en.roleassign.somethingwrongtryagain;
+      res = res + stickitin(Lang_en.roleassign.somethingwrongtryagain, msg.author.id);
    }
    msg.channel.stopTyping();
    return {
@@ -139,6 +153,21 @@ export async function getandapplyroles(msg: Message, allroledata: Array<RoleData
  */
 export async function getandremoveroles(msg: Message, allroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    return await removeroles(msg, getroledatafrommsg(msg, allroledata), serversupportid);
+}
+
+/**
+ * Placeholder function to parse a string for the multiple role reply.
+ *
+ * @param placeholder the placeholder string we'll be using
+ * @param roleData all of the role data that was requested by the user
+ * @param target the target of the message
+ */
+export function parseMultipleRolesReply(placeholder: string, roleData: Array<string>, target: string): string {
+   const final_role = roleData[roleData.length - 1];
+   roleData.pop();
+   const roles = roleData.sort().join(", ");
+
+   return stickitin(placeholder, [target, roles, final_role]);
 }
 
 /**

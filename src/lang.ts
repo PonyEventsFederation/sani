@@ -16,14 +16,16 @@ export const placeholder = "|ss";
  */
 export const Lang_en: Lang = {
    roleassign: {
-      novalidyearsfound: "sorry! I couldn't find any valid years.",
+      novalidyearsfound: "I'm sorry, but I couldn't find any years that I could assign to you.",
       novalidrolesfound: "sorry! I couldn't find any valid roles.",
-      tryagaininserversupport: `hi! can you try again in <#${placeholder}>? thank you! ^^`,
-      horriblywrongauthorperson: `hello! sorry, something went horribly wrong. can you send a message to <@${placeholder}>? thank you! ^^`,
+      tryagaininserversupport: `Hello! can you try again in <#${placeholder}>? thank you! ^^`,
+      horriblywrongauthorperson: `I'm so sorry! It looks like something has gone terribly wrong!\nCould you please send a message to <@${placeholder}> so they can fix me?`,
 
-      alreadyhaveroles: `\nYou already have ${placeholder}`,
-      givenroles: `\nGave you ${placeholder}`,
-      somethingwrongtryagain: "sorry, something went wrong. Can you try again?",
+      alreadyhaveroles: `\nHi <@${placeholder}>! It looks like you already have the ${placeholder} role assigned to you.`,
+      alreadyhaverolesmultiple: `\nHi <@${placeholder}>! It looks like you already have ${placeholder}, and ${placeholder} roles assigned to you.`,
+      givenroles: `\nHi <@${placeholder}>! Sure! I've assigned the ${placeholder} role to you.`,
+      givenrolesmultiple: `\nHi <@${placeholder}>! Sure! I've assigned the ${placeholder}, and ${placeholder} roles to you.`,
+      somethingwrongtryagain: `Hi <@${placeholder}>! I'm sorry, but I don't know what happened. Could you please try again?`,
       stuckonrole: `sorry! I got stuck on ${placeholder}`,
       memewarning: "Hi! You've requested the meme role. Keep in mind that this channel is more free than the rest of the server, so your discretion is advised."
    },
@@ -88,8 +90,12 @@ export interface Lang {
 
       /** phrase for when someone already has a requested role */
       readonly alreadyhaveroles: string;
+      /** phrase for when someone already has multiple roles */
+      readonly alreadyhaverolesmultiple: string;
       /** phrase for when someone has been successfully given a requested role */
       readonly givenroles: string;
+      /** phrase for when someone has been successfully given requested roles */
+      readonly givenrolesmultiple: string;
       /** phrase for when something expected goes wrong */
       readonly somethingwrongtryagain: string;
       /** phrase for when the bot errors on a role. (not used anymore, needs to be removed) */
