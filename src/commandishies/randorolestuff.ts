@@ -1,5 +1,6 @@
 import { GuildMemberRoleManager, Message } from "discord.js";
 import { Lang_en, stickitin } from "../lang";
+import { mlemEmoji } from "../ids";
 
 /**
  * takes a message and an array of {@link RoleData} and checks to see if the message
@@ -29,7 +30,7 @@ export function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): 
 export async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || (msg.channel.id !== serversupportid)) return {
       delete: true,
-      content: stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportid)
+      content: stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportid, mlemEmoji])
    };
 
    msg.channel.startTyping();
@@ -91,7 +92,7 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
 export async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || (msg.channel.id !== serversupportid)) return {
       delete: true,
-      content: stickitin(Lang_en.roleassign.tryagaininserversupport, serversupportid)
+      content: stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportid])
    };
 
    const removed: Array<string> = [];

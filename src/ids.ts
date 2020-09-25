@@ -33,6 +33,9 @@ export const rp = "755487852720291851";
 /** id for galacon #server-support */
 export const serversupportchannel = "613024393425059981";
 
+/** id for galacon mlem emoji */
+export const mlemEmoji = ":Mlem:758757084299788298";
+
 
 // development role ids in my private server thing
 /*

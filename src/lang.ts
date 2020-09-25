@@ -16,21 +16,21 @@ export const placeholder = "|ss";
  */
 export const Lang_en: Lang = {
    roleassign: {
-      novalidyearsfound: "I'm sorry, but I couldn't find any years that I could assign to you.",
-      novalidrolesfound: "sorry! I couldn't find any valid roles.",
-      tryagaininserversupport: `Hello! can you try again in <#${placeholder}>? thank you! ^^`,
+      novalidyearsfound: `Hi <@${placeholder}>.\nI'm sorry, but I didn't find any years that I could assign to you.`,
+      novalidrolesfound: `Hi <@${placeholder}>.\nI'm sorry, but I didn't find any roles that I could assign to you.`,
+      tryagaininserversupport: `Hello <@${placeholder}>! Could you please try asking me again in the <#${placeholder}> channel?\n We don't want Berry getting angry at us. <${placeholder}>`,
       horriblywrongauthorperson: `I'm so sorry! It looks like something has gone terribly wrong!\nCould you please send a message to <@${placeholder}> so they can fix me?`,
 
-      alreadyhaveroles: `\nHi <@${placeholder}>! It looks like you already have the ${placeholder} role assigned to you.`,
-      alreadyhaverolesmultiple: `\nHi <@${placeholder}>! It looks like you already have ${placeholder}, and ${placeholder} roles assigned to you.`,
-      givenroles: `\nHi <@${placeholder}>! Sure! I've assigned the ${placeholder} role to you.`,
-      givenrolesmultiple: `\nHi <@${placeholder}>! Sure! I've assigned the ${placeholder}, and ${placeholder} roles to you.`,
+      alreadyhaveroles: `\nHi <@${placeholder}>!\nIt looks like you already have the ${placeholder} role assigned to you.`,
+      alreadyhaverolesmultiple: `\nHi <@${placeholder}>!\nIt looks like you already have ${placeholder}, and ${placeholder} roles assigned to you.`,
+      givenroles: `\nHi <@${placeholder}>!\nSure! I've assigned the ${placeholder} role to you.`,
+      givenrolesmultiple: `\nHi <@${placeholder}>!\nSure! I've assigned the ${placeholder}, and ${placeholder} roles to you.`,
       somethingwrongtryagain: `Hi <@${placeholder}>! I'm sorry, but I don't know what happened. Could you please try again?`,
-      stuckonrole: `sorry! I got stuck on ${placeholder}`,
-      memewarning: "Hi! You've requested the meme role. Keep in mind that this channel is more free than the rest of the server, so your discretion is advised."
+      stuckonrole: `I'm sorry! I got stuck on ${placeholder}`,
+      memewarning: "Hi! You've been assigned the meme role.\nPlease keep in mind that this channel is more free than the rest of the server, so viewing discretion is advised."
    },
    ping: {
-      responses: ["What?", "why ping?", "hi!"]
+      responses: ["What is it?", "Yes?", "Hi!", "Hello!"]
    }
 };
 
