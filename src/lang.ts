@@ -22,7 +22,7 @@ export const Lang_en: Lang = {
       horriblywrongauthorperson: `I'm so sorry! It looks like something has gone terribly wrong!\nCould you please send a message to <@${placeholder}> so they can fix me?`,
 
       alreadyhaveroles: `\nHi <@${placeholder}>!\nIt looks like you already have the ${placeholder} role assigned to you.`,
-      alreadyhaverolesmultiple: `\nHi <@${placeholder}>!\nIt looks like you already have ${placeholder}, and ${placeholder} roles assigned to you.`,
+      alreadyhaverolesmultiple: `\nHi <@${placeholder}>!\nIt looks like you already have the ${placeholder}, and ${placeholder} roles assigned to you.`,
       givenroles: `\nHi <@${placeholder}>!\nSure! I've assigned the ${placeholder} role to you.`,
       givenrolesmultiple: `\nHi <@${placeholder}>!\nSure! I've assigned the ${placeholder}, and ${placeholder} roles to you.`,
       somethingwrongtryagain: `Hi <@${placeholder}>! I'm sorry, but I don't know what happened. Could you please try again?`,
