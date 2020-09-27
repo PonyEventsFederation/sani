@@ -1,5 +1,5 @@
 import { GuildMemberRoleManager, Message } from "discord.js";
-import { Lang_en, stickitin } from "../lang";
+import { Lang_en, placeholder, stickitin } from "../lang";
 import { mlemEmoji } from "../ids";
 
 /**
@@ -30,13 +30,14 @@ export function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): 
 export async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || (msg.channel.id !== serversupportid)) return {
       delete: true,
-      content: stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportid, mlemEmoji])
+      content: stickitin(Lang_en.roleassign.tryagaininserversupport, [serversupportid, mlemEmoji])
    };
 
    msg.channel.startTyping();
    const given: Array<string> = [];
    const alreadyhave: Array<string> = [];
    let res: string = "";
+   let importantres: string = "";
 
    try {
       const rolemanager: GuildMemberRoleManager = msg.member.roles;
@@ -46,36 +47,31 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
 
          if (rolemanager.cache.has(selectedroledata[i].id)) alreadyhave.push(selectedroledata[i].name);
          else {
-            if (selectedroledata[i].specialmessage) await msg.channel.send(selectedroledata[i].specialmessage);
             await rolemanager.add(selectedroledata[i].id);
-            given.push(selectedroledata[i].name);
+            if (selectedroledata[i].specialmessage) importantres = importantres + selectedroledata[i].specialmessage;
+            else given.push(selectedroledata[i].name);
          }
       }
 
-      if (alreadyhave.length == 1) {
-         res = res + stickitin(Lang_en.roleassign.alreadyhaveroles, [msg.author.id, alreadyhave.sort().join(", ")]);
+      if (alreadyhave.length === 1) {
+         res = res + stickitin(Lang_en.roleassign.alreadyhaveroles, [alreadyhave.sort().join(", ")]);
+      } else if (alreadyhave.length > 1) {
+         res = res + parseMultipleRolesReply(Lang_en.roleassign.alreadyhaverolesmultiple, alreadyhave);
       }
 
-      if (alreadyhave.length > 1) {
-         res = res + parseMultipleRolesReply(Lang_en.roleassign.alreadyhaverolesmultiple, alreadyhave, msg.author.id);
+      if (given.length === 1) {
+         res = res + stickitin(Lang_en.roleassign.givenroles, [given.sort().join(", ")]);
+      } else if (given.length > 1) {
+         res = res + parseMultipleRolesReply(Lang_en.roleassign.givenrolesmultiple, given);
       }
-
-      if (given.length == 1) {
-         res = res + stickitin(Lang_en.roleassign.givenroles, [msg.author.id, given.sort().join(", ")]);
-      }
-
-      if (given.length > 1) {
-         res = res + parseMultipleRolesReply(Lang_en.roleassign.givenrolesmultiple, given, msg.author.id);
-      }
-
    } catch (e: unknown) {
       console.warn(e);
-      res = res + stickitin(Lang_en.roleassign.somethingwrongtryagain, msg.author.id);
+      res = res + Lang_en.roleassign.somethingwrongtryagain;
    }
    msg.channel.stopTyping();
    return {
       delete: false,
-      content: res
+      content: importantres + res
    };
 }
 
@@ -92,7 +88,7 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
 export async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || (msg.channel.id !== serversupportid)) return {
       delete: true,
-      content: stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportid])
+      content: stickitin(Lang_en.roleassign.tryagaininserversupport, [serversupportid])
    };
 
    const removed: Array<string> = [];
@@ -163,12 +159,12 @@ export async function getandremoveroles(msg: Message, allroledata: Array<RoleDat
  * @param roleData all of the role data that was requested by the user
  * @param target the target of the message
  */
-export function parseMultipleRolesReply(placeholder: string, roleData: Array<string>, target: string): string {
+export function parseMultipleRolesReply(placeholder: string, roleData: Array<string>): string {
    const final_role = roleData[roleData.length - 1];
    roleData.pop();
    const roles = roleData.sort().join(", ");
 
-   return stickitin(placeholder, [target, roles, final_role]);
+   return stickitin(placeholder, [roles, final_role]);
 }
 
 /**

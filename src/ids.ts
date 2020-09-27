@@ -37,7 +37,8 @@ export const serversupportchannel = "613024393425059981";
 export const mlemEmoji = ":Mlem:758757084299788298";
 
 
-// development role ids in my private server thing
+// development role ids in autumn's private server thing
+// people who develop on sani, feel free to add here if you want
 /*
 export const y2012 = "740013333184381020";
 export const y2013 = "740013318751911979";

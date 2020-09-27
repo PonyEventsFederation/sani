@@ -21,9 +21,9 @@ export class OtherRoleAssignCommandish extends Commandish {
          if (msg.guild && msg.deletable) {
             msg.delete();
 
-            (await msg.channel.send(stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlemEmoji]))).delete({ timeout: 15000 });
-         } else msg.channel.send(stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlemEmoji]));
-      } else msg.channel.send(response.content || stickitin(Lang_en.roleassign.novalidrolesfound, [msg.author.id]));
+            (await msg.channel.send(stickitin(Lang_en.roleassign.hi, msg.author.id) + stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlemEmoji]))).delete({ timeout: 15000 });
+         } else msg.channel.send(stickitin(Lang_en.roleassign.hi, msg.author.id) + stickitin(Lang_en.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlemEmoji]));
+      } else msg.channel.send(stickitin(Lang_en.roleassign.hi, msg.author.id) + response.content || stickitin(Lang_en.roleassign.novalidrolesfound, [msg.author.id]));
    }
 }
 
