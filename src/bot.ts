@@ -137,22 +137,32 @@ export class SaniSoda {
     */
    private initcommandishes(): void {
       const pinger: Pinggg = new Pinggg(this);
-      this.commandishes.push(new OtherRoleAssignCommandish(this));
-      // this.commandishes.push(new OtherRoleAssign(this));
-      this.commandishes.push(new YearAssignCommandish(this));
+      // this.commandishes.push(new OtherRoleAssignCommandish(this));
+      // this.commandishes.push(new YearAssignCommandish(this));
       this.commandishes.push(new HelpCommandish(this));
+      // special ones that have special handling
+      const otherrole: OtherRoleAssignCommandish = new OtherRoleAssignCommandish(this);
+      const yearrole: YearAssignCommandish = new YearAssignCommandish(this);
 
       this.bot.on("message", msg => {
-         let done: boolean = false;
+         // let done: boolean = false;
 
          if (msg.author.bot) return;
-         this.commandishes.forEach(commandishthing => {
-            if (commandishthing.shouldhandle(msg)) {
-               done = true;
-               commandishthing.handle(msg);
-            }
-         });
-         if (!done) if (pinger.shouldhandle(msg)) return void pinger.handle(msg);
+
+         // special handling
+         if (yearrole.shouldhandle(msg)) yearrole.handle(msg);
+         else if (otherrole.shouldhandle(msg)) otherrole.handle(msg);
+
+         // not used for now
+         // this.commandishes.forEach(commandishthing => {
+         //    if (commandishthing.shouldhandle(msg)) {
+         //       done = true;
+         //       commandishthing.handle(msg);
+         //    }
+         // });
+         // if (!done) if (pinger.shouldhandle(msg)) return void pinger.handle(msg);
+
+         else if (pinger.shouldhandle(msg)) pinger.handle(msg);
       });
    }
 }
