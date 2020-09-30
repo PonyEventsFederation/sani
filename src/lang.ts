@@ -18,7 +18,7 @@ export const Lang_en: Lang = {
    roleassign: {
       novalidyearsfound: "\nI'm sorry, but I didn't find any years that I could assign to you.",
       novalidrolesfound: "\nI'm sorry, but I didn't find any roles that I could assign to you.",
-      tryagaininserversupport: `Hello <@${placeholder}>! Could you please try asking me again in the <#${placeholder}> channel?\n We don't want Berry getting angry at us. <${placeholder}>`,
+      tryagaininserversupport: `Hello <@${placeholder}>! Could you please try asking me again in the <#${placeholder}> channel?\nWe don't want Berry getting angry at us. <${placeholder}>`,
       horriblywrongauthorperson: `I'm so sorry! It looks like something has gone terribly wrong!\nCould you please send a message to <@${placeholder}> so they can fix me?`,
 
       alreadyhaveroles: `\n\nIt looks like you already have the ${placeholder} role assigned to you.`,
