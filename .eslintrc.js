@@ -352,7 +352,7 @@ module.exports = {
       "@typescript-eslint/no-extra-parens": [error, all],
       "@typescript-eslint/no-extra-semi": off,
       "@typescript-eslint/no-extraneous-class": error,
-      "@typescript-eslint/no-floating-promises": error,
+      "@typescript-eslint/no-floating-promises": warn,
       "@typescript-eslint/no-for-in-array": error,
       "@typescript-eslint/no-implicit-any-catch": [error, {
          allowExplicitAny: true
@@ -366,7 +366,7 @@ module.exports = {
       "@typescript-eslint/no-loop-func": error,
       "@typescript-eslint/no-loss-of-precision": error,
       "@typescript-eslint/no-magic-numbers": [warn, {
-         ignore: [1],
+         ignore: [-1, 0, 1],
          ignoreArrayIndexes: true,
          ignoreDefaultValues: true,
          enforceConst: false,
@@ -423,8 +423,8 @@ module.exports = {
          ignoreMixedLogicalExpressions: true
       }],
       "@typescript-eslint/prefer-optional-chain": error,
-      "@typescript-eslint/prefer-readonly-parameter-types": warn,
-      "@typescript-eslint/prefer-readonly": warn,
+      "@typescript-eslint/prefer-readonly-parameter-types": off,
+      "@typescript-eslint/prefer-readonly": error,
       "@typescript-eslint/prefer-reduce-type-parameter": error,
       "@typescript-eslint/prefer-regexp-exec": error,
       "@typescript-eslint/prefer-string-starts-ends-with": error,
@@ -435,15 +435,15 @@ module.exports = {
          allowTemplateLiterals: true
       }],
       "@typescript-eslint/require-array-sort-compare": warn,
-      "@typescript-eslint/require-await": error,
+      "@typescript-eslint/require-await": warn,
       "@typescript-eslint/restrict-plus-operands": [warn, {
          checkCompoundAssignments: true
       }],
       "@typescript-eslint/restrict-template-expressions": warn,
-      "@typescript-eslint/return-await": [error, "in-try-catch"],
+      "@typescript-eslint/return-await": off,
       "@typescript-eslint/semi": error,
       "@typescript-eslint/space-before-function-paren": [error, never],
-      "@typescript-eslint/strict-boolean-expressions": warn,
+      "@typescript-eslint/strict-boolean-expressions": error,
       "@typescript-eslint/switch-exhaustiveness-check": error,
       "@typescript-eslint/triple-slash-reference": [error, {
          path: never,
