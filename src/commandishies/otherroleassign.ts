@@ -22,7 +22,7 @@ export class OtherRoleAssignCommandish extends Commandish {
             void msg.delete();
             (await msg.channel.send(stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji]))).delete({ timeout: 15000 }).catch(console.warn);
          } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji])).catch(console.warn);
-      } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + response.content || stickitin(langen.roleassign.novalidrolesfound, [msg.author.id])).catch(console.warn);
+      } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + (response.content || stickitin(langen.roleassign.novalidrolesfound, [msg.author.id]))).catch(console.warn);
    }
 }
 
