@@ -1,0 +1,53 @@
+---
+on:
+- push
+- pull_request
+
+name: ci
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+
+      - name: print node version
+        run: |
+          node -v
+          npm -v
+
+      - name: clean install dependencies
+        run: npm ci
+
+      - name: build typescript
+        run: npm run build
+
+
+  lint:
+    name: lint
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+
+      - name: print node version
+        run: |
+          node -v
+          npm -v
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: lint typescript
+        run: npm run lint
