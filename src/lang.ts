@@ -7,14 +7,14 @@
  *
  * see {@link Lang} and {@link Lang_en}
  */
-export const placeholder = "|ss";
+export const placeholder: string = "|ss";
 
 /**
  * the english implementation of {@link Lang}
  *
  * see {@link Lang}
  */
-export const Lang_en: Lang = {
+export const langen: Lang = {
    roleassign: {
       novalidyearsfound: "\nI'm sorry, but I didn't find any years that I could assign to you.",
       novalidrolesfound: "\nI'm sorry, but I didn't find any roles that I could assign to you.",
@@ -56,10 +56,10 @@ export const Lang_en: Lang = {
 export function stickitin(phrase: string, replacers: Array<string> | string): string {
    if (typeof replacers === "string") return phrase.replace(placeholder, replacers);
 
-   for (let i: number = 0; i < replacers.length; i++) {
-      const iofphrase = phrase.indexOf(placeholder);
+   for (const replacer of replacers) {
+      const iofphrase: number = phrase.indexOf(placeholder);
       if (iofphrase === -1) return phrase;
-      phrase = phrase.replace(placeholder, replacers[i]);
+      phrase = phrase.replace(placeholder, replacer);
    }
    return phrase;
 }
@@ -104,8 +104,8 @@ export interface Lang {
       /** warning for people who request the meme role */
       readonly memewarning: string;
       /** Sani says Hi */
-      readonly hi: string
-   }
+      readonly hi: string;
+   };
 
    /** phrases for the ping response command thing */
    readonly ping: {
@@ -114,5 +114,5 @@ export interface Lang {
        * response is chosen at random from the array
        */
       readonly responses: Array<string>;
-   }
+   };
 }

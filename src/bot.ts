@@ -14,10 +14,7 @@ import { HelpCommandish } from "./commandishies/help";
  * i guess [go follow me on github lol](https://github.com/pcelestia/)
  *
  * oh and join the [GalaCon discord server](https://discord.gg/galacon)! I'm there
- * and so are a lot of awesome friends. there will be lots of hugs... I
- * [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
- *
- * oh that promise joke was so stupid... lol
+ * and so are a lot of awesome friends. there will be lots of hugs... I promise.
  */
 export class SaniSoda {
    /**
@@ -26,7 +23,7 @@ export class SaniSoda {
     *
     * see [Client (discord.js)](https://discord.js.org/#/docs/main/v12/class/Client)
     */
-   private bot: Client;
+   private readonly bot: Client;
 
    /**
     * whether or not this instance of SaniSoda has started. Used because
@@ -51,10 +48,10 @@ export class SaniSoda {
    // private busy: boolean = false;
 
    /** the Discord token. Used to login the discord client */
-   private token: string;
+   private readonly token: string;
 
    /** array containing the {@link Commandish}es */
-   private commandishes: Array<Commandish>;
+   private readonly commandishes: Array<Commandish>;
 
    /**
     * constructs a new Sani instance (duh)
@@ -63,11 +60,11 @@ export class SaniSoda {
     */
    public constructor(token?: string) {
       this.bot = new Client();
-      if (token) this.token = token;
+      if (token !== undefined) this.token = token;
       else {
          assertenv("TOKEN");
-         // h is to satisfy tsc
-         this.token = process.env.TOKEN || "h";
+         // @ts-expect-error
+         this.token = process.env.TOKEN;
       }
 
       this.commandishes = [];
@@ -150,8 +147,8 @@ export class SaniSoda {
          if (msg.author.bot) return;
 
          // special handling
-         if (yearrole.shouldhandle(msg)) yearrole.handle(msg);
-         else if (otherrole.shouldhandle(msg)) otherrole.handle(msg);
+         if (yearrole.shouldhandle(msg)) void yearrole.handle(msg);
+         else if (otherrole.shouldhandle(msg)) void otherrole.handle(msg);
 
          // not used for now
          // this.commandishes.forEach(commandishthing => {
@@ -162,7 +159,7 @@ export class SaniSoda {
          // });
          // if (!done) if (pinger.shouldhandle(msg)) return void pinger.handle(msg);
 
-         else if (pinger.shouldhandle(msg)) pinger.handle(msg);
+         else if (pinger.shouldhandle(msg)) void pinger.handle(msg);
       });
    }
 }

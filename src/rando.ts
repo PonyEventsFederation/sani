@@ -4,10 +4,9 @@
  * @param varname variable name to check existence of
  * @returns the environment variable if it exists, or false
  */
-export function checkenv(varname: string): string | false {
-   const envvar = process.env[varname];
-   if (envvar) return envvar;
-   return false;
+export function checkenv(varname: string): boolean {
+   const envvar: string | undefined = process.env[varname];
+   return envvar !== undefined;
 }
 
 /**
@@ -77,7 +76,7 @@ export function randfromarray<T>(...arrs: Array<Array<T>>): Array<T> {
 
    const randnum: number = Math.floor(Math.random() * arrs[0].length);
    const randarr: Array<T> = [];
-   for (let i = 0; i < arrs.length; i++) if (arrs[i] && arrs[i].length > randnum) randarr.push(arrs[i][randnum]);
+   for (const arr of arrs) if (arr.length > randnum) randarr.push(arr[randnum]);
 
    return randarr;
 }

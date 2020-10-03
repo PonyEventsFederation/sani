@@ -352,7 +352,7 @@ module.exports = {
       "@typescript-eslint/no-extra-parens": [error, all],
       "@typescript-eslint/no-extra-semi": off,
       "@typescript-eslint/no-extraneous-class": error,
-      "@typescript-eslint/no-floating-promises": warn,
+      "@typescript-eslint/no-floating-promises": error,
       "@typescript-eslint/no-for-in-array": error,
       "@typescript-eslint/no-implicit-any-catch": [error, {
          allowExplicitAny: true

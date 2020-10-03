@@ -1,11 +1,11 @@
 import { SaniSoda } from "./bot";
 import { envisdev } from "./rando";
 
-// if NODE_ENV doesnt exist, assume development
-// if it does, check for mode "dev" or "development"
-// then configure using dotenv
-if (envisdev()) require("dotenv").config();
-else console.log = () => {};
+setup().then(() => {
+   void new SaniSoda().start();
+}).catch(console.warn);
 
-
-new SaniSoda().start();
+async function setup(): Promise<void> {
+   if (envisdev()) (await import("dotenv")).config();
+   else console.log = (): any => {};
+}
