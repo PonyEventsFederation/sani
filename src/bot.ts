@@ -159,7 +159,7 @@ export class SaniSoda {
          // });
          // if (!done) if (pinger.shouldhandle(msg)) return void pinger.handle(msg);
 
-         else if (pinger.shouldhandle(msg)) void pinger.handle(msg);
+         // else if (pinger.shouldhandle(msg)) void pinger.handle(msg);
       });
    }
 }
