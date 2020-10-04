@@ -7,7 +7,6 @@
    "scripts": {
       "test": "echo im lazy lol",
       "build": "tsc",
-      "postinstall": "npm run build",
       "bot": "node build",
       "buildandbot": "npm run build && npm run bot",
       "lint": "eslint --ext .ts src/",
