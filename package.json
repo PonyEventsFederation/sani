@@ -33,12 +33,14 @@
       "zlib-sync": "^0.1.7"
    },
    "devDependencies": {
+      "@autumnblaze/eslint-config-h": "^0.1.1",
       "@types/node": "^14.11.2",
       "@types/ws": "^7.2.6",
       "@typescript-eslint/eslint-plugin": "^4.2.0",
       "@typescript-eslint/parser": "^4.2.0",
       "dotenv": "^8.2.0",
       "eslint": "^7.10.0",
+      "eslint-plugin-functional": "^3.2.1",
       "typedoc": "^0.19.2",
       "typescript": "^4.0.3"
    }

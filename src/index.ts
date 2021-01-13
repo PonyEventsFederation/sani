@@ -1,11 +1,16 @@
-import { SaniSoda } from "./bot";
+import { createsani } from "./bot";
 import { envisdev } from "./rando";
+import { otherroleassign, yearassign } from "./commandish";
 
-setup().then(() => {
-   void new SaniSoda().start();
-}).catch(console.warn);
-
-async function setup(): Promise<void> {
+void (async function() {
    if (envisdev()) (await import("dotenv")).config();
-   else console.log = (): any => {};
-}
+   if (!process.env.TOKEN) throw new Error("NO TOKEN IN THE ENV LOL");
+
+   await createsani({
+      token: process.env.TOKEN,
+      stdout: console.log,
+      stderr: console.error,
+      events: ["exit", "SIGINT", "SIGTERM"],
+      commandishes: [otherroleassign, yearassign]
+   });
+})();

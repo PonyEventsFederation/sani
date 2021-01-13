@@ -1,6 +1,6 @@
 import { GuildMemberRoleManager, Message } from "discord.js";
-import { langen, stickitin } from "../lang";
-import { mlememoji } from "../ids";
+import { langen, stickitin } from "./lang";
+import { mlememoji } from "./ids";
 
 /**
  * takes a message and an array of {@link RoleData} and checks to see if the message
