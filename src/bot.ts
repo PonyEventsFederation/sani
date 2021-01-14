@@ -33,8 +33,8 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
 
    opts.commandishes.forEach(cmdish => commandishes.push(cmdish({
       sani,
-      stdout: console.log,
-      stderr: console.error
+      stdout: opts.stdout ?? console.log,
+      stderr: opts.stderr ?? console.error
    })));
 
    // initialise the commandishes and stuffs
@@ -55,5 +55,6 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
    const stop = () => void bot.destroy();
    opts.events.forEach(event => process.on(event, stop));
 
+   (opts.stdout ?? console.log)("up!");
    return sani;
 }
