@@ -53,9 +53,7 @@ export const langen: Lang = {
  * @param phrase phrase to insert artuments into
  * @param replacers arguments to insert into the phrase
  */
-export function stickitin(phrase: string, replacers: Array<string> | string): string {
-   if (typeof replacers === "string") return phrase.replace(placeholder, replacers);
-
+export function stickitin(phrase: string, ...replacers: Array<string>): string {
    for (const replacer of replacers) {
       const iofphrase: number = phrase.indexOf(placeholder);
       if (iofphrase === -1) return phrase;

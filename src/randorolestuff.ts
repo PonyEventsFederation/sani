@@ -29,7 +29,7 @@ function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): 
    roledata.pop();
    const roles: string = roledata.sort().join(", ");
 
-   return stickitin(placeholder, [roles, finalrole]);
+   return stickitin(placeholder, roles, finalrole);
 }
 
 /**
@@ -45,7 +45,7 @@ function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): 
 async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || msg.channel.id !== serversupportid) return {
       delete: true,
-      content: stickitin(langen.roleassign.tryagaininserversupport, [serversupportid, mlememoji])
+      content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid, mlememoji)
    };
 
    void msg.channel.startTyping();
@@ -69,13 +69,13 @@ async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serve
       }
 
       if (alreadyhave.length === 1) {
-         res = res + stickitin(langen.roleassign.alreadyhaveroles, [alreadyhave.sort().join(", ")]);
+         res = res + stickitin(langen.roleassign.alreadyhaveroles, alreadyhave.sort().join(", "));
       } else if (alreadyhave.length > 1) {
          res = res + parsemultiplerolesreply(langen.roleassign.alreadyhaverolesmultiple, alreadyhave);
       }
 
       if (given.length === 1) {
-         res = res + stickitin(langen.roleassign.givenroles, [given.sort().join(", ")]);
+         res = res + stickitin(langen.roleassign.givenroles, given.sort().join(", "));
       } else if (given.length > 1) {
          res = res + parsemultiplerolesreply(langen.roleassign.givenrolesmultiple, given);
       }
@@ -103,7 +103,7 @@ async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serve
 async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || msg.channel.id !== serversupportid) return {
       delete: true,
-      content: stickitin(langen.roleassign.tryagaininserversupport, [serversupportid])
+      content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid)
    };
 
    const removed: Array<string> = [];

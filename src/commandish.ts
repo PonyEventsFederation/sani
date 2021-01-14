@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { Sani } from "./bot";
 import { Logger } from "./bot";
-import { getandapplyroles, ModifyRolesReturnValue, RoleData } from "./randorolestuff";
+import { getandapplyroles, RoleData } from "./randorolestuff";
 import {
    serversupportchannel,
    y2012, y2013, y2014, y2015,
@@ -12,11 +12,42 @@ import {
 import { langen, placeholder, stickitin } from "./lang";
 import { wait } from "./rando";
 
-export type Commandish = (opts: {
+type CommandishOpts = {
    sani: Sani;
    stdout: Logger;
    stderr: Logger;
-}) => (msg: Message) => Promise<void> | Promise<false>;
+};
+
+export type Commandish = (opts: CommandishOpts) => (msg: Message) => Promise<void> | Promise<false>;
+
+/**
+ * returns true if:
+ *
+ * - there is no bot user in opts.sani.bot.user
+ * - bot isn't mentioned or regex test on the msg content doesn't return true
+ *
+ * use for commandishes. parameters are the commandish's opts and context and stuff,
+ * can just pass them in
+ */
+const needreturn = (opts: CommandishOpts, msg: Message, test: RegExp): boolean =>
+   !opts.sani.bot.user || !(msg.mentions.has(opts.sani.bot.user) && test.test(msg.content));
+
+/** tests for help (or halp) */
+const helptest: RegExp = /\bh(e|a)lp\b/im;
+
+/**
+ * The help message. The placeholders should be replaced with (in order) message author username (`msg.member?.nickname || msg.author.username`),
+ * sani user id, sani user id, and author user id ({@link authorperson}).
+ */
+const helpmessage: string = `
+Hi ${placeholder}! Seems like you need some help. Here are some things I can do for you.
+
+**"<@${placeholder}> I want musician and 2019 role please"** can get you some roles. It doesn't matter what you put, as long as the word "role" or "roles" is present in your message, I will know you want roles. I have artist, musician, cosplayer, meme, and roleplayer available, as well as the years 2012-2019.
+
+**"<@${placeholder}> I was at galacon in 2014 and 2015"** can get you year roles. It doesn't matter what you put, as long as the word "galacon" is present in your message, I will know you want year roles. I have the years 2012-2019 available.
+
+Thats all I do right now. If you need help, you can always ask <@${placeholder}> about it, she knows the most about me.
+`;
 
 const yeartest: RegExp = /\bgalacon\b/im;
 const yeartest2012: RegExp = /\b2012\b/im;
@@ -38,18 +69,6 @@ const yearroles: Array<RoleData> = [
    { name: "2018", regex: yeartest2018, id: y2018 },
    { name: "2019", regex: yeartest2019, id: y2019 }
 ];
-
-export const yearassign: Commandish = (opts) => async msg => {
-   if (!opts.sani.bot.user) return;
-   if (!(msg.mentions.has(opts.sani.bot.user) && yeartest.test(msg.content))) return;
-   const response: ModifyRolesReturnValue = await getandapplyroles(msg, yearroles, serversupportchannel);
-   if (response.delete) {
-      if (msg.guild && msg.deletable) {
-         void msg.delete();
-         (await msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji]))).delete({ timeout: 15000 }).catch(opts.stderr);
-      } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji])).catch(opts.stderr);
-   } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + (response.content || stickitin(langen.roleassign.novalidyearsfound, [msg.author.id]))).catch(opts.stderr);
-};
 
 /** tests to see if someone indicated that they want artist role */
 const artisttest: RegExp = /\b(art(s|ist)?)\b/im;
@@ -73,46 +92,16 @@ const otherroles: Array<RoleData> = [
    { name: "rp", regex: rptest, id: rp }
 ];
 
-export const otherroleassign: Commandish = opts => async msg => {
-   if (!opts.sani.bot.user) return;
-   if (!(msg.mentions.has(opts.sani.bot.user) && roletest.test(msg.content))) return;
-
-   const response: ModifyRolesReturnValue = await getandapplyroles(msg, otherroles, serversupportchannel);
-   if (response.delete) {
-      if (msg.guild && msg.deletable) {
-         void msg.delete();
-         (await msg.channel.send(stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji]))).delete({ timeout: 15000 }).catch(opts.stderr);
-      } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji])).catch(opts.stderr);
-   } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + (response.content || stickitin(langen.roleassign.novalidrolesfound, [msg.author.id]))).catch(opts.stderr);
-};
-
-/** tests for help (or halp) */
-const helptest: RegExp = /\bh(e|a)lp\b/im;
-
-/**
- * The help message. The placeholders should be replaced with (in order) message author username (`msg.member?.nickname || msg.author.username`),
- * sani user id, sani user id, and author user id ({@link authorperson}).
- */
-const helpmessage: string = `
-Hi ${placeholder}! Seems like you need some help. Here are some things I can do for you.
-
-**"<@${placeholder}> I want musician and 2019 role please"** can get you some roles. It doesn't matter what you put, as long as the word "role" or "roles" is present in your message, I will know you want roles. I have artist, musician, cosplayer, meme, and roleplayer available, as well as the years 2012-2019.
-
-**"<@${placeholder}> I was at galacon in 2014 and 2015"** can get you year roles. It doesn't matter what you put, as long as the word "galacon" is present in your message, I will know you want year roles. I have the years 2012-2019 available.
-
-Thats all I do right now. If you need help, you can always ask <@${placeholder}> about it, she knows the most about me.
-`;
-
 export const help: Commandish = opts => async msg => {
    if (!opts.sani.bot.user) return;
    if (!(msg.mentions.has(opts.sani.bot.user) && helptest.test(msg.content))) return;
 
-   await msg.author.send(stickitin(helpmessage, [
+   await msg.author.send(stickitin(helpmessage,
       msg.member?.nickname ?? msg.author.username,
       opts.sani.bot.user.id,
       opts.sani.bot.user.id,
       authorperson
-   ]));
+   ));
 
    if (msg.deletable) await msg.delete();
    else if (msg.channel.type !== "dm") {
@@ -124,3 +113,44 @@ export const help: Commandish = opts => async msg => {
       await reaction.users.remove();
    }
 };
+
+
+const roleassign: (roleassignopts: {
+   test: RegExp;
+   roles: Array<RoleData>;
+   serversupportchannel: string;
+   hi: string;
+   novalidrolesfound: string;
+   tryagaininserversupport: string;
+   mlememoji: string;
+}) => Commandish = roleassignopts => opts => async msg => {
+   if (needreturn(opts, msg, roleassignopts.test)) return;
+
+   const response = await getandapplyroles(msg, roleassignopts.roles, roleassignopts.serversupportchannel);
+
+   if (!response.delete) return void msg.channel.send(stickitin(roleassignopts.hi, msg.author.id) + (response.content || stickitin(roleassignopts.novalidrolesfound, msg.author.id))).catch(opts.stderr);
+   if (!(msg.guild && msg.deletable)) return void msg.channel.send(stickitin(roleassignopts.hi, msg.author.id) + stickitin(roleassignopts.tryagaininserversupport, msg.author.id, roleassignopts.serversupportchannel, mlememoji)).catch(opts.stderr);
+
+   void msg.delete();
+   (await msg.channel.send(stickitin(roleassignopts.tryagaininserversupport, msg.author.id, roleassignopts.serversupportchannel, roleassignopts.mlememoji))).delete({ timeout: 15000 }).catch(opts.stderr);
+};
+
+export const otherroleassign: Commandish = roleassign({
+   test: roletest,
+   roles: otherroles,
+   serversupportchannel,
+   hi: langen.roleassign.hi,
+   novalidrolesfound: langen.roleassign.novalidrolesfound,
+   tryagaininserversupport: langen.roleassign.tryagaininserversupport,
+   mlememoji
+});
+
+export const yearassign: Commandish = roleassign({
+   test: yeartest,
+   roles: yearroles,
+   serversupportchannel,
+   hi: langen.roleassign.hi,
+   novalidrolesfound: langen.roleassign.novalidyearsfound,
+   tryagaininserversupport: langen.roleassign.tryagaininserversupport,
+   mlememoji
+});
