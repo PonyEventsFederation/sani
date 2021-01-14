@@ -18,6 +18,21 @@ export function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): 
 }
 
 /**
+ * Placeholder function to parse a string for the multiple role reply.
+ *
+ * @param placeholder the placeholder string we'll be using
+ * @param roledata all of the role data that was requested by the user
+ * @param target the target of the message
+ */
+export function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): string {
+   const finalrole: string = roledata[roledata.length - 1];
+   roledata.pop();
+   const roles: string = roledata.sort().join(", ");
+
+   return stickitin(placeholder, [roles, finalrole]);
+}
+
+/**
  * applys roles specified by an array of {@link RoleData} to a message author
  *
  * @param msg apply roles to this message's author
@@ -153,26 +168,11 @@ export async function getandremoveroles(msg: Message, allroledata: Array<RoleDat
 }
 
 /**
- * Placeholder function to parse a string for the multiple role reply.
- *
- * @param placeholder the placeholder string we'll be using
- * @param roledata all of the role data that was requested by the user
- * @param target the target of the message
- */
-export function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): string {
-   const finalrole: string = roledata[roledata.length - 1];
-   roledata.pop();
-   const roles: string = roledata.sort().join(", ");
-
-   return stickitin(placeholder, [roles, finalrole]);
-}
-
-/**
  * Data for a Discord role, including a user-friendly name, regex to test for the
  * presence of a request in a message, and an id so it can be applied or removed
  * from a user.
  */
-export interface RoleData {
+export type RoleData = {
    /** user-friendly name of the role, can be different from the actual role name */
    readonly name: string;
    /** regex to test for the presence of the role request inside a message */
@@ -181,11 +181,11 @@ export interface RoleData {
    readonly id: string;
    /** special message to send when someone requests this role */
    readonly specialmessage?: string;
-}
+};
 
-export interface ModifyRolesReturnValue {
+export type ModifyRolesReturnValue = {
    /** whether or not to delete the original message and the result message */
    delete: boolean;
    /** content of the result (the actual result) */
    content: string;
-}
+};

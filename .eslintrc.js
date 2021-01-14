@@ -30,7 +30,9 @@ module.exports = {
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/require-array-sort-compare": "off",
       "@typescript-eslint/restrict-plus-operands": "off",
-      "functional/no-class": "error"
+      "functional/no-class": "error",
+      "functional/prefer-type-literal": "error"
    }
 };
