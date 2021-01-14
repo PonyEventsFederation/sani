@@ -2,8 +2,14 @@ import { Message } from "discord.js";
 import { Sani } from "./bot";
 import { Logger } from "./bot";
 import { getandapplyroles, ModifyRolesReturnValue, RoleData } from "./randorolestuff";
-import { serversupportchannel, y2012, y2013, y2014, y2015, y2016, y2017, y2018, y2019, artist, cosplayer, meme, musician, rp, mlememoji } from "./ids";
-import { langen, stickitin } from "./lang";
+import {
+   serversupportchannel,
+   y2012, y2013, y2014, y2015,
+   y2016, y2017, y2018, y2019,
+   artist, cosplayer, meme, musician, rp,
+   mlememoji, authorperson
+} from "./ids";
+import { langen, placeholder, stickitin } from "./lang";
 
 export type Commandish = (opts: {
    sani: Sani;
@@ -77,4 +83,35 @@ export const otherroleassign: Commandish = opts => async msg => {
          (await msg.channel.send(stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji]))).delete({ timeout: 15000 }).catch(opts.stderr);
       } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + stickitin(langen.roleassign.tryagaininserversupport, [msg.author.id, serversupportchannel, mlememoji])).catch(opts.stderr);
    } else msg.channel.send(stickitin(langen.roleassign.hi, msg.author.id) + (response.content || stickitin(langen.roleassign.novalidrolesfound, [msg.author.id]))).catch(opts.stderr);
+};
+
+/** tests for help (or halp) */
+export const helptest: RegExp = /\bh(e|a)lp\b/im;
+
+/**
+ * The help message. The placeholders should be replaced with (in order) message author username (`msg.member?.nickname || msg.author.username`),
+ * sani user id, sani user id, and author user id ({@link authorperson}).
+ */
+export const helpmessage: string = `
+Hi ${placeholder}! Seems like you need some help. Here are some things I can do for you.
+
+**"<@${placeholder}> I want musician and 2019 role please"** can get you some roles. It doesn't matter what you put, as long as the word "role" or "roles" is present in your message, I will know you want roles. I have artist, musician, cosplayer, meme, and roleplayer available, as well as the years 2012-2019.
+
+**"<@${placeholder}> I was at galacon in 2014 and 2015"** can get you year roles. It doesn't matter what you put, as long as the word "galacon" is present in your message, I will know you want year roles. I have the years 2012-2019 available.
+
+Thats all I do right now. If you need help, you can always ask <@${placeholder}> about it, she knows the most about me.
+`;
+
+export const help: Commandish = opts => async msg => {
+   if (!opts.sani.bot.user) return;
+   if (!(msg.mentions.has(opts.sani.bot.user) && helptest.test(msg.content))) return;
+   await msg.author.send(stickitin(helpmessage, [
+      msg.member?.nickname ?? msg.author.username,
+      opts.sani.bot.user.id,
+      opts.sani.bot.user.id,
+      authorperson
+   ]));
+   if (msg.deletable) await msg.delete();
+   //                                                     ✅
+   else if (msg.channel.type !== "dm") void msg.react("\u2705");
 };

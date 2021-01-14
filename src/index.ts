@@ -1,6 +1,6 @@
 import { createsani } from "./bot";
 import { envisdev } from "./rando";
-import { otherroleassign, yearassign } from "./commandish";
+import { otherroleassign, yearassign, help } from "./commandish";
 
 void (async function() {
    if (envisdev()) (await import("dotenv")).config();
@@ -11,6 +11,6 @@ void (async function() {
       stdout: console.log,
       stderr: console.error,
       events: ["exit", "SIGINT", "SIGTERM"],
-      commandishes: [otherroleassign, yearassign]
+      commandishes: [otherroleassign, yearassign, help]
    });
 })();
