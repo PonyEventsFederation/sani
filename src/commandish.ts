@@ -32,8 +32,6 @@ export type Commandish = (opts: CommandishOpts) => (msg: Message) => Promise<voi
 const needreturn = (opts: CommandishOpts, msg: Message, test: RegExp): boolean =>
    !opts.sani.bot.user || !(msg.mentions.has(opts.sani.bot.user) && test.test(msg.content));
 
-/** tests for help (or halp) */
-const helptest: RegExp = /\bh(e|a)lp\b/im;
 
 /**
  * The help message. The placeholders should be replaced with (in order) message author username (`msg.member?.nickname || msg.author.username`),
@@ -49,52 +47,9 @@ Hi ${placeholder}! Seems like you need some help. Here are some things I can do 
 Thats all I do right now. If you need help, you can always ask <@${placeholder}> about it, she knows the most about me.
 `;
 
-const yeartest: RegExp = /\bgalacon\b/im;
-const yeartest2012: RegExp = /\b2012\b/im;
-const yeartest2013: RegExp = /\b2013\b/im;
-const yeartest2014: RegExp = /\b2014\b/im;
-const yeartest2015: RegExp = /\b2015\b/im;
-const yeartest2016: RegExp = /\b2016\b/im;
-const yeartest2017: RegExp = /\b2017\b/im;
-const yeartest2018: RegExp = /\b2018\b/im;
-const yeartest2019: RegExp = /\b2019\b/im;
-
-const yearroles: Array<RoleData> = [
-   { name: "2012", regex: yeartest2012, id: y2012 },
-   { name: "2013", regex: yeartest2013, id: y2013 },
-   { name: "2014", regex: yeartest2014, id: y2014 },
-   { name: "2015", regex: yeartest2015, id: y2015 },
-   { name: "2016", regex: yeartest2016, id: y2016 },
-   { name: "2017", regex: yeartest2017, id: y2017 },
-   { name: "2018", regex: yeartest2018, id: y2018 },
-   { name: "2019", regex: yeartest2019, id: y2019 }
-];
-
-/** tests to see if someone indicated that they want artist role */
-const artisttest: RegExp = /\b(art(s|ist)?)\b/im;
-/** tests to see if someone indicated that they want artist role */
-const musiciantest: RegExp = /\b(music(ians?)?)\b/im;
-/** tests to see if someone indicated that they want musician role */
-const cosplayertest: RegExp = /\b(cosplay(ers?)?)\b/im;
-/** tests to see if someone indicated that they want meme role */
-const memetest: RegExp = /\b((me){2,}(ist)?s?)\b/im;
-/** tests to see if someone indicated that they want roleplay role */
-const rptest: RegExp = /\b(rp|roleplay(er)?s?)\b/im;
-/** tests to see if someone indicated that the message contains other role requests */
-const roletest: RegExp = /\broles?\b/im;
-
-/** array of all the other roles, for iterating through */
-const otherroles: Array<RoleData> = [
-   { name: "artist", regex: artisttest, id: artist },
-   { name: "musician", regex: musiciantest, id: musician },
-   { name: "cosplayer", regex: cosplayertest, id: cosplayer },
-   { name: "meme", regex: memetest, id: meme, specialmessage: langen.roleassign.memewarning },
-   { name: "rp", regex: rptest, id: rp }
-];
-
 export const help: Commandish = opts => async msg => {
    if (!opts.sani.bot.user) return;
-   if (!(msg.mentions.has(opts.sani.bot.user) && helptest.test(msg.content))) return;
+   if (!(msg.mentions.has(opts.sani.bot.user) && /\bh(e|a)lp\b/im.test(msg.content))) return;
 
    await msg.author.send(stickitin(helpmessage,
       msg.member?.nickname ?? msg.author.username,
@@ -136,8 +91,14 @@ const roleassign: (roleassignopts: {
 };
 
 export const otherroleassign: Commandish = roleassign({
-   test: roletest,
-   roles: otherroles,
+   test: /\broles?\b/im,
+   roles: [
+      { name: "artist", regex: /\b(art(s|ists?)?)\b/im, id: artist },
+      { name: "musician", regex: /\b(music(ians?)?)\b/im, id: musician },
+      { name: "cosplayer", regex: /\b(cosplay(ers?)?)\b/im, id: cosplayer },
+      { name: "meme", regex: /\b((me){2,}(ist)?s?)\b/im, id: meme, specialmessage: langen.roleassign.memewarning },
+      { name: "rp", regex: /\b(rp|roleplay(er)?s?)\b/im, id: rp }
+   ],
    serversupportchannel,
    hi: langen.roleassign.hi,
    novalidrolesfound: langen.roleassign.novalidrolesfound,
@@ -146,8 +107,17 @@ export const otherroleassign: Commandish = roleassign({
 });
 
 export const yearassign: Commandish = roleassign({
-   test: yeartest,
-   roles: yearroles,
+   test: /\bgalacon\b/im,
+   roles: [
+      { name: "2012", regex: /\b2012\b/im, id: y2012 },
+      { name: "2013", regex: /\b2013\b/im, id: y2013 },
+      { name: "2014", regex: /\b2014\b/im, id: y2014 },
+      { name: "2015", regex: /\b2015\b/im, id: y2015 },
+      { name: "2016", regex: /\b2016\b/im, id: y2016 },
+      { name: "2017", regex: /\b2017\b/im, id: y2017 },
+      { name: "2018", regex: /\b2018\b/im, id: y2018 },
+      { name: "2019", regex: /\b2019\b/im, id: y2019 }
+   ],
    serversupportchannel,
    hi: langen.roleassign.hi,
    novalidrolesfound: langen.roleassign.novalidyearsfound,
