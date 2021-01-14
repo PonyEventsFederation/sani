@@ -87,13 +87,13 @@ export const otherroleassign: Commandish = opts => async msg => {
 };
 
 /** tests for help (or halp) */
-export const helptest: RegExp = /\bh(e|a)lp\b/im;
+const helptest: RegExp = /\bh(e|a)lp\b/im;
 
 /**
  * The help message. The placeholders should be replaced with (in order) message author username (`msg.member?.nickname || msg.author.username`),
  * sani user id, sani user id, and author user id ({@link authorperson}).
  */
-export const helpmessage: string = `
+const helpmessage: string = `
 Hi ${placeholder}! Seems like you need some help. Here are some things I can do for you.
 
 **"<@${placeholder}> I want musician and 2019 role please"** can get you some roles. It doesn't matter what you put, as long as the word "role" or "roles" is present in your message, I will know you want roles. I have artist, musician, cosplayer, meme, and roleplayer available, as well as the years 2012-2019.
@@ -106,12 +106,14 @@ Thats all I do right now. If you need help, you can always ask <@${placeholder}>
 export const help: Commandish = opts => async msg => {
    if (!opts.sani.bot.user) return;
    if (!(msg.mentions.has(opts.sani.bot.user) && helptest.test(msg.content))) return;
+
    await msg.author.send(stickitin(helpmessage, [
       msg.member?.nickname ?? msg.author.username,
       opts.sani.bot.user.id,
       opts.sani.bot.user.id,
       authorperson
    ]));
+
    if (msg.deletable) await msg.delete();
    else if (msg.channel.type !== "dm") {
       // void (await msg.react("\u2705")).users.remove();

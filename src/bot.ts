@@ -3,7 +3,7 @@ import { Commandish } from "./commandish";
 
 export type Logger = (...args: any) => void;
 
-export type SaniOpts = {
+type SaniOpts = {
    readonly token: string;
    readonly events: ReadonlyArray<string>;
    readonly stdout?: Logger;

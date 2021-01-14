@@ -11,7 +11,7 @@ import { mlememoji } from "./ids";
  * @param allroledata array of all roles to check
  * @returns an array of {@link RoleData} containing the roles that the message author wants
  */
-export function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): Array<RoleData> {
+function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): Array<RoleData> {
    const arrr: Array<RoleData> = [];
    for (const roledata of allroledata) if (roledata.regex.test(msg.content)) arrr.push(roledata);
    return arrr;
@@ -24,7 +24,7 @@ export function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): 
  * @param roledata all of the role data that was requested by the user
  * @param target the target of the message
  */
-export function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): string {
+function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): string {
    const finalrole: string = roledata[roledata.length - 1];
    roledata.pop();
    const roles: string = roledata.sort().join(", ");
@@ -42,7 +42,7 @@ export function parsemultiplerolesreply(placeholder: string, roledata: Array<str
  * @returns a string of response, with an indication of whether or not to delete
  *          the original message and the response message
  */
-export async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
+async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || msg.channel.id !== serversupportid) return {
       delete: true,
       content: stickitin(langen.roleassign.tryagaininserversupport, [serversupportid, mlememoji])
@@ -100,7 +100,7 @@ export async function applyroles(msg: Message, selectedroledata: Array<RoleData>
  * @returns a string of response, with an indication of whether or not to delete
  *          the original message and the response message
  */
-export async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
+async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
    if (!msg.member || msg.channel.id !== serversupportid) return {
       delete: true,
       content: stickitin(langen.roleassign.tryagaininserversupport, [serversupportid])

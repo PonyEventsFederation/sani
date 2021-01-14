@@ -69,7 +69,7 @@ export function stickitin(phrase: string, replacers: Array<string> | string): st
  * A language is a massive object that contains all the string data for things like
  * responses to commands, error messages, etc etc
  */
-export type Lang = {
+type Lang = {
    /** specifys strings related to assigning roles */
    readonly roleassign: {
       /**
