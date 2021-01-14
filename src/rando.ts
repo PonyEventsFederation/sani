@@ -15,7 +15,7 @@ export function checkenv(varname: string): boolean {
  *
  * @param varname variable name to assert existence of
  */
-export function assertenv(varname: string): void {
+export function assertenv(varname: string): never | void {
    if (!checkenv(varname)) {
       console.error(`no environment variable called ${varname}`);
       process.exit(1);
