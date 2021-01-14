@@ -10,6 +10,7 @@ import {
    mlememoji, authorperson
 } from "./ids";
 import { langen, placeholder, stickitin } from "./lang";
+import { wait } from "./rando";
 
 export type Commandish = (opts: {
    sani: Sani;
@@ -112,6 +113,12 @@ export const help: Commandish = opts => async msg => {
       authorperson
    ]));
    if (msg.deletable) await msg.delete();
-   //                                                     ✅
-   else if (msg.channel.type !== "dm") void msg.react("\u2705");
+   else if (msg.channel.type !== "dm") {
+      // void (await msg.react("\u2705")).users.remove();
+      //                                ✅
+      const reaction = await msg.react("\u2705");
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      await wait(15000);
+      await reaction.users.remove();
+   }
 };
