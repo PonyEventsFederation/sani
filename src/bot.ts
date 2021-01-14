@@ -52,7 +52,10 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
 
    // login and init the stop events
    await bot.login(opts.token);
-   const stop = () => void bot.destroy();
+
+   let up = true;
+   // const stop = () => void (opts.stdout ?? console.log)("not up!") ?? void bot.destroy();
+   const stop = () => up && (void (opts.stdout ?? console.log)("not up!") ?? void bot.destroy() ?? (up = false));
    opts.events.forEach(event => process.on(event, stop));
 
    (opts.stdout ?? console.log)("up!");

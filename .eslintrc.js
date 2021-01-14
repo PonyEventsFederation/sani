@@ -26,6 +26,7 @@ module.exports = {
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-type-alias": "off",
+      "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/init-declarations": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
