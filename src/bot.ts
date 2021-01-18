@@ -61,10 +61,9 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
    // if its false, then its destroyed already, so it doesnt run destroy()
    // dont run destroy() twice
    const stop = () => up && (void (opts.stdout ?? console.log)("not up!") ?? void bot.destroy() ?? (up = false));
+   sani.stop = stop;
 
    opts.events.forEach(event => process.on(event, stop));
-
-   sani.stop = stop;
 
    (opts.stdout ?? console.log)("up!");
    return sani;

@@ -25,6 +25,7 @@ module.exports = {
       "@typescript-eslint/consistent-type-definitions": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-throw-literal": "off",
       "@typescript-eslint/no-type-alias": "off",
       "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/no-unused-expressions": "off",
