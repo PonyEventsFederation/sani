@@ -3,13 +3,13 @@ import { Commandish } from "./commandish";
 
 export type Logger = (...args: any) => void;
 
-type SaniOpts = {
-   readonly token: string;
-   readonly events: ReadonlyArray<string>;
-   readonly stdout?: Logger;
-   readonly stderr?: Logger;
-   readonly commandishes: ReadonlyArray<Commandish>;
-};
+type SaniOpts = Readonly<{
+   token: string;
+   events: ReadonlyArray<string>;
+   stdout?: Logger;
+   stderr?: Logger;
+   commandishes: ReadonlyArray<Commandish>;
+}>;
 
 export type Sani = {
    readonly bot: Client;
@@ -26,9 +26,8 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
       get bot() {
          return bot;
       },
-      stop() {
-         bot.destroy();
-      }
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      stop() {}
    };
 
    opts.commandishes.forEach(cmdish => commandishes.push(cmdish({
@@ -50,13 +49,22 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
       }
    });
 
-   // login and init the stop events
    await bot.login(opts.token);
 
+   // init the stop events
+
+   /** whether or not the bot is logged in, false if destroyed already */
    let up = true;
-   // const stop = () => void (opts.stdout ?? console.log)("not up!") ?? void bot.destroy();
+
+   // the stop function below checks if up is true, if it is true than its still
+   // logged in, so destroy it
+   // if its false, then its destroyed already, so it doesnt run destroy()
+   // dont run destroy() twice
    const stop = () => up && (void (opts.stdout ?? console.log)("not up!") ?? void bot.destroy() ?? (up = false));
+
    opts.events.forEach(event => process.on(event, stop));
+
+   sani.stop = stop;
 
    (opts.stdout ?? console.log)("up!");
    return sani;
