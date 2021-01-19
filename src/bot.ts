@@ -1,6 +1,7 @@
 import { Client } from "discord.js";
 import { Commandish } from "./commandish";
 
+// poor man's logger
 export type Logger = (...args: any) => void;
 
 type SaniOpts = Readonly<{
