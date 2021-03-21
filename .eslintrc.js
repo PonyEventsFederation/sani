@@ -1,7 +1,7 @@
 module.exports = {
    parser: "@typescript-eslint/parser",
    parserOptions: {
-      ecmaVersion: 2017,
+      ecmaVersion: 2020,
       sourceType: "module",
       ecmaFeatures: {
          globalReturn: false,
@@ -30,12 +30,19 @@ module.exports = {
       "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/init-declarations": "off",
+      "@typescript-eslint/no-shadow": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/promise-function-async": "off",
       "@typescript-eslint/require-array-sort-compare": "off",
       "@typescript-eslint/restrict-plus-operands": "off",
+      "@typescript-eslint/space-before-function-paren": ["error", {
+         "anonymous": "never",
+         "named": "never",
+         "asyncArrow": "always"
+      }],
       "functional/no-class": "error",
       "functional/prefer-type-literal": "error"
    }
