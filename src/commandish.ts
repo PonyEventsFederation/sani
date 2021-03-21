@@ -37,7 +37,7 @@ const needreturn = (opts: CommandishOpts, msg: Message, test: RegExp): boolean =
 const helpmessage: string = `
 Hi ${placeholder}! Seems like you need some help. Here are some things I can do for you.
 
-**"<@${placeholder}> I want musician and 2019 role please"** can get you some roles. It doesn't matter what you put, as long as the word "role" or "roles" is present in your message, I will know you want roles. I have artist, musician, cosplayer, meme, and roleplayer available, as well as the years 2012-2019.
+**"<@${placeholder}> I want musician and 2019 role please"** can get you some roles. It doesn't matter what you put, as long as the word "role" or "roles" is present in your message, I will know you want roles. I have artist, musician, cosplayer, meme, roleplayer, and news available, as well as the years 2012-2019.
 
 **"<@${placeholder}> I was at galacon in 2014 and 2015"** can get you year roles. It doesn't matter what you put, as long as the word "galacon" is present in your message, I will know you want year roles. I have the years 2012-2019 available.
 
@@ -60,7 +60,6 @@ export const help: Commandish = opts => async msg => {
       // void (await msg.react("\u2705")).users.remove();
       //                                ✅
       const reaction = await msg.react("\u2705");
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       await wait(15000);
       await reaction.users.remove();
    }
@@ -93,6 +92,7 @@ export const otherroleassign = (ids: {
    cosplayer: string;
    meme: string;
    rp: string;
+   news: string;
 }) => roleassign({
    test: /\broles?\b/im,
    roles: [
@@ -100,7 +100,8 @@ export const otherroleassign = (ids: {
       { name: "musician", regex: /\b(music(ians?)?)\b/im, id: ids.musician },
       { name: "cosplayer", regex: /\b(cosplay(ers?)?)\b/im, id: ids.cosplayer },
       { name: "meme", regex: /\b((me){2,}(ist)?s?)\b/im, id: ids.meme, specialmessage: langen.roleassign.memewarning },
-      { name: "rp", regex: /\b(rp|roleplay(er)?s?)\b/im, id: ids.rp }
+      { name: "rp", regex: /\b(rp|roleplay(er)?s?)\b/im, id: ids.rp },
+      { name: "news", regex: /\bnews\b/im, id: ids.news }
    ],
    serversupportchannel,
    hi: langen.roleassign.hi,

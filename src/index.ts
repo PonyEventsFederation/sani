@@ -26,6 +26,7 @@ type IDTYPE = {
    cosplayer: string;
    meme: string;
    rp: string;
+   news: string;
 };
 
 function getids(): IDTYPE {
@@ -42,15 +43,16 @@ function getids(): IDTYPE {
       musician:  getid("id_musician"),
       cosplayer: getid("id_cosplayer"),
       meme:      getid("id_meme"),
-      rp:        getid("id_rp")
+      rp:        getid("id_rp"),
+      news:      getid("id_news")
    };
    return ids;
 }
 
 function getidsmethod2(): IDTYPE {
    const ids = process.env.SANI_IDS;
-   const order = "2012,2013,2014,2015,2016,2017,2018,2019,artist,musician,cosplayer,meme,rp";
-   if (!ids) throw `SANI_IDS not available! set SANI_IDS to a comma seperated list of ids, in this order: ${order}`;
+   const order = "2012,2013,2014,2015,2016,2017,2018,2019,artist,musician,cosplayer,meme,rp,news";
+   if (!ids) throw `SANI_IDS not available! set SANI_IDS to a comma seperated list of ids, in this order: ${order.split(",").join(", ")}`;
    const arrayofids = ids.split(",");
    const trimmedids: Array<string> = [];
    arrayofids.forEach((val) => trimmedids.push(val.trim()));
@@ -68,7 +70,8 @@ function getidsmethod2(): IDTYPE {
       musician:  trimmedids[9],
       cosplayer: trimmedids[10],
       meme:      trimmedids[11],
-      rp:        trimmedids[12]
+      rp:        trimmedids[12],
+      news:      trimmedids[13]
    };
 }
 
@@ -81,10 +84,8 @@ void (async function() {
       ids = getids();
    } catch (error1: unknown) {
       console.error("PROBLEM, FALLING BACK TO THE METHOD 2 OF EXTRACTING IDS");
-      console.error("PLEASE DONT USE THIS");
-      console.error("ITS HORRIBLE");
-      console.error("WE CAN TOTALLY TELL WHAT THAT ALL MEANS WHEN YOU HAVE LIKE 13 NUMBERS ALL THE SAME LENGTH STRUNG TOGETHER LIKE THAT");
-      console.error("DONT USE THIS LOL");
+      console.error("FIX METHOD 1 AS SOON AS POSSIBLE");
+
       try {
          ids = getidsmethod2();
       } catch (error2: unknown) {
