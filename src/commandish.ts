@@ -87,12 +87,10 @@ const roleassign: (roleassignopts: {
 };
 
 export const otherroleassign = (ids: {
-   artist: string;
-   musician: string;
-   cosplayer: string;
-   meme: string;
-   rp: string;
-   news: string;
+   artist: string; musician: string; cosplayer: string;
+   meme: string; rp: string; news: string;
+   y2012: string; y2013: string; y2014: string; y2015: string;
+   y2016: string; y2017: string; y2018: string; y2019: string;
 }) => roleassign({
    test: /\broles?\b/im,
    roles: [
@@ -101,7 +99,19 @@ export const otherroleassign = (ids: {
       { name: "cosplayer", regex: /\b(cosplay(ers?)?)\b/im, id: ids.cosplayer },
       { name: "meme", regex: /\b((me){2,}(ist)?s?)\b/im, id: ids.meme, specialmessage: langen.roleassign.memewarning },
       { name: "rp", regex: /\b(rp|roleplay(er)?s?)\b/im, id: ids.rp },
-      { name: "news", regex: /\bnews\b/im, id: ids.news }
+      { name: "news", regex: /\bnews\b/im, id: ids.news },
+
+      // year roles
+      // because apparently these can also give year roles
+      { name: "2012", regex: /\b2012\b/im, id: ids.y2012 },
+      { name: "2013", regex: /\b2013\b/im, id: ids.y2013 },
+      { name: "2014", regex: /\b2014\b/im, id: ids.y2014 },
+      { name: "2015", regex: /\b2015\b/im, id: ids.y2015 },
+      { name: "2016", regex: /\b2016\b/im, id: ids.y2016 },
+      { name: "2017", regex: /\b2017\b/im, id: ids.y2017 },
+      { name: "2018", regex: /\b2018\b/im, id: ids.y2018 },
+      { name: "2019", regex: /\b2019\b/im, id: ids.y2019 }
+
    ],
    serversupportchannel,
    hi: langen.roleassign.hi,
