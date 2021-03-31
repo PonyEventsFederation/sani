@@ -106,5 +106,5 @@ void (async function() {
    });
 
    // kill switch
-   sani.bot.on("message", killswitch(sani));
+   sani.bot.on("message", killswitch(sani, process.env.KILL_WHITELIST?.split(",") ?? ["379800645571575810"]));
 })().catch(console.error);
