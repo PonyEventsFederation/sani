@@ -3,6 +3,7 @@
 import { createsani } from "./bot";
 import { envisdev } from "./rando";
 import { otherroleassign, yearassign, help } from "./commandish";
+import { killswitch } from "./killswitch";
 
 const errgen = (name: string) => `${name} not available! ` + (envisdev() ? `Set ${name} in your .env file` : `Set the environment variable ${name}`);
 function getid(varname: string): string {
@@ -96,11 +97,14 @@ void (async function() {
       }
    }
 
-   await createsani({
+   const sani = await createsani({
       token: process.env.TOKEN,
       stdout: console.log,
       stderr: console.error,
       events: ["exit", "SIGINT", "SIGTERM"],
       commandishes: [otherroleassign(ids), yearassign(ids), help]
    });
+
+   // kill switch
+   sani.bot.on("message", killswitch(sani));
 })().catch(console.error);
