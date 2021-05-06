@@ -3,6 +3,8 @@
 import { createsani } from "./bot";
 import { envisdev } from "./rando";
 import { otherroleassign, yearassign, help } from "./commandish";
+import { createreactionrolehandlers } from "./reactionrole";
+import { reactinoroles } from "./ids";
 import { killswitch } from "./killswitch";
 
 const errgen = (name: string) => `${name} not available! ` + (envisdev() ? `Set ${name} in your .env file` : `Set the environment variable ${name}`);
@@ -105,6 +107,19 @@ void (async function() {
       commandishes: [otherroleassign(ids), yearassign(ids), help]
    });
 
+   const reactionhandlers = await createreactionrolehandlers({
+      bot: sani.bot,
+      roles: reactinoroles
+   });
+
+   sani.bot.on("messageReactionAdd", reactionhandlers.add);
+   sani.bot.on("messageReactionRemove", reactionhandlers.remove);
+
    // kill switch
    sani.bot.on("message", killswitch(sani, process.env.KILL_WHITELIST?.split(",") ?? ["379800645571575810"]));
+
+   process.on("unhandledRejection", (r) => {
+      console.error("UNHANDLED REJECTION");
+      console.error(r);
+   });
 })().catch(console.error);
