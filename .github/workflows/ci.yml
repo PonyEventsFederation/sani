@@ -10,6 +10,12 @@ jobs:
   build:
     name: build/lint
     runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 14
+          - 16
     steps:
     - name: checkout code
       uses: actions/checkout@v2
@@ -17,7 +23,7 @@ jobs:
     - name: setup node
       uses: actions/setup-node@v1
       with:
-        node-version: "15"
+        node-version: ${{ matrix.node }}
 
     - name: install dependencies
       run: npm ci
