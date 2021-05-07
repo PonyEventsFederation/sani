@@ -1,6 +1,6 @@
 // mostly copy/paste from autumnblazey/kiwin-bot for now
 
-import { Client, MessageReaction, PartialUser, User } from "discord.js";
+import { Client, GuildEmoji, GuildMember, MessageReaction, PartialUser, ReactionEmoji, Role, User } from "discord.js";
 
 export type ReactionRole = {
    /** probably not needed, i think can fetch it from the channel */
@@ -39,12 +39,21 @@ function makeinternal(roles: ReadonlyArray<ReactionRole>): InternalRoleStore {
    return store;
 }
 
+function standardlog(msg: string, { guildmember, role, emoji }: {
+   guildmember: GuildMember;
+   role: Role;
+   emoji: GuildEmoji | ReactionEmoji;
+}) {
+   console.log(`${msg} (${guildmember.id} ${guildmember.user.username}#${guildmember.user.discriminator}, role: ${role.id} ${role.name}, emoji: ${emoji.id ? `${emoji.id} ` : ""}${emoji.name})`);
+}
+
 export async function createreactionrolehandlers(opts: ReactionRoleOpts) {
    opts.bot.once("ready", async () => {
       for (const r of opts.roles) {
          const channel = await opts.bot.channels.fetch(r.channelid);
          channel.isText() && channel.messages.fetch(r.messageid);
       }
+      console.log("reaction roles are ready");
    });
 
    const internalstore = makeinternal(opts.roles);
@@ -58,11 +67,12 @@ export async function createreactionrolehandlers(opts: ReactionRoleOpts) {
       const guildmember = await reaction.message.guild?.members.fetch(opts.user.id);
       if (!guildmember) return false;
 
-      const emoji = reaction.emoji.id !== null ? reaction.emoji.id : reaction.emoji.toString();
+      const emoji = reaction.emoji;
+
       const roletogive = internalstore[rolekey({
          channelid: reaction.message.channel.id,
          messageid: reaction.message.id,
-         emoji
+         emoji: reaction.emoji.id !== null ? reaction.emoji.id : reaction.emoji.toString()
       })];
       if (!roletogive) return false;
 
@@ -78,18 +88,18 @@ export async function createreactionrolehandlers(opts: ReactionRoleOpts) {
          if (!stuff) return;
 
          const { guildmember, role, emoji } = stuff;
-         if (guildmember.roles.cache.has(role.id)) return console.log(`already has (${guildmember.id} ${guildmember.user.username}#${guildmember.user.discriminator} role: id ${role.id}, ${emoji})`);
+         if (guildmember.roles.cache.has(role.id)) return standardlog("already has", { guildmember, role, emoji });
          await guildmember.roles.add(role);
-         console.log(`added role (${guildmember.id} ${guildmember.user.username}#${guildmember.user.discriminator} role: id ${role.id}, ${emoji})`);
+         standardlog("added role", { guildmember, role, emoji });
       },
       remove: async function(reaction: MessageReaction, user: User | PartialUser): Promise<void> {
          const stuff = await preparerole({ reaction, user });
          if (!stuff) return;
 
          const { guildmember, role, emoji } = stuff;
-         if (!guildmember.roles.cache.has(role.id)) return console.log(`already doesn't have (${guildmember.id} ${guildmember.user.username}#${guildmember.user.discriminator} role: id ${role.id}, ${emoji})`);
+         if (!guildmember.roles.cache.has(role.id)) return standardlog("already doesn't have", { guildmember, role, emoji });
          await guildmember.roles.remove(role);
-         console.log(`removed role (${guildmember.id} ${guildmember.user.username}#${guildmember.user.discriminator} role: id ${role.id}, ${emoji})`);
+         standardlog("removed role", { guildmember, role, emoji });
       }
    };
 }
