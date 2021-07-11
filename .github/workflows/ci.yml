@@ -3,6 +3,7 @@ on:
   push:
     branches-ignore:
     - "deploy"
+    - "deploy2"
   pull_request:
 
 name: ci
