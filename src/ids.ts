@@ -1,4 +1,5 @@
 import { ReactionRole } from "./reactionrole";
+
 /** id for galacon #server-support */
 export const serversupportchannel: string = "613024393425059981";
 
@@ -9,16 +10,15 @@ export const mlememoji: string = ":Mlem:758757084299788298";
 // export const serversupportchannel: string = "578740813912211457";
 
 /**
- * id for the author of the bot (person to ping when something goes horribly wrong)
+ * id for the author of the bot (user to ping when something goes horribly wrong)
  *
- * see {@link Lang.roleassign.horriblywrongauthorperson} and {@link Lang_en.roleassign.horriblywrongauthorperson}
+ * see {@link Lang.roleassign.horriblywrongauthor} and {@link Lang_en.roleassign.horriblywrongauthor}
  */
-export const authorperson: string = "379800645571575810";
+export const botauthor: string = "379800645571575810";
 
 const channelid = "823351439279259648";
 const serverrolemessage = "839966718071406652";
 const yearrolemessage = "839966718507221013";
-
 
 export const artistrole: ReactionRole = {
    // artist

@@ -19,7 +19,7 @@ export const langen: Lang = {
       novalidyearsfound: "\nI'm sorry, but I didn't find any years that I could assign to you.",
       novalidrolesfound: "\nI'm sorry, but I didn't find any roles that I could assign to you.",
       tryagaininserversupport: `Hello <@${placeholder}>! Could you please try asking me again in the <#${placeholder}> channel?\nWe don't want Berry getting angry at us. <${placeholder}>`,
-      horriblywrongauthorperson: `I'm so sorry! It looks like something has gone terribly wrong!\nCould you please send a message to <@${placeholder}> so they can fix me?`,
+      horriblywrongauthor: `I'm so sorry! It looks like something has gone terribly wrong!\nCould you please send a message to <@${placeholder}> so they can fix me?`,
 
       alreadyhaveroles: `\n\nIt looks like you already have the ${placeholder} role assigned to you.`,
       alreadyhaverolesmultiple: `\n\nIt looks like you already have the ${placeholder}, and ${placeholder} roles assigned to you.`,
@@ -82,10 +82,10 @@ type Lang = {
       /**
        * phrase for when something horribly wrong happens, and its the strangest thing
        * that has not ever been seen, and this should not ever happen and something went __horribly__ wrong.
-       * the author person part is so that the bot can tag the owner of the bot
-       * (specified by {@link authorperson}) when such events happen
+       * the botauthor part is so that the bot can tag the owner of the bot
+       * (specified by {@link botauthor}) when such events happen
        */
-      readonly horriblywrongauthorperson: string;
+      readonly horriblywrongauthor: string;
 
       /** phrase for when someone already has a requested role */
       readonly alreadyhaveroles: string;

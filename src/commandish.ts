@@ -4,7 +4,7 @@ import { Logger } from "./bot";
 import { getandapplyroles, RoleData } from "./randorolestuff";
 import {
    serversupportchannel,
-   mlememoji, authorperson
+   mlememoji, botauthor
 } from "./ids";
 import { langen, placeholder, stickitin } from "./lang";
 import { wait } from "./rando";
@@ -32,7 +32,7 @@ const needreturn = (opts: CommandishOpts, msg: Message, test: RegExp): boolean =
 
 /**
  * The help message. The placeholders should be replaced with (in order) message author username (`msg.member?.nickname || msg.author.username`),
- * sani user id, sani user id, and author user id ({@link authorperson}).
+ * sani user id, sani user id, and author user id ({@link botauthor}).
  */
 const helpmessage: string = `
 Hi ${placeholder}! Seems like you need some help. Here are some things I can do for you.
@@ -52,7 +52,7 @@ export const help: Commandish = opts => async msg => {
       msg.member?.nickname ?? msg.author.username,
       opts.sani.bot.user.id,
       opts.sani.bot.user.id,
-      authorperson
+      botauthor
    ));
 
    if (msg.deletable) await msg.delete();
