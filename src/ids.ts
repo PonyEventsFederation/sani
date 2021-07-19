@@ -1,5 +1,7 @@
 import { ReactionRole } from "./reactionrole";
 
+/** id for galacon server */
+export const galaconid: string = "602434888880095242";
 /** id for galacon #server-support */
 export const serversupportchannel: string = "613024393425059981";
 
@@ -14,7 +16,12 @@ export const mlememoji: string = ":Mlem:758757084299788298";
  *
  * see {@link Lang.roleassign.horriblywrongauthor} and {@link Lang_en.roleassign.horriblywrongauthor}
  */
-export const botauthor: string = "379800645571575810";
+export const botauthor = "379800645571575810";
+
+/**
+ * loyalty role ID
+ */
+export const loyaltyrole = "865372668618735636";
 
 const channelid = "823351439279259648";
 const serverrolemessage = "839966718071406652";
