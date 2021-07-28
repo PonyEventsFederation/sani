@@ -4,7 +4,7 @@ import { createsani } from "./bot";
 import { envisdev } from "./rando";
 import { otherroleassign, yearassign, help } from "./commandish";
 import { createreactionrole } from "./reactionrole";
-import { reactionroles, artistrole, musicianrole, cosplayerrole, memerole, rprole, newsrole, movienightrole, year2012, year2013, year2014, year2015, year2016, year2017, year2018, year2019 } from "./ids";
+import { reactionroles, artistrole, musicianrole, cosplayerrole, memerole, rprole, newsrole, year2012, year2013, year2014, year2015, year2016, year2017, year2018, year2019 } from "./ids";
 import { killswitch } from "./killswitch";
 import { startServer } from "./loyaltyserver";
 

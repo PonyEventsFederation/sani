@@ -72,7 +72,8 @@
       /* stuff that running `tsc --init` didnt put in here for no reason */
       "noEmitOnError": true                        /* don't emit output if any errors were reported */
    },
-   "include": ["src/**/*"],
+   "include": ["src/**/*.ts"],
+   "exclude": ["**/GITIGNORE-*"],
    "typeAcquisition": {
       "enable": true
    }

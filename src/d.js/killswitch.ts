@@ -1,4 +1,4 @@
-import { Message, GuildMember } from "discord.js";
+import { Message } from "discord.js";
 import { Sani } from "./bot";
 
 export function killswitch(bot: Sani, allowedusers: ReadonlyArray<string>) {
