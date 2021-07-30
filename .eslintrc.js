@@ -23,6 +23,7 @@ module.exports = {
    },
    rules: {
       "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/consistent-type-imports": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-throw-literal": "off",
@@ -30,6 +31,7 @@ module.exports = {
       "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/init-declarations": "off",
+      "@typescript-eslint/no-loop-func": "off",
       "@typescript-eslint/no-shadow": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
