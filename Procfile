@@ -1,2 +1,2 @@
-bot: npm run bot
-web: npm run bot
+bot: node build/d.js
+web: node build/d.js
