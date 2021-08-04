@@ -137,6 +137,7 @@ function handlePreflight(req: http.IncomingMessage, res: http.ServerResponse): b
          "Access-Control-Allow-Methods": allowedMethods
       }
    }, req, res);
+   return true;
 }
 
 async function createServer(port: number, cb: (user: UserAndAction) => Promise<metadata>) {
