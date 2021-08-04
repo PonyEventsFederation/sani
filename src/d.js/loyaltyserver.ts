@@ -2,6 +2,9 @@ import http from "http";
 import { Sani } from "./bot";
 import { galaconid, loyaltyrole } from "./ids";
 
+const allowedOrigin = "https://data.pony-events.eu";
+const allowedMethods = ["POST"];
+
 export async function startServer(port: number, sani: Sani) {
    const server = await createServer(port, async req => {
       try {
@@ -42,8 +45,8 @@ export async function startServer(port: number, sani: Sani) {
 
 function finaliserequest(data: metadata, req: http.IncomingMessage, res: http.ServerResponse) {
    data.headers && Object.entries(data.headers).forEach(([header, value]) => res.setHeader(header, value));
-   res.setHeader("Access-Control-Allow-Origin", "https://data.pony-events.eu");
-   res.setHeader("Access-Control-Allow-Methods", "POST");
+   res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+   res.setHeader("Access-Control-Allow-Methods", allowedMethods);
    res.writeHead(data.code);
    data.data && res.write(data.data);
    res.end();
@@ -60,7 +63,7 @@ type metadata = {
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
-type HttpMethod = "POST";
+type HttpMethod = "POST" | "OPTIONS";
 type UrlAndMethod = {
    url: string;
    method: HttpMethod;
@@ -70,7 +73,7 @@ function checkrequest(req: http.IncomingMessage): metadata | UrlAndMethod {
    if (!req.url || !req.method) return { code: 400 };
 
    const m = req.method.toUpperCase();
-   if (m !== "POST" || req.url !== "/loyalty-role") return { code: 400 };
+   if ((m !== "POST" && m !== "OPTIONS") || req.url !== "/loyalty-role") return { code: 400 };
 
    return { url: req.url, method: m };
 }
@@ -112,11 +115,38 @@ function getUserAndAction(header: string): UserAndAction | metadata {
    return { user, username, discriminator, action };
 }
 
+/** @return false if ditched cause incorrect, true if handled properly */
+function handlePreflight(req: http.IncomingMessage, res: http.ServerResponse): boolean {
+   // check for presence of right headers
+   if (!req.headers["access-control-request-headers"]) return false;
+   if (!req.headers["access-control-request-method"]) return false;
+   if (!req.headers.origin) return false;
+
+   // check headers are set to the right value
+   // if headers don't include `action`, which is required
+   if (!req.headers["access-control-request-headers"].split(",").map(s => s.trim().toUpperCase()).includes("ACTION")) return false;
+   // check method is pOST
+   if (!allowedMethods.includes(req.headers["access-control-request-method"].toUpperCase())) return false;
+   // check origin
+   if (req.headers.origin !== allowedOrigin) return false;
+
+   finaliserequest({
+      code: 204,
+      headers: {
+         "Access-Control-Allow-Origin": allowedOrigin,
+         "Access-Control-Allow-Methods": allowedMethods
+      }
+   }, req, res);
+}
+
 async function createServer(port: number, cb: (user: UserAndAction) => Promise<metadata>) {
    const server = http.createServer(async (req, res) => {
       try {
          const checked = checkrequest(req);
          if ("code" in checked) return finaliserequest(checked, req, res);
+
+         if (checked.method === "OPTIONS") return handlePreflight(req, res) || finaliserequest({ code: 400 }, req, res);
+
 
          if (!req.headers.action) return finaliserequest({ code: 400, data: "Missing action header" }, req, res);
          const user = getUserAndAction(Array.isArray(req.headers.action) ? req.headers.action.join("") : req.headers.action);
