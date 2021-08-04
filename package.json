@@ -1,34 +1,27 @@
 {
-   "name": "@autumnblaze/sani-soda-bot",
-   "version": "1.0.0",
-   "description": "",
-   "main": "build/bot.js",
    "private": true,
    "scripts": {
       "build": "rm -rf build && tsc",
       "dev": "tsc -p tsconfig.json -w --preserveWatchOutput",
       "start": "node build/d.js",
-      "buildandstart": "npm run build && npm start",
       "lint": "eslint --ext .ts src/",
       "docs": "typedoc --out docs src",
       "start:droff": "node build/droff"
    },
-   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/PCelestia/sani.git"
-   },
    "author": {
-      "name": "Alexander Liu (autumnblazey)",
+      "name": "Autumn",
       "url": "https://github.com/autumnblazey/"
    },
+   "contributors": [
+      {
+         "name": "Christopher",
+         "url": "https://github.com/ChrisFhey/"
+      }
+   ],
    "license": "MIT",
-   "bugs": {
-      "url": "https://github.com/PCelestia/sani/issues"
-   },
    "engines": {
       "node": "14.x"
    },
-   "homepage": "https://github.com/PCelestia/sani#readme",
    "dependencies": {
       "bufferutil": "^4.0.3",
       "discord.js": "^12.5.3",
