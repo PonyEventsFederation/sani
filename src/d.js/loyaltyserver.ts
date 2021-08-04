@@ -42,6 +42,8 @@ export async function startServer(port: number, sani: Sani) {
 
 function finaliserequest(data: metadata, req: http.IncomingMessage, res: http.ServerResponse) {
    data.headers && Object.entries(data.headers).forEach(([header, value]) => res.setHeader(header, value));
+   res.setHeader("Access-Control-Allow-Origin", "https://data.pony-events.eu");
+   res.setHeader("Access-Control-Allow-Methods", "POST");
    res.writeHead(data.code);
    data.data && res.write(data.data);
    res.end();
