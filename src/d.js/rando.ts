@@ -5,8 +5,8 @@
  * @returns the environment variable if it exists, or false
  */
 function checkenv(varname: string): boolean {
-   const envvar: string | undefined = process.env[varname];
-   return envvar !== undefined;
+	const envvar: string | undefined = process.env[varname];
+	return envvar !== undefined;
 }
 
 // /**
@@ -16,10 +16,10 @@ function checkenv(varname: string): boolean {
 //  * @param varname variable name to assert existence of
 //  */
 // export function assertenv(varname: string): never | void {
-//    if (!checkenv(varname)) {
-//       console.error(`no environment variable called ${varname}`);
-//       process.exit(1);
-//    }
+// 	if (!checkenv(varname)) {
+// 		console.error(`no environment variable called ${varname}`);
+// 		process.exit(1);
+// 	}
 // }
 
 /**
@@ -28,10 +28,10 @@ function checkenv(varname: string): boolean {
  * @returns  whether or not env is considered development
  */
 export function envisdev(): boolean {
-   // if NODE_ENV doesnt exist, assume development
-   // if it does, check for mode "dev" or "development"
-   // then configure using dotenv
-   return !checkenv("NODE_ENV") || process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "development";
+	// if NODE_ENV doesnt exist, assume development
+	// if it does, check for mode "dev" or "development"
+	// then configure using dotenv
+	return !checkenv("NODE_ENV") || process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "development";
 }
 
 // /**
@@ -44,7 +44,7 @@ export function envisdev(): boolean {
 //  * @returns whether or not env is considered production
 //  */
 // export function envisprod(): boolean {
-//    return !envisdev();
+// 	return !envisdev();
 // }
 
 // /**
@@ -72,13 +72,13 @@ export function envisdev(): boolean {
 //  * @returns array of elements picked from arrays (length is equal to amount of arrays passed in)
 //  */
 // export function randfromarray<T>(...arrs: Array<Array<T>>): Array<T> {
-//    if (arrs.length === 0) return [];
+// 	if (arrs.length === 0) return [];
 
-//    const randnum: number = Math.floor(Math.random() * arrs[0].length);
-//    const randarr: Array<T> = [];
-//    for (const arr of arrs) if (arr.length > randnum) randarr.push(arr[randnum]);
+// 	const randnum: number = Math.floor(Math.random() * arrs[0].length);
+// 	const randarr: Array<T> = [];
+// 	for (const arr of arrs) if (arr.length > randnum) randarr.push(arr[randnum]);
 
-//    return randarr;
+// 	return randarr;
 // }
 
 export const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));

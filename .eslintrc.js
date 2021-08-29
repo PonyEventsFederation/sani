@@ -30,6 +30,7 @@ module.exports = {
       "@typescript-eslint/no-type-alias": "off",
       "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/indent": ["error", "tab"],
       "@typescript-eslint/init-declarations": "off",
       "@typescript-eslint/no-loop-func": "off",
       "@typescript-eslint/no-shadow": "off",

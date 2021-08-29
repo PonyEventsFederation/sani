@@ -12,9 +12,9 @@ import { mlememoji } from "./ids";
  * @returns an array of {@link RoleData} containing the roles that the message author wants
  */
 function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): Array<RoleData> {
-   const arrr: Array<RoleData> = [];
-   for (const roledata of allroledata) if (roledata.regex.test(msg.content)) arrr.push(roledata);
-   return arrr;
+	const arrr: Array<RoleData> = [];
+	for (const roledata of allroledata) if (roledata.regex.test(msg.content)) arrr.push(roledata);
+	return arrr;
 }
 
 /**
@@ -25,11 +25,11 @@ function getroledatafrommsg(msg: Message, allroledata: Array<RoleData>): Array<R
  * @param target the target of the message
  */
 function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): string {
-   const finalrole: string = roledata[roledata.length - 1];
-   roledata.pop();
-   const roles: string = roledata.sort().join(", ");
+	const finalrole: string = roledata[roledata.length - 1];
+	roledata.pop();
+	const roles: string = roledata.sort().join(", ");
 
-   return stickitin(placeholder, roles, finalrole);
+	return stickitin(placeholder, roles, finalrole);
 }
 
 /**
@@ -43,51 +43,51 @@ function parsemultiplerolesreply(placeholder: string, roledata: Array<string>): 
  *          the original message and the response message
  */
 async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
-   if (!msg.member || msg.channel.id !== serversupportid) return {
-      delete: true,
-      content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid, mlememoji)
-   };
+	if (!msg.member || msg.channel.id !== serversupportid) return {
+		delete: true,
+		content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid, mlememoji)
+	};
 
-   void msg.channel.startTyping();
-   const given: Array<string> = [];
-   const alreadyhave: Array<string> = [];
-   let res: string = "";
-   let importantres: string = "";
+	void msg.channel.startTyping();
+	const given: Array<string> = [];
+	const alreadyhave: Array<string> = [];
+	let res: string = "";
+	let importantres: string = "";
 
-   try {
-      const rolemanager: GuildMemberRoleManager = msg.member.roles;
+	try {
+		const rolemanager: GuildMemberRoleManager = msg.member.roles;
 
-      for (const roledata of selectedroledata) {
-         if (!roledata.regex.test(msg.content)) continue;
+		for (const roledata of selectedroledata) {
+			if (!roledata.regex.test(msg.content)) continue;
 
-         if (rolemanager.cache.has(roledata.id)) alreadyhave.push(roledata.name);
-         else {
-            await rolemanager.add(roledata.id);
-            if (roledata.specialmessage !== undefined) importantres = importantres + roledata.specialmessage;
-            else given.push(roledata.name);
-         }
-      }
+			if (rolemanager.cache.has(roledata.id)) alreadyhave.push(roledata.name);
+			else {
+				await rolemanager.add(roledata.id);
+				if (roledata.specialmessage !== undefined) importantres = importantres + roledata.specialmessage;
+				else given.push(roledata.name);
+			}
+		}
 
-      if (alreadyhave.length === 1) {
-         res = res + stickitin(langen.roleassign.alreadyhaveroles, alreadyhave.sort().join(", "));
-      } else if (alreadyhave.length > 1) {
-         res = res + parsemultiplerolesreply(langen.roleassign.alreadyhaverolesmultiple, alreadyhave);
-      }
+		if (alreadyhave.length === 1) {
+			res = res + stickitin(langen.roleassign.alreadyhaveroles, alreadyhave.sort().join(", "));
+		} else if (alreadyhave.length > 1) {
+			res = res + parsemultiplerolesreply(langen.roleassign.alreadyhaverolesmultiple, alreadyhave);
+		}
 
-      if (given.length === 1) {
-         res = res + stickitin(langen.roleassign.givenroles, given.sort().join(", "));
-      } else if (given.length > 1) {
-         res = res + parsemultiplerolesreply(langen.roleassign.givenrolesmultiple, given);
-      }
-   } catch (e: unknown) {
-      console.warn(e);
-      res = res + langen.roleassign.somethingwrongtryagain;
-   }
-   msg.channel.stopTyping();
-   return {
-      delete: false,
-      content: importantres + res
-   };
+		if (given.length === 1) {
+			res = res + stickitin(langen.roleassign.givenroles, given.sort().join(", "));
+		} else if (given.length > 1) {
+			res = res + parsemultiplerolesreply(langen.roleassign.givenrolesmultiple, given);
+		}
+	} catch (e: unknown) {
+		console.warn(e);
+		res = res + langen.roleassign.somethingwrongtryagain;
+	}
+	msg.channel.stopTyping();
+	return {
+		delete: false,
+		content: importantres + res
+	};
 }
 
 /**
@@ -101,38 +101,38 @@ async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serve
  *          the original message and the response message
  */
 async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
-   if (!msg.member || msg.channel.id !== serversupportid) return {
-      delete: true,
-      content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid)
-   };
+	if (!msg.member || msg.channel.id !== serversupportid) return {
+		delete: true,
+		content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid)
+	};
 
-   const removed: Array<string> = [];
-   const alreadydonthave: Array<string> = [];
-   let res: string = "";
+	const removed: Array<string> = [];
+	const alreadydonthave: Array<string> = [];
+	let res: string = "";
 
-   try {
-      const rolemanager: GuildMemberRoleManager = msg.member.roles;
+	try {
+		const rolemanager: GuildMemberRoleManager = msg.member.roles;
 
-      for (const roledata of selectedroledata) {
-         if (!roledata.regex.test(msg.content)) continue;
+		for (const roledata of selectedroledata) {
+			if (!roledata.regex.test(msg.content)) continue;
 
-         if (rolemanager.cache.has(roledata.id)) {
-            await rolemanager.remove(roledata.id);
-            removed.push(roledata.name);
-         } else alreadydonthave.push(roledata.name);
-      }
+			if (rolemanager.cache.has(roledata.id)) {
+				await rolemanager.remove(roledata.id);
+				removed.push(roledata.name);
+			} else alreadydonthave.push(roledata.name);
+		}
 
-      if (alreadydonthave.length > 0) res = res + stickitin(langen.roleassign.alreadyhaveroles, alreadydonthave.sort().join(", "));
-      if (removed.length > 0) res = res + stickitin(langen.roleassign.givenroles, removed.sort().join(", "));
-   } catch (e: unknown) {
-      console.warn(e);
-      res = res + langen.roleassign.somethingwrongtryagain;
-   }
+		if (alreadydonthave.length > 0) res = res + stickitin(langen.roleassign.alreadyhaveroles, alreadydonthave.sort().join(", "));
+		if (removed.length > 0) res = res + stickitin(langen.roleassign.givenroles, removed.sort().join(", "));
+	} catch (e: unknown) {
+		console.warn(e);
+		res = res + langen.roleassign.somethingwrongtryagain;
+	}
 
-   return {
-      delete: false,
-      content: res
-   };
+	return {
+		delete: false,
+		content: res
+	};
 }
 
 /**
@@ -148,7 +148,7 @@ async function removeroles(msg: Message, selectedroledata: Array<RoleData>, serv
  *          the original message and the response message
  */
 export async function getandapplyroles(msg: Message, allroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
-   return await applyroles(msg, getroledatafrommsg(msg, allroledata), serversupportid);
+	return await applyroles(msg, getroledatafrommsg(msg, allroledata), serversupportid);
 }
 
 /**
@@ -164,7 +164,7 @@ export async function getandapplyroles(msg: Message, allroledata: Array<RoleData
  *          the original message and the response message
  */
 export async function getandremoveroles(msg: Message, allroledata: Array<RoleData>, serversupportid: string): Promise<ModifyRolesReturnValue> {
-   return await removeroles(msg, getroledatafrommsg(msg, allroledata), serversupportid);
+	return await removeroles(msg, getroledatafrommsg(msg, allroledata), serversupportid);
 }
 
 /**
@@ -173,19 +173,19 @@ export async function getandremoveroles(msg: Message, allroledata: Array<RoleDat
  * from a user.
  */
 export type RoleData = {
-   /** user-friendly name of the role, can be different from the actual role name */
-   readonly name: string;
-   /** regex to test for the presence of the role request inside a message */
-   readonly regex: RegExp;
-   /** discord id (snowflake) of the role */
-   readonly id: string;
-   /** special message to send when someone requests this role */
-   readonly specialmessage?: string;
+	/** user-friendly name of the role, can be different from the actual role name */
+	readonly name: string;
+	/** regex to test for the presence of the role request inside a message */
+	readonly regex: RegExp;
+	/** discord id (snowflake) of the role */
+	readonly id: string;
+	/** special message to send when someone requests this role */
+	readonly specialmessage?: string;
 };
 
 export type ModifyRolesReturnValue = {
-   /** whether or not to delete the original message and the result message */
-   delete: boolean;
-   /** content of the result (the actual result) */
-   content: string;
+	/** whether or not to delete the original message and the result message */
+	delete: boolean;
+	/** content of the result (the actual result) */
+	content: string;
 };
