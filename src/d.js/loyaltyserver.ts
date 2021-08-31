@@ -16,7 +16,7 @@ export async function startServer(port: number, sani: Sani) {
 			if (memberfindres.size !== 1) memberfindres = members.filter(member => member.user.username.toUpperCase() === req.username.toUpperCase() && member.user.discriminator === req.discriminator);
 			if (memberfindres.size !== 1) return { code: 500, data: "could not find user" };
 
-			const member = memberfindres.array()[0];
+			const member = [...memberfindres.values()][0];
 			await member.fetch(true); // force update with latest info
 
 			const hasrole = member.roles.cache.has(loyaltyrole);

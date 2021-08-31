@@ -1,6 +1,6 @@
 // mostly copy/paste from autumnblazey/kiwin-bot for now
 
-import { Client, GuildEmoji, GuildMember, MessageReaction, PartialUser, ReactionEmoji, Role, User } from "discord.js";
+import { Client, GuildEmoji, GuildMember, MessageReaction, PartialMessageReaction, PartialUser, ReactionEmoji, Role, User } from "discord.js";
 
 export type ReactionRole = {
 	/** probably not needed, i think can fetch it from the channel */
@@ -50,14 +50,14 @@ export async function createreactionrole(opts: ReactionRoleOpts) {
 	opts.bot.once("ready", async () => {
 		for (const r of opts.roles) {
 			const channel = await opts.bot.channels.fetch(r.channelid);
-			channel.isText() && await channel.messages.fetch(r.messageid);
+			channel?.isText() && await channel.messages.fetch(r.messageid);
 		}
 		console.log("reaction roles are ready");
 	});
 
 	const internalstore = makeinternal(opts.roles);
 
-	return async function(reaction: MessageReaction, user: User | PartialUser) {
+	return async function(reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser) {
 		reaction = reaction.partial ? await reaction.fetch() : reaction;
 		const emoji = reaction.emoji;
 		const guildmember = await reaction.message.guild?.members.fetch(user.id);

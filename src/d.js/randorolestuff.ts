@@ -48,7 +48,7 @@ async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serve
 		content: stickitin(langen.roleassign.tryagaininserversupport, serversupportid, mlememoji)
 	};
 
-	void msg.channel.startTyping();
+	void msg.channel.sendTyping();
 	const given: Array<string> = [];
 	const alreadyhave: Array<string> = [];
 	let res: string = "";
@@ -83,7 +83,6 @@ async function applyroles(msg: Message, selectedroledata: Array<RoleData>, serve
 		console.warn(e);
 		res = res + langen.roleassign.somethingwrongtryagain;
 	}
-	msg.channel.stopTyping();
 	return {
 		delete: false,
 		content: importantres + res

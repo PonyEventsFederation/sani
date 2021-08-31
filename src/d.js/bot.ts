@@ -19,8 +19,12 @@ export type Sani = {
 
 /** creates a sani bot, logs in and everything, returns a sani object */
 export async function createsani(opts: SaniOpts): Promise<Sani> {
-	// create some vars and stuff
-	const bot = new Client();
+	// hacky all intents for now
+	// TODO figure out which intents, and make it more maintainable and everything
+	const intents = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+		.reduce((total, current) => total | 1 << current, 0);
+
+	const bot = new Client({ intents });
 	const commandishes: Array<ReturnType<Commandish>> = [];
 
 	const sani: Sani = {

@@ -56,7 +56,7 @@ export const help: Commandish = opts => async msg => {
 	));
 
 	if (msg.deletable) await msg.delete();
-	else if (msg.channel.type !== "dm") {
+	else if (msg.channel.type !== "DM") {
 		// void (await msg.react("\u2705")).users.remove();
 		//                                ✅
 		const reaction = await msg.react("\u2705");
@@ -83,7 +83,11 @@ const roleassign: (roleassignopts: {
 	if (!(msg.guild && msg.deletable)) return void msg.channel.send(stickitin(roleassignopts.hi, msg.author.id) + stickitin(roleassignopts.tryagaininserversupport, msg.author.id, roleassignopts.serversupportchannel, mlememoji)).catch(opts.stderr);
 
 	void msg.delete();
-	(await msg.channel.send(stickitin(roleassignopts.tryagaininserversupport, msg.author.id, roleassignopts.serversupportchannel, roleassignopts.mlememoji))).delete({ timeout: 15000 }).catch(opts.stderr);
+	// (await msg.channel.send(stickitin(roleassignopts.tryagaininserversupport, msg.author.id, roleassignopts.serversupportchannel, roleassignopts.mlememoji))).delete({ timeout: 15000 }).catch(opts.stderr);
+	await msg.channel.send(stickitin(roleassignopts.tryagaininserversupport, msg.author.id, roleassignopts.serversupportchannel, roleassignopts.mlememoji))
+		.then(async m => await wait(15000) && m)
+		.then(m => m.delete())
+		.catch(opts.stderr);
 };
 
 export const otherroleassign = (ids: {
