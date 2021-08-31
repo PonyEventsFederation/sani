@@ -23,6 +23,8 @@
 		"node": "16.x"
 	},
 	"dependencies": {
+		"@discordjs/rest": "^0.1.0-canary.0",
+		"discord-api-types": "^0.22.0",
 		"discord.js": "^13.1.0",
 		"dotenv": "^10.0.0",
 		"droff": "^0.17.14",
@@ -34,6 +36,7 @@
 	"devDependencies": {
 		"@autumnblaze/eslint-config-h": "^1.0.0",
 		"@types/node": "^16.7.5",
+		"@types/node-fetch": "^2.5.12",
 		"@types/ws": "^7.4.7",
 		"@typescript-eslint/eslint-plugin": "^4.29.3",
 		"@typescript-eslint/parser": "^4.29.3",
