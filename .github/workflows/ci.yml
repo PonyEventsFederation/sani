@@ -14,9 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node:
-          - 14
-          - 16
+        project:
+        - djs
+        - djs2
+        - droff
+
     steps:
     - name: checkout code
       uses: actions/checkout@v2
@@ -24,16 +26,16 @@ jobs:
     - name: setup node
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node }}
+        node-version: "16.8.0"
 
-    - name: update npm
+    - name: install npm (known, consistent version)
       run: npm i -g npm@7.21.0
 
     - name: install dependencies
       run: npm ci
 
     - name: build typescript
-      run: npm run build
+      run: npm run build:${{ matrix.project }}
 
     - name: lint typescript
-      run: npm run lint
+      run: npm run lint:${{ matrix.project }}

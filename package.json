@@ -1,12 +1,27 @@
 {
 	"private": true,
 	"scripts": {
+		"clean": "rm -rf build",
+		"clean:djs": "rm -rf build/djs",
+		"clean:djs2": "rm -rf build/djs2",
+		"clean:droff": "rm -rf build/droff",
 		"build": "rm -rf build && tsc",
+		"build:djs": "rm -rf build/djs && tsc -p tsconfig.djs.json",
+		"build:djs2": "rm -rf build/djs2 && tsc -p tsconfig.djs2.json",
+		"build:droff": "rm -rf build/droff && tsc -p tsconfig.droff.json",
 		"dev": "tsc -p tsconfig.json -w --preserveWatchOutput",
-		"start": "node build/d.js",
-		"lint": "eslint --ext .ts src/",
-		"docs": "typedoc --out docs src",
-		"start:droff": "node build/droff"
+		"dev:djs": "rm -rf build/djs && tsc -p tsconfig.djs.json -w --preserveWatchOutput",
+		"dev:djs2": "rm -rf build/djs2 && tsc -p tsconfig.djs2.json -w --preserveWatchOutput",
+		"dev:droff": "rm -rf build/droff && tsc -p tsconfig.droff.json -w --preserveWatchOutput",
+		"start": "node build/djs",
+		"start:djs": "node build/djs",
+		"start:djs2": "node build/djs2",
+		"start:droff": "node build/droff",
+		"lint": "eslint --ext .ts src",
+		"lint:djs": "eslint --ext .ts src/djs",
+		"lint:djs2": "eslint --ext .ts src/djs2",
+		"lint:droff": "eslint --ext .ts src/droff",
+		"docs": "typedoc --out docs src"
 	},
 	"author": {
 		"name": "Autumn",

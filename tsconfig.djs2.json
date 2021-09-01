@@ -1,0 +1,8 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "./src/djs2",
+		"outDir": "./build/djs2"
+	},
+	"include": ["./src/djs2"]
+}
