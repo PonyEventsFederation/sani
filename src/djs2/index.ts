@@ -1,10 +1,12 @@
 import "dotenv/config";
-import { getEnv, createbot, SlashCommandBuilder } from "./lib";
-console.log("h");
+import { getEnv, createbot, SlashCommandBuilder, setGlobalLogLevel } from "./lib";
 
 const env = getEnv();
 const isProduction = env.env === "production";
-const bot = createbot({
+
+setGlobalLogLevel(isProduction ? "info" : "debug");
+
+createbot({
 	token: env.token,
 	isProduction,
 	clientid: "741509200328392725",
@@ -14,8 +16,18 @@ const bot = createbot({
 		cmd: new SlashCommandBuilder()
 			.setName("h")
 			.setDescription("respond with h"),
-		commandResponder: i => {
-			void i.reply("h");
+		commandResponder: ({ logger }) => async i => {
+			logger.debug("got an aitch cmd");
+			await i.reply("h");
+		}
+	})
+	.registerSlashCommand({
+		cmd: new SlashCommandBuilder()
+			.setName("time")
+			.setDescription("gets the current time in ISO format"),
+		commandResponder: ({ logger }) => async i => {
+			logger.debug("got an time cmd");
+			await i.reply(new Date().toISOString());
 		}
 	})
 	.start(() => console.log("started"));
