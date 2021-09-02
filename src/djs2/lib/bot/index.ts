@@ -47,7 +47,7 @@ export function createbot(o: BotOpts) {
 		if (state.state === "started") return bot;
 		if (state.state === "stopped") throw new Error("cannot restart when already stopped");
 
-		void new Promise<void>(async () => {
+		void new Promise<void>(async (res) => {
 			// todo ack could figure out a better way to do this cast
 			const s = state as CreatedState;
 
@@ -72,6 +72,7 @@ export function createbot(o: BotOpts) {
 				guildID: o.guildid
 			});
 			s.slashManager.listenForInteractions(client);
+			res();
 		}).then(cb);
 
 		return bot;
