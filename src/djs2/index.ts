@@ -10,7 +10,8 @@ createbot({
 	token: env.token,
 	isProduction,
 	clientid: "741509200328392725",
-	guildid: "834297591159980073"
+	guildid: "834297591159980073",
+	shutdownEvents: ["beforeExit", "SIGINT", "SIGTERM"]
 })
 	.registerSlashCommand({
 		cmd: new SlashCommandBuilder()

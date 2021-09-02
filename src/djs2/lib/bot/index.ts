@@ -47,6 +47,8 @@ export function createbot(o: BotOpts) {
 		if (state.state === "started") return bot;
 		if (state.state === "stopped") throw new Error("cannot restart when already stopped");
 
+		o.shutdownEvents?.forEach(e => process.on(e, stop));
+
 		void new Promise<void>(async (res) => {
 			// todo ack could figure out a better way to do this cast
 			const s = state as CreatedState;
