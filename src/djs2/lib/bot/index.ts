@@ -74,6 +74,12 @@ export function createbot(o: BotOpts) {
 				guildID: o.guildid
 			});
 			s.slashManager.listenForInteractions(client);
+
+			// update state
+			state = {
+				state: "started",
+				client
+			};
 			res();
 		}).then(cb);
 
@@ -83,6 +89,7 @@ export function createbot(o: BotOpts) {
 	function stop() {
 		if (state.state === "stopped") return;
 		if (state.state === "created") throw new Error("cannot stop if not even started yet");
+
 		state.client.destroy();
 		state = { state: "stopped" };
 
