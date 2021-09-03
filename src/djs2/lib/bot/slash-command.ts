@@ -1,20 +1,27 @@
 import type { CommandInteraction, Client } from "discord.js";
-import type { SlashCommandBuilder } from "@discordjs/builders";
 import type { Logger } from "../logger";
+import { SlashCommandBuilder } from "@discordjs/builders";
 import { createLogger } from "../logger";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 
-export type SlashCommand = {
-	cmd: SlashCommandBuilder;
+type _SlashCommand = {
+	cmd(s: SlashCommandBuilder): unknown;
 	commandResponder(o: {
 		logger: Logger;
-	}): (i: CommandInteraction) => unknown;
+		i: CommandInteraction;
+	}): unknown;
 };
+export type SlashCommand = _SlashCommand | (() => _SlashCommand);
 export type SlashCommandManager = ReturnType<typeof createSlashCommandManager>;
 
+type InternalSlashCommandStore = {
+	cmd: SlashCommandBuilder;
+	respond(interaction: CommandInteraction): unknown;
+};
+
 export function createSlashCommandManager() {
-	const commands: Array<SlashCommand> = [];
+	const commands: Array<InternalSlashCommandStore> = [];
 	let registered = false;
 
 	const manager = {
@@ -25,9 +32,21 @@ export function createSlashCommandManager() {
 	return manager;
 
 	function registerSlashCommand(s: SlashCommand) {
-		if (commands.find(c => c.cmd.name === s.cmd.name)) throw new Error("cannot have two slash commands with the same name");
+		if (typeof s === "function") s = s();
+		if (commands.find(c => c.cmd.name === (s as _SlashCommand).cmd.name)) throw new Error("cannot have two slash commands with the same name");
 		if (registered) throw new Error("listener for slash commands already registered, cannot add new slash command");
-		commands.push(s);
+
+		const cmd = new SlashCommandBuilder();
+		s.cmd(cmd);
+
+		const logger = createLogger(`slash command ${cmd.name}`);
+
+		commands.push({
+			cmd,
+			respond(i) {
+				(s as _SlashCommand).commandResponder({ i, logger });
+			}
+		});
 	}
 
 	async function putSlashCommands<On extends "global" | "guild">(o: {
@@ -46,19 +65,12 @@ export function createSlashCommandManager() {
 		);
 	};
 
-	function listenForInteractions(c: Client) {
+	function listenForInteractions(client: Client) {
 		registered = true;
 
-		const cmds = commands.map(c => ({
-			name: c.cmd.name,
-			respond: c.commandResponder({
-				logger: createLogger(`slash command ${c.cmd.name}`)
-			})
-		}));
-
-		c.on("interactionCreate", interaction => {
+		client.on("interactionCreate", interaction => {
 			if (interaction.isCommand()) {
-				cmds.find(c => c.name === interaction.commandName)
+				commands.find(c => c.cmd.name === interaction.commandName)
 					?.respond(interaction);
 			}
 		});

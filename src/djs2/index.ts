@@ -1,5 +1,6 @@
 import "dotenv/config";
-import { getEnv, createbot, SlashCommandBuilder, setGlobalLogLevel } from "./lib";
+import { createbot, setGlobalLogLevel } from "./lib";
+import { getEnv } from "./env";
 
 const env = getEnv();
 const isProduction = env.env === "production";
@@ -14,19 +15,19 @@ createbot({
 	shutdownEvents: ["beforeExit", "SIGINT", "SIGTERM"]
 })
 	.registerSlashCommand({
-		cmd: new SlashCommandBuilder()
+		cmd: s => s
 			.setName("h")
 			.setDescription("respond with h"),
-		commandResponder: ({ logger }) => async i => {
+		commandResponder: async ({ logger, i }) =>  {
 			logger.debug("got an aitch cmd");
 			await i.reply("h");
 		}
 	})
 	.registerSlashCommand({
-		cmd: new SlashCommandBuilder()
+		cmd: s => s
 			.setName("time")
 			.setDescription("gets the current time in ISO format"),
-		commandResponder: ({ logger }) => async i => {
+		commandResponder: async ({ logger, i }) =>  {
 			logger.debug("got an time cmd");
 			await i.reply(new Date().toISOString());
 		}

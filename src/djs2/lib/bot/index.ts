@@ -35,6 +35,8 @@ export function createbot(o: BotOpts) {
 	};
 	return bot;
 
+	// slash commands related
+
 	function registerSlashCommand(s: SlashCommand) {
 		if (state.state === "started") throw new Error("cannot register slash command after starting");
 		if (state.state === "stopped") throw new Error("what's the point of registering a new slash command after you stop the bot?");
@@ -42,6 +44,8 @@ export function createbot(o: BotOpts) {
 
 		return bot;
 	}
+
+	// bot lifecycle
 
 	function start(cb?: () => void) {
 		if (state.state === "started") return bot;
