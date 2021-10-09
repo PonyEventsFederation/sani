@@ -1,8 +1,0 @@
-{
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"rootDir": "./src/droff",
-		"outDir": "./build/droff"
-	},
-	"include": ["./src/droff"]
-}
