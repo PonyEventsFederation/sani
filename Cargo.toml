@@ -6,15 +6,15 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+dotenv = "0.15"
 tokio = { version = "1", features = ["full"] }
-
 twilight-cache-inmemory = "0.6"
-twilight-gateway        = "0.6"
-twilight-http           = "0.6"
-twilight-mention        = "0.6"
-twilight-model          = "0.6"
-twilight-standby        = "0.6"
-twilight-util           = "0.6"
+twilight-gateway = "0.6"
+twilight-http = "0.6"
+twilight-mention = "0.6"
+twilight-model = "0.6"
+twilight-standby = "0.6"
+twilight-util = "0.6"
 
 [profile.dev]
 opt-level = 0 # none

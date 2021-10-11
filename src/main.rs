@@ -1,3 +1,5 @@
+mod dotenv;
+
 use tokio::runtime::Builder as TokioRuntimeBuilder;
 use std::time::Duration;
 
@@ -13,5 +15,6 @@ fn main() {
 }
 
 async fn async_main() {
+	dotenv::init();
 	println!("i spent like 4 hours on this, help");
 }
