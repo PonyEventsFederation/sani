@@ -1,4 +1,4 @@
-mod dotenv;
+mod env;
 
 use tokio::runtime::Builder as TokioRuntimeBuilder;
 use std::time::Duration;
@@ -15,6 +15,8 @@ fn main() {
 }
 
 async fn async_main() {
-	dotenv::init();
-	println!("i spent like 4 hours on this, help");
+	let env = env::Env::get_env();
+
+	println!("we are in production mode? {}", env.is_production());
+	println!("we are in development mode? {}", env.is_development());
 }
