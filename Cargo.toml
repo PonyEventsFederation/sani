@@ -15,3 +15,12 @@ twilight-mention        = "0.6"
 twilight-model          = "0.6"
 twilight-standby        = "0.6"
 twilight-util           = "0.6"
+
+[profile.dev]
+opt-level = 0 # none
+debug = true
+debug-assertions = true
+
+[profile.release]
+opt-level = 3 # all
+debug-assertions = false
