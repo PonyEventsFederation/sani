@@ -26,8 +26,8 @@ impl Env {
 		Env { token }
 	}
 
-	pub fn token(&self) -> &str {
-		&self.token[..]
+	pub fn token(&self) -> &String {
+		&self.token
 	}
 
 	#[inline]
