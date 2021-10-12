@@ -1,3 +1,6 @@
+// todo remove later
+#![allow(unused)]
+
 mod env;
 
 use std::{
