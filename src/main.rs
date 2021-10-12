@@ -2,6 +2,7 @@
 #![allow(unused)]
 
 mod env;
+mod lib;
 
 use std::{
 	error::Error,
