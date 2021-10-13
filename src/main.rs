@@ -27,20 +27,13 @@ fn main() {
 		.build()
 		.unwrap()
 		.block_on(async_main());
-		// .spawn(async_main());
-		// figure out how to gracefully shutdown on sigint and sigterm
 }
 
-async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>>{
+async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>> {
 	let env = env::Env::get_env();
 
-	// gateway
-
-	// let intents
-	// 	= Intents::GUILD_MESSAGE_REACTIONS
-	// 	| Intents::GUILD_MEMBERS;
+	let http = HttpClient::new(env.token().clone());
 	let intents = Intents::all();
-
 	let (cluster, mut events) = Cluster::builder(env.token(), intents)
 		.shard_scheme(Auto)
 		.build().await?;
@@ -48,15 +41,24 @@ async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>>{
 	let cluster_spawn = cluster.clone();
 	tokio::spawn(async move { cluster_spawn.up().await });
 
-	// http
+	// asyncronously wait for a signal and then bring cluster down
+	let cluster_down = cluster.clone();
+	tokio::spawn(async move {
+		use tokio::signal::unix::{ signal, SignalKind as SK };
+		let mut sigint = signal(SK::interrupt()).unwrap();
+		let mut sigterm = signal(SK::terminate()).unwrap();
 
-	let http = HttpClient::new(env.token().clone());
+		tokio::select! {
+			_ = sigint.recv() => {}
+			_ = sigterm.recv() => {}
+		}
+
+		cluster_down.down();
+	});
 
 	while let Some((shard_id, event)) = events.next().await {
 		tokio::spawn(handle_event(shard_id, event, http.clone()));
 	}
-
-	cluster.down();
 
 	Ok(())
 }
