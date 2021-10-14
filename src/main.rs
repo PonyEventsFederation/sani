@@ -2,7 +2,7 @@
 #![allow(unused)]
 
 mod env;
-mod lib;
+mod library;
 
 use std::{
 	error::Error,

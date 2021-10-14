@@ -1,7 +1,7 @@
 type LogFn = Box<dyn Fn(String) -> ()>;
 
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub(crate) enum LogLevel { Error, Warn, Info, Verbose, Debug }
+pub enum LogLevel { Error, Warn, Info, Verbose, Debug }
 
 impl std::fmt::Display for LogLevel {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
@@ -15,7 +15,7 @@ impl std::fmt::Display for LogLevel {
 	}
 }
 
-pub(crate) struct Logger {
+pub struct Logger {
 	name: String,
 	level: LogLevel,
 
