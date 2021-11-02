@@ -2,7 +2,6 @@
 #![allow(unused)]
 
 mod env;
-mod lib;
 
 use std::{
 	error::Error,
@@ -10,7 +9,6 @@ use std::{
 	sync::Arc
 };
 
-use tokio::runtime::Builder as TokioRuntimeBuilder;
 use twilight_gateway::{
 	cluster::{ Cluster, ShardScheme::Auto },
 	Event,
@@ -19,23 +17,30 @@ use twilight_gateway::{
 use twilight_http::client::Client as HttpClient;
 use futures::stream::StreamExt;
 
-fn main() {
-	let _rt = TokioRuntimeBuilder::new_multi_thread()
+type MainResult = Result<(), Box<dyn Error + Send + Sync>>;
+
+fn main() -> MainResult {
+	let rt = tokio::runtime::Builder::new_multi_thread()
 		.enable_all()
 		.worker_threads(2)
 		.max_blocking_threads(32)
 		.thread_keep_alive(Duration::from_secs(60))
 		.build()
-		.unwrap()
-		.block_on(async_main());
+		.unwrap();
+
+	rt.block_on(async_main())?;
+	rt.shutdown_timeout(Duration::from_secs(60));
+
+	Ok(())
 }
 
-async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>> {
+async fn async_main() -> MainResult {
 	let env = env::Env::get_env();
 
 	let http = HttpClient::new(env.token().clone());
 	let http = Arc::new(http);
 
+	// todo make this better
 	let intents = Intents::all();
 	let (cluster, mut events) = Cluster::builder(env.token(), intents)
 		.shard_scheme(Auto)
@@ -53,6 +58,11 @@ async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>> {
 		let mut sigterm = signal(SK::terminate()).unwrap();
 
 		tokio::select! {
+			// without biased, tokio::select! will choose random branches to poll,
+			// which incurs a small cpu cost for the random number generator
+			// biased polling is fine here
+			biased;
+
 			_ = sigint.recv() => {}
 			_ = sigterm.recv() => {}
 		}
@@ -61,26 +71,7 @@ async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>> {
 	});
 
 	while let Some((shard_id, event)) = events.next().await {
-		tokio::spawn(handle_event(shard_id, event, Arc::clone(&http)));
-	}
-
-	Ok(())
-}
-
-async fn handle_event(_shard_id: u64, event: Event, http: Arc<HttpClient>) -> Result<(), Box<dyn Error + Send + Sync>> {
-	match event {
-		Event::MessageCreate(msg) => {
-			println!("got msg: {}", msg.content);
-
-			if msg.content == "h" {
-				http.create_message(msg.channel_id)
-					.content("weffer")?
-					.exec().await?;
-			}
-		}
-		_ => {
-			println!("got event {:?}", event);
-		}
+		// do something
 	}
 
 	Ok(())

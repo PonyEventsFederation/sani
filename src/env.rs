@@ -21,12 +21,14 @@ impl Env {
 		init_dotenv();
 
 		let token = var("TOKEN")
-			.unwrap_or_else(|_| var("BOT_TOKEN").unwrap());
+			// .unwrap_or_else(|_| var("BOT_TOKEN").unwrap());
+			.or_else(|_| var("BOT_TOKEN"))
+			.expect("could not find suitable bot token");
 
 		Env { token }
 	}
 
-	pub fn token(&self) -> &String {
+	pub fn token(&self) -> &str {
 		&self.token
 	}
 
