@@ -1,22 +1,44 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [package]
 name = "sani"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
+rust-version = "1.56.1"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies.chrono]
+version = "0.4"
 
-[dependencies]
-chrono = "0.4"
-dotenv = "0.15"
-futures = "0.3"
-tokio = { version = "1", features = ["full"] }
-twilight-cache-inmemory = "0.6"
-twilight-gateway = "0.6"
-twilight-http = "0.6"
-twilight-mention = "0.6"
-twilight-model = "0.6"
-twilight-standby = "0.6"
-twilight-util = "0.6"
+[dependencies.dotenv]
+version = "0.15"
+
+[dependencies.futures]
+version = "0.3"
+
+[dependencies.tokio]
+version = "1"
+features = ["full"]
+
+[dependencies.twilight-cache-inmemory]
+version = "0.7"
+
+[dependencies.twilight-gateway]
+version = "0.7"
+
+[dependencies.twilight-http]
+version = "0.7"
+
+[dependencies.twilight-mention]
+version = "0.7"
+
+[dependencies.twilight-model]
+version = "0.7"
+
+[dependencies.twilight-standby]
+version = "0.7"
+
+[dependencies.twilight-util]
+version = "0.7"
 
 [profile.dev]
 opt-level = 0 # none

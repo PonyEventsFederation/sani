@@ -6,7 +6,8 @@ mod lib;
 
 use std::{
 	error::Error,
-	time::Duration
+	time::Duration,
+	sync::Arc
 };
 
 use tokio::runtime::Builder as TokioRuntimeBuilder;
@@ -33,16 +34,19 @@ async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>> {
 	let env = env::Env::get_env();
 
 	let http = HttpClient::new(env.token().clone());
+	let http = Arc::new(http);
+
 	let intents = Intents::all();
 	let (cluster, mut events) = Cluster::builder(env.token(), intents)
 		.shard_scheme(Auto)
 		.build().await?;
+	let cluster = Arc::new(cluster);
 
-	let cluster_spawn = cluster.clone();
+	let cluster_spawn = Arc::clone(&cluster);
 	tokio::spawn(async move { cluster_spawn.up().await });
 
 	// asyncronously wait for a signal and then bring cluster down
-	let cluster_down = cluster.clone();
+	let cluster_down = Arc::clone(&cluster);
 	tokio::spawn(async move {
 		use tokio::signal::unix::{ signal, SignalKind as SK };
 		let mut sigint = signal(SK::interrupt()).unwrap();
@@ -57,13 +61,13 @@ async fn async_main() -> Result<(), Box<dyn Error + Send + Sync>> {
 	});
 
 	while let Some((shard_id, event)) = events.next().await {
-		tokio::spawn(handle_event(shard_id, event, http.clone()));
+		tokio::spawn(handle_event(shard_id, event, Arc::clone(&http)));
 	}
 
 	Ok(())
 }
 
-async fn handle_event(_shard_id: u64, event: Event, http: HttpClient) -> Result<(), Box<dyn Error + Send + Sync>> {
+async fn handle_event(_shard_id: u64, event: Event, http: Arc<HttpClient>) -> Result<(), Box<dyn Error + Send + Sync>> {
 	match event {
 		Event::MessageCreate(msg) => {
 			println!("got msg: {}", msg.content);
