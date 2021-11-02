@@ -3,21 +3,22 @@
 
 mod env;
 
-use std::{
-	error::Error,
-	time::Duration,
-	sync::Arc
-};
-
-use twilight_gateway::{
-	cluster::{ Cluster, ShardScheme::Auto },
-	Event,
-	Intents
-};
-use twilight_http::client::Client as HttpClient;
+use env::Env;
 use futures::stream::StreamExt;
+use std::error::Error;
+use std::sync::Arc;
+use std::time::Duration;
+use tokio::signal::unix::signal;
+use tokio::signal::unix::SignalKind;
+use tokio::spawn;
+use twilight_gateway::cluster::Cluster;
+use twilight_gateway::cluster::Events;
+use twilight_gateway::cluster::ShardScheme::Auto;
+use twilight_gateway::Event;
+use twilight_gateway::Intents;
+use twilight_http::client::Client as HttpClient;
 
-type MainResult = Result<(), Box<dyn Error + Send + Sync>>;
+type MainResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 
 fn main() -> MainResult {
 	let rt = tokio::runtime::Builder::new_multi_thread()
@@ -35,27 +36,55 @@ fn main() -> MainResult {
 }
 
 async fn async_main() -> MainResult {
-	let env = env::Env::get_env();
+	let env = Env::get_env();
 
-	let http = HttpClient::new(env.token().clone());
+	let HttpAndCluster { http, cluster, mut events } = setup_http_and_cluster(&env).await?;
+
+	start_cluster(&cluster);
+
+	watch_for_stop_events(&cluster);
+
+	while let Some((shard_id, event)) = events.next().await {
+		// do something
+	}
+
+	Ok(())
+}
+
+struct HttpAndCluster {
+	http: Arc<HttpClient>,
+	cluster: Arc<Cluster>,
+	events: Events
+}
+
+async fn setup_http_and_cluster(env: &Env) -> MainResult<HttpAndCluster> {
+	let http = HttpClient::new(env.token().to_string().clone());
 	let http = Arc::new(http);
 
-	// todo make this better
+	// todo make intents better
 	let intents = Intents::all();
-	let (cluster, mut events) = Cluster::builder(env.token(), intents)
+	let (cluster, events) = Cluster::builder(env.token(), intents)
 		.shard_scheme(Auto)
 		.build().await?;
 	let cluster = Arc::new(cluster);
 
-	let cluster_spawn = Arc::clone(&cluster);
-	tokio::spawn(async move { cluster_spawn.up().await });
+	Ok(HttpAndCluster { http, cluster, events })
+}
 
-	// asyncronously wait for a signal and then bring cluster down
-	let cluster_down = Arc::clone(&cluster);
-	tokio::spawn(async move {
-		use tokio::signal::unix::{ signal, SignalKind as SK };
-		let mut sigint = signal(SK::interrupt()).unwrap();
-		let mut sigterm = signal(SK::terminate()).unwrap();
+#[inline]
+fn start_cluster(cluster: &Arc<Cluster>) {
+	let cluster = Arc::clone(&cluster);
+	spawn(async move { cluster.up().await });
+}
+
+/// asyncronously wait for a signal and then bring cluster down
+#[inline]
+fn watch_for_stop_events(cluster: &Arc<Cluster>) {
+	let cluster = Arc::clone(&cluster);
+
+	spawn(async move {
+		let mut sigint = signal(SignalKind::interrupt()).unwrap();
+		let mut sigterm = signal(SignalKind::terminate()).unwrap();
 
 		tokio::select! {
 			// without biased, tokio::select! will choose random branches to poll,
@@ -67,12 +96,6 @@ async fn async_main() -> MainResult {
 			_ = sigterm.recv() => {}
 		}
 
-		cluster_down.down();
+		cluster.down();
 	});
-
-	while let Some((shard_id, event)) = events.next().await {
-		// do something
-	}
-
-	Ok(())
 }
