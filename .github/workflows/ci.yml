@@ -1,0 +1,54 @@
+---
+on:
+  push:
+    branches-ignore:
+    - "deploy"
+    - "deploy*"
+  pull_request:
+
+name: ci
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        release-channel:
+        - stable
+        - nightly
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@1e204e9a9253d643386038d443f96446fa156a97 # v2.3.5
+
+    - name: update toolchain
+      run: |
+        rustup update ${{ matrix.release-channel }}
+        rustup default ${{ matrix.release-channel }}
+
+    - name: build
+      # use `haswell` instead of `native` due to some github
+      # actions runners not supporting some `avx512` instructions.
+      # taken from https://github.com/twilight-rs/twilight/blob/9134ad48480a6b1a628376bc12a401910b950a76/.github/workflows/test.yml
+      run: cargo b
+      env:
+        RUSTFLAGS: "-C target-cpu=haswell"
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@27121b0bdffd731efa15d66772be8dc71245d074 # v2.2.4
+      with:
+        name: sani
+        path: target/debug/sani
+
+  lint:
+    name: lint
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@1e204e9a9253d643386038d443f96446fa156a97 # v2.3.5
+
+    - name: lint
+      run: cargo clippy --all-targets
