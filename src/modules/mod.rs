@@ -9,3 +9,4 @@ use async_trait::async_trait;
 use twilight_gateway::Event::*;
 
 pub mod status;
+pub mod reaction_role;
