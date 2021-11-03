@@ -1,7 +1,10 @@
+use std::error::Error;
 use std::sync::Arc;
 use twilight_gateway::Event as GatewayEvent;
 use twilight_gateway::Intents;
 use twilight_http::Client;
+
+pub type HandleResult = Result<(), Box<dyn Error + Send + Sync>>;
 
 pub struct Event {
 	pub shard_id: u64,
@@ -17,5 +20,5 @@ pub trait Module: Send + Sync {
 	}
 
 	// async fn init(&mut self);
-	async fn handle_event(&self, event: Event);
+	async fn handle_event(&self, event: Event) -> HandleResult;
 }

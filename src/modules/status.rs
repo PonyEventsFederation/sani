@@ -5,7 +5,7 @@ pub struct Status();
 
 #[async_trait]
 impl Module for Status {
-	async fn handle_event(&self, event: Event) {
+	async fn handle_event(&self, event: Event) -> HandleResult {
 		match event.event {
 			GatewayReconnect => {
 				eprintln!("reconnecting...");
@@ -18,5 +18,7 @@ impl Module for Status {
 			}
 			_ => {}
 		}
+
+		Ok(())
 	}
 }
