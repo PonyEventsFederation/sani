@@ -2,6 +2,7 @@
 #![allow(unused)]
 
 mod env;
+mod modules;
 
 use env::Env;
 use futures::stream::StreamExt;
@@ -39,13 +40,39 @@ async fn async_main() -> MainResult {
 	let env = Env::get_env();
 
 	let HttpAndCluster { http, cluster, mut events } = setup_http_and_cluster(&env).await?;
-
 	start_cluster(&cluster);
-
 	watch_for_stop_events(&cluster);
 
+	let modules: Vec<Box<dyn modules::module::Module>> = vec![
+		Box::new(modules::status::Status())
+	];
+
+	let modules: Arc<Vec<_>> = Arc::new(
+			modules.into_iter()
+				.map(|m| Arc::new(m))
+				.collect()
+		);
+
 	while let Some((shard_id, event)) = events.next().await {
-		// do something
+		// clone a few values, then send it off into another task
+		// wait for next event
+		let modules = Arc::clone(&modules);
+		let event = event.clone();
+		let http = Arc::clone(&http);
+
+		spawn(async move {
+			for module in modules.iter() {
+				let module = Arc::clone(module);
+				let event = event.clone();
+				let http = Arc::clone(&http);
+
+				let event = modules::module::Event { shard_id, event, http };
+
+				spawn(async move {
+					module.handle_event(event).await;
+				});
+			}
+		});
 	}
 
 	Ok(())
