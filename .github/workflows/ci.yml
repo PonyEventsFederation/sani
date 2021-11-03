@@ -39,7 +39,7 @@ jobs:
     - name: upload artifacts
       uses: actions/upload-artifact@27121b0bdffd731efa15d66772be8dc71245d074 # v2.2.4
       with:
-        name: sani
+        name: sani-rust-${{ matrix.release-channel}}
         path: target/debug/sani
 
     - name: print some useful info
@@ -59,4 +59,4 @@ jobs:
       run: rustup update stable
 
     - name: lint
-      run: cargo clippy --all-targets
+      run: cargo clippy --all-targets -- -D warnings
