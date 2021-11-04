@@ -8,6 +8,11 @@ use env::Env;
 use futures::stream::StreamExt;
 use modules::status::Status;
 use modules::reaction_role::ReactionRole;
+use modules::reaction_role::channel_id;
+use modules::reaction_role::emoji_id;
+use modules::reaction_role::guild_id;
+use modules::reaction_role::message_id;
+use modules::reaction_role::role_id;
 use std::error::Error;
 use std::sync::Arc;
 use std::time::Duration;
@@ -54,13 +59,13 @@ async fn async_main() -> MainResult {
 	let modules: Vec<Box<dyn modules::module::Module>> = vec![
 		Box::new(Status()),
 		Box::new(ReactionRole {
-			role_id: RoleId::new(905_52966_33953_52587).unwrap(),
-			guild_id: GuildId::new(834_29759_11599_80073).unwrap(),
-			channel_id: ChannelId::new(834_29852_87413_26869).unwrap(),
-			message_id: MessageId::new(905_53005_37717_88360).unwrap(),
+			role_id: role_id(905_52966_33953_52587),
+			guild_id: guild_id(834_29759_11599_80073),
+			channel_id: channel_id(834_29852_87413_26869),
+			message_id: message_id(905_53005_37717_88360),
 			emoji: ReactionType::Custom {
 				animated: false,
-				id: EmojiId::new(897_60539_74504_61215).unwrap(),
+				id: emoji_id(897_60539_74504_61215),
 				name: None
 			}
 		})

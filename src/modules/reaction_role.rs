@@ -7,10 +7,27 @@ use twilight_model::channel::ReactionType;
 use twilight_http::request::channel::reaction::RequestReactionType;
 use twilight_model::guild::Member;
 use twilight_model::id::ChannelId;
+use twilight_model::id::EmojiId;
 use twilight_model::id::GuildId;
 use twilight_model::id::MessageId;
 use twilight_model::id::RoleId;
 use twilight_cache_inmemory::InMemoryCacheBuilder;
+
+pub fn role_id(id: u64) -> RoleId {
+	RoleId::new(id).unwrap()
+}
+pub fn guild_id(id: u64) -> GuildId {
+	GuildId::new(id).unwrap()
+}
+pub fn channel_id(id: u64) -> ChannelId {
+	ChannelId::new(id).unwrap()
+}
+pub fn message_id(id: u64) -> MessageId {
+	MessageId::new(id).unwrap()
+}
+pub fn emoji_id(id: u64) -> EmojiId {
+	EmojiId::new(id).unwrap()
+}
 
 pub struct ReactionRole {
 	pub guild_id: GuildId,
