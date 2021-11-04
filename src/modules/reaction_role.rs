@@ -1,4 +1,7 @@
 use super::*;
+
+use tokio::time::Duration;
+use tokio::time::sleep;
 use twilight_model::channel::Reaction;
 use twilight_model::channel::ReactionType;
 use twilight_http::request::channel::reaction::RequestReactionType;
@@ -59,7 +62,7 @@ impl Module for ReactionRole {
 			};
 
 			// delete the reaction after 1s delay
-			tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+			sleep(Duration::from_secs(1)).await;
 			event.http.delete_reaction(channel_id, message_id, &emoji, user_id).exec().await?;
 		}
 
