@@ -21,7 +21,49 @@ pub struct ReactionRole {
 #[async_trait]
 impl Module for ReactionRole {
 	async fn handle_event(&self, event: Event) -> HandleResult {
-		aitch(self, event).await
+		if let ReactionAdd(reaction) = event.event {
+			let Reaction { channel_id, message_id, emoji, user_id, .. } = reaction.0;
+
+			// check if the reaction is in the correct channel and message
+			if channel_id != self.channel_id
+				|| message_id != self.message_id
+				|| !emojis_are_eq(&emoji, &self.emoji)
+			{ return Ok(()) }
+
+			let member = event.http.guild_member(self.guild_id, user_id)
+				.exec().await?.model().await?;
+
+			// check if user has the role, and create new list of roles accordingly
+			let new_roles = if let None = member.roles.clone().into_iter().find(|r| r == &self.role_id) {
+				let mut roles = member.roles.clone();
+				roles.push(self.role_id);
+				roles
+			} else {
+				member.roles.into_iter().filter(|r| r != &self.role_id).collect::<Vec<_>>()
+			};
+
+			// perform the role update
+			let update = event.http.update_guild_member(self.guild_id, user_id)
+				.roles(&new_roles[..]);
+				update.exec().await?;
+
+			// wot
+			// i think this could be cleaner, 100%
+			let emoji = match emoji {
+				ReactionType::Unicode{ ref name } => {
+					RequestReactionType::Unicode { name: &name }
+				}
+				ReactionType::Custom{ ref name, id, .. } => {
+					RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id }
+				}
+			};
+
+			// delete the reaction after 1s delay
+			tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+			event.http.delete_reaction(channel_id, message_id, &emoji, user_id).exec().await?;
+		}
+
+		Ok(())
 	}
 }
 
@@ -39,45 +81,4 @@ fn emojis_are_eq(a: &ReactionType, b: &ReactionType) -> bool {
 	}
 
 	false
-}
-
-async fn aitch(s: &ReactionRole, event: Event) -> HandleResult {
-	if let ReactionAdd(reaction) = event.event {
-		let Reaction { channel_id, message_id, emoji, user_id, .. } = reaction.0;
-
-		if channel_id != s.channel_id
-			|| message_id != s.message_id
-			|| !emojis_are_eq(&emoji, &s.emoji)
-		{ return Ok(()) }
-
-		let member = event.http.guild_member(s.guild_id, user_id)
-			.exec().await?.model().await?;
-		let update = event.http.update_guild_member(s.guild_id, user_id);
-
-		let new_roles = if let None = member.roles.clone().into_iter().find(|r| r == &s.role_id) {
-			let mut roles = member.roles.clone();
-			roles.push(s.role_id);
-			roles
-		} else {
-			member.roles.into_iter().filter(|r| r != &s.role_id).collect::<Vec<_>>()
-		};
-		let update = update.roles(&new_roles[..]);
-
-		update.exec().await?;
-
-		// wot
-		// i think this could be cleaner, 100%
-		let emoji = match emoji {
-			ReactionType::Unicode{ ref name } => {
-				RequestReactionType::Unicode { name: &name }
-			}
-			ReactionType::Custom{ ref name, id, .. } => {
-				RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id }
-			}
-		};
-
-		event.http.delete_reaction(channel_id, message_id, &emoji, user_id).exec().await?;
-	}
-
-	Ok(())
 }
