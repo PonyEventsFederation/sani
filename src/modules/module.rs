@@ -5,6 +5,11 @@ use twilight_gateway::Intents;
 use twilight_http::Client;
 
 pub type HandleResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
+pub type InitResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
+
+pub struct InitStuff {
+	pub http: Arc<Client>
+}
 
 pub struct Event {
 	pub shard_id: u64,
@@ -19,6 +24,6 @@ pub trait Module: Send + Sync {
 		Intents::empty()
 	}
 
-	// async fn init(&mut self);
+	async fn init(&mut self, init: &InitStuff) -> InitResult { Ok(()) }
 	async fn handle_event(&self, event: Event) -> HandleResult;
 }

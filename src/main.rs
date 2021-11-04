@@ -6,6 +6,8 @@ mod modules;
 
 use env::Env;
 use futures::stream::StreamExt;
+use modules::module::Event;
+use modules::module::InitStuff;
 use modules::status::Status;
 use modules::reaction_role::ReactionRole;
 use modules::reaction_role::channel_id;
@@ -22,7 +24,6 @@ use tokio::spawn;
 use twilight_gateway::cluster::Cluster;
 use twilight_gateway::cluster::Events;
 use twilight_gateway::cluster::ShardScheme::Auto;
-use twilight_gateway::Event;
 use twilight_gateway::Intents;
 use twilight_http::client::Client as HttpClient;
 use twilight_http::request::channel::reaction::RequestReactionType;
@@ -54,10 +55,8 @@ async fn async_main() -> MainResult {
 	let env = Env::get_env();
 
 	let HttpAndCluster { http, cluster, mut events } = setup_http_and_cluster(&env).await?;
-	start_cluster(&cluster);
-	watch_for_stop_events(&cluster);
 
-	let modules: Vec<Box<dyn modules::module::Module>> = vec![
+	let mut modules: Vec<Box<dyn modules::module::Module>> = vec![
 		Box::new(Status()),
 		Box::new(ReactionRole {
 			role_id: role_id(905_52966_33953_52587),
@@ -71,11 +70,22 @@ async fn async_main() -> MainResult {
 		})
 	];
 
-	let modules: Arc<Vec<_>> = Arc::new(
+	let stuff = InitStuff {
+		http: Arc::clone(&http)
+	};
+
+	for module in modules.iter_mut() {
+		module.init(&stuff).await;
+	}
+
+	let modules = Arc::new(
 		modules.into_iter()
 			.map(|m| Arc::new(m))
-			.collect()
+			.collect::<Vec<_>>()
 	);
+
+	start_cluster(&cluster);
+	watch_for_stop_events(&cluster);
 
 	while let Some((shard_id, event)) = events.next().await {
 		// clone a few values, then send it off into another task
@@ -90,7 +100,7 @@ async fn async_main() -> MainResult {
 				let event = event.clone();
 				let http = Arc::clone(&http);
 
-				let event = modules::module::Event { shard_id, event, http };
+				let event = Event { shard_id, event, http };
 
 				spawn(async move {
 					module.handle_event(event).await;
