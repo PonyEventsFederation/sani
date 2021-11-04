@@ -6,8 +6,8 @@ mod modules;
 
 use env::Env;
 use futures::stream::StreamExt;
-use modules::module::Event;
-use modules::module::InitStuff;
+use modules::Event;
+use modules::InitStuff;
 use modules::status::Status;
 use modules::reaction_role::ReactionRole;
 use modules::reaction_role::channel_id;
@@ -56,7 +56,7 @@ async fn async_main() -> MainResult {
 
 	let HttpAndCluster { http, cluster, mut events } = setup_http_and_cluster(&env).await?;
 
-	let mut modules: Vec<Box<dyn modules::module::Module>> = vec![
+	let mut modules: Vec<Box<dyn modules::Module>> = vec![
 		Box::new(Status()),
 		Box::new(ReactionRole {
 			role_id: role_id(905_52966_33953_52587),
