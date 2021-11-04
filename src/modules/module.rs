@@ -4,7 +4,7 @@ use twilight_gateway::Event as GatewayEvent;
 use twilight_gateway::Intents;
 use twilight_http::Client;
 
-pub type HandleResult = Result<(), Box<dyn Error + Send + Sync>>;
+pub type HandleResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 
 pub struct Event {
 	pub shard_id: u64,

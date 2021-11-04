@@ -1,6 +1,7 @@
 use super::*;
 use twilight_model::channel::Reaction;
 use twilight_model::channel::ReactionType;
+use twilight_http::request::channel::reaction::RequestReactionType;
 use twilight_model::guild::Member;
 use twilight_model::id::ChannelId;
 use twilight_model::id::GuildId;
@@ -9,27 +10,44 @@ use twilight_model::id::RoleId;
 use twilight_cache_inmemory::InMemoryCacheBuilder;
 
 pub struct ReactionRole {
-	guild_id: GuildId,
-	channel_id: ChannelId,
-	message_id: MessageId,
-	emoji: ReactionType,
-	role_id: RoleId
+	pub guild_id: GuildId,
+	pub channel_id: ChannelId,
+	pub message_id: MessageId,
+	// todo investigate this, this might be better as RequestReactionType
+	pub emoji: ReactionType,
+	pub role_id: RoleId
 }
 
 #[async_trait]
 impl Module for ReactionRole {
 	async fn handle_event(&self, event: Event) -> HandleResult {
-		Ok(())
+		aitch(self, event).await
 	}
+}
+
+fn emojis_are_eq(a: &ReactionType, b: &ReactionType) -> bool {
+	if let ReactionType::Unicode { name: a_unicode } = a {
+		if let ReactionType::Unicode { name: b_unicode } = b {
+			return a_unicode == b_unicode
+		}
+	}
+
+	if let ReactionType::Custom { id: a_id, .. } = a {
+		if let ReactionType::Custom { id: b_id, .. } = b {
+			return a_id == b_id
+		}
+	}
+
+	false
 }
 
 async fn aitch(s: &ReactionRole, event: Event) -> HandleResult {
 	if let ReactionAdd(reaction) = event.event {
-		let Reaction { channel_id, message_id, emoji, user_id, member, .. } = reaction.0;
+		let Reaction { channel_id, message_id, emoji, user_id, .. } = reaction.0;
 
 		if channel_id != s.channel_id
 			|| message_id != s.message_id
-			|| emoji != s.emoji
+			|| !emojis_are_eq(&emoji, &s.emoji)
 		{ return Ok(()) }
 
 		let member = event.http.guild_member(s.guild_id, user_id)
@@ -46,6 +64,19 @@ async fn aitch(s: &ReactionRole, event: Event) -> HandleResult {
 		let update = update.roles(&new_roles[..]);
 
 		update.exec().await?;
+
+		// wot
+		// i think this could be cleaner, 100%
+		let emoji = match emoji {
+			ReactionType::Unicode{ ref name } => {
+				RequestReactionType::Unicode { name: &name }
+			}
+			ReactionType::Custom{ ref name, id, .. } => {
+				RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id }
+			}
+		};
+
+		event.http.delete_reaction(channel_id, message_id, &emoji, user_id).exec().await?;
 	}
 
 	Ok(())

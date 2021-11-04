@@ -6,6 +6,8 @@ mod modules;
 
 use env::Env;
 use futures::stream::StreamExt;
+use modules::status::Status;
+use modules::reaction_role::ReactionRole;
 use std::error::Error;
 use std::sync::Arc;
 use std::time::Duration;
@@ -18,6 +20,12 @@ use twilight_gateway::cluster::ShardScheme::Auto;
 use twilight_gateway::Event;
 use twilight_gateway::Intents;
 use twilight_http::client::Client as HttpClient;
+use twilight_model::channel::ReactionType;
+use twilight_model::id::ChannelId;
+use twilight_model::id::GuildId;
+use twilight_model::id::EmojiId;
+use twilight_model::id::MessageId;
+use twilight_model::id::RoleId;
 
 type MainResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 
@@ -44,18 +52,29 @@ async fn async_main() -> MainResult {
 	watch_for_stop_events(&cluster);
 
 	let modules: Vec<Box<dyn modules::module::Module>> = vec![
-		Box::new(modules::status::Status())
+		Box::new(Status()),
+		Box::new(ReactionRole {
+			role_id: RoleId::new(905_52966_33953_52587).unwrap(),
+			guild_id: GuildId::new(834_29759_11599_80073).unwrap(),
+			channel_id: ChannelId::new(834_29852_87413_26869).unwrap(),
+			message_id: MessageId::new(905_53005_37717_88360).unwrap(),
+			emoji: ReactionType::Custom {
+				animated: false,
+				id: EmojiId::new(897_60539_74504_61215).unwrap(),
+				name: None
+			}
+		})
 	];
 
 	let modules: Arc<Vec<_>> = Arc::new(
-			modules.into_iter()
-				.map(|m| Arc::new(m))
-				.collect()
-		);
+		modules.into_iter()
+			.map(|m| Arc::new(m))
+			.collect()
+	);
 
 	while let Some((shard_id, event)) = events.next().await {
 		// clone a few values, then send it off into another task
-		// wait for next event
+		// so we can quickly wait for and process the next event
 		let modules = Arc::clone(&modules);
 		let event = event.clone();
 		let http = Arc::clone(&http);
