@@ -29,20 +29,20 @@ pub fn emoji_id(id: u64) -> EmojiId {
 	EmojiId::new(id).unwrap()
 }
 
-pub struct ReactionRole {
+pub struct ReactionRole<'h> {
 	pub guild_id: GuildId,
 	pub channel_id: ChannelId,
 	pub message_id: MessageId,
-	// todo investigate this, this might be better as RequestReactionType
-	pub emoji: ReactionType,
+	pub emoji: RequestReactionType<'h>,
 	pub role_id: RoleId
 }
 
 #[async_trait]
-impl Module for ReactionRole {
+impl<'h> Module for ReactionRole<'h> {
 	async fn handle_event(&self, event: Event) -> HandleResult {
 		if let ReactionAdd(reaction) = event.event {
 			let Reaction { channel_id, message_id, emoji, user_id, .. } = reaction.0;
+			let emoji = reaction_to_request_reaction_emoji(&emoji);
 
 			// check if the reaction is in the correct channel and message
 			if channel_id != self.channel_id
@@ -67,17 +67,6 @@ impl Module for ReactionRole {
 				.roles(&new_roles[..]);
 				update.exec().await?;
 
-			// wot
-			// i think this could be cleaner, 100%
-			let emoji = match emoji {
-				ReactionType::Unicode{ ref name } => {
-					RequestReactionType::Unicode { name: &name }
-				}
-				ReactionType::Custom{ ref name, id, .. } => {
-					RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id }
-				}
-			};
-
 			// delete the reaction after 1s delay
 			sleep(Duration::from_secs(1)).await;
 			event.http.delete_reaction(channel_id, message_id, &emoji, user_id).exec().await?;
@@ -87,16 +76,27 @@ impl Module for ReactionRole {
 	}
 }
 
-fn emojis_are_eq(a: &ReactionType, b: &ReactionType) -> bool {
-	if let ReactionType::Unicode { name: a_unicode } = a {
-		if let ReactionType::Unicode { name: b_unicode } = b {
-			return a_unicode == b_unicode
+fn reaction_to_request_reaction_emoji(reaction: &ReactionType) -> RequestReactionType<'_> {
+	match reaction {
+		ReactionType::Unicode { ref name } => {
+			RequestReactionType::Unicode { name: &name }
+		}
+		ReactionType::Custom { ref name, id, .. } => {
+			RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id: id.clone() }
+		}
+	}
+}
+
+fn emojis_are_eq(a: &RequestReactionType<'_>, b: &RequestReactionType<'_>) -> bool {
+	if let RequestReactionType::Custom { id: a_id, .. } = a {
+		if let RequestReactionType::Custom { id: b_id, .. } = b {
+			return a_id == b_id
 		}
 	}
 
-	if let ReactionType::Custom { id: a_id, .. } = a {
-		if let ReactionType::Custom { id: b_id, .. } = b {
-			return a_id == b_id
+	if let RequestReactionType::Unicode { name: a_name } = a {
+		if let RequestReactionType::Unicode { name: b_name } = b {
+			return a_name == b_name
 		}
 	}
 

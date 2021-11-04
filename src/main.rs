@@ -25,6 +25,7 @@ use twilight_gateway::cluster::ShardScheme::Auto;
 use twilight_gateway::Event;
 use twilight_gateway::Intents;
 use twilight_http::client::Client as HttpClient;
+use twilight_http::request::channel::reaction::RequestReactionType;
 use twilight_model::channel::ReactionType;
 use twilight_model::id::ChannelId;
 use twilight_model::id::GuildId;
@@ -63,8 +64,7 @@ async fn async_main() -> MainResult {
 			guild_id: guild_id(834_29759_11599_80073),
 			channel_id: channel_id(834_29852_87413_26869),
 			message_id: message_id(905_53005_37717_88360),
-			emoji: ReactionType::Custom {
-				animated: false,
+			emoji: RequestReactionType::Custom {
 				id: emoji_id(897_60539_74504_61215),
 				name: None
 			}
