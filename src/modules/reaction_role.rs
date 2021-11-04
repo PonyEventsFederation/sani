@@ -49,7 +49,7 @@ impl<'h> Module for ReactionRole<'h> {
 			.exec().await?
 			.model().await?;
 
-		let reaction = reactions.iter().find(|u| u.id == current_user.id).is_some();
+		let reaction = reactions.iter().any(|u| u.id == current_user.id);
 		if !reaction {
 			init.http.create_reaction(self.channel_id, self.message_id, &self.emoji)
 				.exec().await?;
@@ -73,7 +73,7 @@ impl<'h> Module for ReactionRole<'h> {
 				.exec().await?.model().await?;
 
 			// check if user has the role, and create new list of roles accordingly
-			let new_roles = if let None = member.roles.clone().into_iter().find(|r| r == &self.role_id) {
+			let new_roles = if !member.roles.clone().into_iter().any(|r| r == self.role_id) {
 				let mut roles = member.roles.clone();
 				roles.push(self.role_id);
 				roles
@@ -98,10 +98,10 @@ impl<'h> Module for ReactionRole<'h> {
 fn reaction_to_request_reaction_emoji(reaction: &ReactionType) -> RequestReactionType<'_> {
 	match reaction {
 		ReactionType::Unicode { ref name } => {
-			RequestReactionType::Unicode { name: &name }
+			RequestReactionType::Unicode { name }
 		}
 		ReactionType::Custom { ref name, id, .. } => {
-			RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id: id.clone() }
+			RequestReactionType::Custom { name: name.as_ref().map(|s| &s[..]), id: *id }
 		}
 	}
 }

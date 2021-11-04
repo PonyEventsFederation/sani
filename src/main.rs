@@ -80,7 +80,7 @@ async fn async_main() -> MainResult {
 
 	let modules = Arc::new(
 		modules.into_iter()
-			.map(|m| Arc::new(m))
+			.map(Arc::new)
 			.collect::<Vec<_>>()
 	);
 
@@ -119,7 +119,7 @@ struct HttpAndCluster {
 }
 
 async fn setup_http_and_cluster(env: &Env) -> MainResult<HttpAndCluster> {
-	let http = HttpClient::new(env.token().to_string().clone());
+	let http = HttpClient::new(env.token().to_string());
 	let http = Arc::new(http);
 
 	// todo make intents better
@@ -134,14 +134,14 @@ async fn setup_http_and_cluster(env: &Env) -> MainResult<HttpAndCluster> {
 
 #[inline]
 fn start_cluster(cluster: &Arc<Cluster>) {
-	let cluster = Arc::clone(&cluster);
+	let cluster = Arc::clone(cluster);
 	spawn(async move { cluster.up().await });
 }
 
 /// asyncronously wait for a signal and then bring cluster down
 #[inline]
 fn watch_for_stop_events(cluster: &Arc<Cluster>) {
-	let cluster = Arc::clone(&cluster);
+	let cluster = Arc::clone(cluster);
 
 	spawn(async move {
 		let mut sigint = signal(SignalKind::interrupt()).unwrap();
