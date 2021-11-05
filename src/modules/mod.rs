@@ -14,11 +14,13 @@ mod modules {
 	use twilight_gateway::Event as GatewayEvent;
 	use twilight_gateway::Intents;
 	use twilight_http::Client;
+	use twilight_model::user::CurrentUser;
 
 	pub type HandleResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 	pub type InitResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 
 	pub struct InitStuff {
+		pub current_user: CurrentUser,
 		pub http: Arc<Client>
 	}
 

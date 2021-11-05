@@ -58,7 +58,11 @@ async fn async_main() -> MainResult {
 
 	let mut modules: Vec<Box<dyn modules::Module>> = modules();
 
+	let current_user = http.current_user()
+		.exec().await?
+		.model().await?;
 	let stuff = InitStuff {
+		current_user,
 		http: Arc::clone(&http)
 	};
 

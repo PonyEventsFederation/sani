@@ -40,16 +40,12 @@ pub struct ReactionRole<'h> {
 #[async_trait]
 impl<'h> Module for ReactionRole<'h> {
 	async fn init(&mut self, init: &InitStuff) -> InitResult {
-		let current_user = init.http.current_user()
-			.exec().await?
-			.model().await?;
-
 		let reactions = init.http.reactions(self.channel_id, self.message_id, &self.emoji)
 			.limit(100)?
 			.exec().await?
 			.model().await?;
 
-		let reaction = reactions.iter().any(|u| u.id == current_user.id);
+		let reaction = reactions.iter().any(|u| u.id == init.current_user.id);
 		if !reaction {
 			init.http.create_reaction(self.channel_id, self.message_id, &self.emoji)
 				.exec().await?;
