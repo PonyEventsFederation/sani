@@ -70,7 +70,7 @@ impl<'h> Module for ReactionRole<'h> {
 
 			// check if user has the role, and create new list of roles accordingly
 			let new_roles = if !member.roles.clone().into_iter().any(|r| r == self.role_id) {
-				let mut roles = member.roles.clone();
+				let mut roles = member.roles;
 				roles.push(self.role_id);
 				roles
 			} else {
