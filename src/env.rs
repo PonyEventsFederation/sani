@@ -23,6 +23,7 @@ impl Env {
 		let token = var("TOKEN")
 			// .unwrap_or_else(|_| var("BOT_TOKEN").unwrap());
 			.or_else(|_| var("BOT_TOKEN"))
+			.or_else(|_| var("BOT_TOKEN_SANI"))
 			.expect("could not find suitable bot token");
 
 		Env { token }
