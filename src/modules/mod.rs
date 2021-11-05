@@ -6,9 +6,9 @@ use twilight_gateway::Event::*;
 pub mod status;
 pub mod reaction_role;
 
-pub use modules::*;
+pub use modules_stuff::*;
 
-mod modules {
+mod modules_stuff {
 	use std::error::Error;
 	use std::sync::Arc;
 	use twilight_gateway::Event as GatewayEvent;
