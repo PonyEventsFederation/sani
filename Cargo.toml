@@ -43,6 +43,9 @@ version = "0.7"
 [dependencies.twilight-util]
 version = "0.7"
 
+[dependencies.warp]
+version = "0.3"
+
 [profile.dev]
 opt-level = 0 # none
 debug = true

@@ -2,6 +2,7 @@
 #![allow(unused)]
 
 mod env;
+mod loyalty_server;
 mod modules;
 
 use env::Env;
