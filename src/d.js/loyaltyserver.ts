@@ -130,9 +130,12 @@ function handlePreflight(req: http.IncomingMessage, res: http.ServerResponse): b
    // check origin
    if (!allowedOrigin.includes(req.headers.origin.toLowerCase())) return false;
 
-   // necessary headers will be set by finaliserequest
    finaliserequest({
-      code: 204
+      code: 204,
+      headers: {
+         "access-control-allow-headers": "action"
+         // other necessary headers will be set by finaliserequest
+      }
    }, req, res);
 
    return true;
