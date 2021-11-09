@@ -26,7 +26,8 @@
       "url": "https://github.com/PCelestia/sani/issues"
    },
    "engines": {
-      "node": "14.x"
+      "node": "14.x",
+      "npm": "8.x"
    },
    "homepage": "https://github.com/PCelestia/sani#readme",
    "dependencies": {
