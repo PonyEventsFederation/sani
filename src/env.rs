@@ -10,7 +10,7 @@ fn init_dotenv() {
 #[cfg(not(debug_assertions))]
 fn init_dotenv() {}
 
-pub(crate) struct Env {
+pub struct Env {
 	token: String
 }
 
