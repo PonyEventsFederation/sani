@@ -37,18 +37,22 @@ struct UserAndAction {
 }
 
 impl UserAndAction {
+	#[inline]
 	fn user(&self) -> String {
 		format!("{}#{:04}", self.username, self.discriminator)
 	}
 
+	#[inline]
 	fn username(&self) -> &str {
 		&self.username
 	}
 
+	#[inline]
 	fn discriminator(&self) -> &u16 {
 		&self.discriminator
 	}
 
+	#[inline]
 	fn action(&self) -> &Action {
 		&self.action
 	}
