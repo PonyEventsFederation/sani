@@ -8,10 +8,13 @@ fn init_dotenv() {
 }
 
 #[cfg(not(debug_assertions))]
-fn init_dotenv() {}
+fn init_dotenv() {
+	// dotenv is not used in production
+}
 
 pub struct Env {
-	token: String
+	token: String,
+	port: u16
 }
 
 impl Env {
@@ -21,31 +24,43 @@ impl Env {
 		init_dotenv();
 
 		let token = var("TOKEN")
-			// .unwrap_or_else(|_| var("BOT_TOKEN").unwrap());
-			.or_else(|_| var("BOT_TOKEN"))
 			.or_else(|_| var("BOT_TOKEN_SANI"))
+			.or_else(|_| var("BOT_TOKEN"))
 			.expect("could not find suitable bot token");
 
-		Env { token }
+		let port = var("PORT")
+			.unwrap_or("7079".into())
+			.parse::<u16>()
+			.expect("failed to parse port");
+
+		Env { token, port }
 	}
 
 	pub fn token(&self) -> &str {
 		&self.token
 	}
 
+	pub fn port(&self) -> &u16 {
+		&self.port
+	}
+}
+
+// debug functions
+#[cfg(debug_assertions)]
+impl Env {
 	#[inline]
-	#[cfg(debug_assertions)]
-	pub fn is_production(&self) -> bool { false }
+	pub fn production(&self) -> bool { false }
 
 	#[inline]
-	#[cfg(not(debug_assertions))]
-	pub fn is_production(&self) -> bool { true }
+	pub fn development(&self) -> bool { true }
+}
+
+// production functions
+#[cfg(not(debug_assertions))]
+impl Env {
+	#[inline]
+	pub fn production(&self) -> bool { true }
 
 	#[inline]
-	#[cfg(debug_assertions)]
-	pub fn is_development(&self) -> bool { true }
-
-	#[inline]
-	#[cfg(not(debug_assertions))]
-	pub fn is_development(&self) -> bool { false }
+	pub fn development(&self) -> bool { false }
 }
