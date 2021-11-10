@@ -119,11 +119,15 @@ impl Display for UserAndActionError {
 			WeirdError => { "an extremely weird and unexpected error has occured, please contact Autumn Meadow#2864 about it, thank you!".into() }
 		})?;
 
-		if !matches!(self, FormatIncorrect) {
+		if !matches!(self, FormatIncorrect | WeirdError) {
 			write!(f, "\n\n")?;
 		}
 
-		write!(f, "format: <grant | revoke> <username>#<discriminator>\nex: \"grant Autumn Meadow@2864\"\nex: \"revoke Autumn Meadow#2864\"")
+		if !matches!(self, WeirdError) {
+			write!(f, "format: <grant | revoke> <username>#<discriminator>\nex: \"grant Autumn Meadow#2864\"\nex: \"revoke Autumn Meadow#2864\"\n")?;
+		}
+
+		Ok(())
 	}
 }
 
