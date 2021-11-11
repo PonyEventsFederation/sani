@@ -1,14 +1,11 @@
 // todo remove later
 #![allow(unused)]
 
-mod env;
 mod loyalty_server;
 mod modules;
-
-use env::Env;
+use twilight_bot_utils::deps::*;
 use futures::stream::StreamExt;
-use modules::Event;
-use modules::InitStuff;
+use twilight_bot_utils::modules::*;
 use modules::status::Status;
 use modules::reaction_role::ReactionRole;
 use modules::reaction_role::channel_id;
@@ -34,6 +31,7 @@ use twilight_model::id::GuildId;
 use twilight_model::id::EmojiId;
 use twilight_model::id::MessageId;
 use twilight_model::id::RoleId;
+use twilight_bot_utils::env::Env;
 
 type MainResult<T = ()> = Result<T, Box<dyn Error + Send + Sync>>;
 
@@ -57,7 +55,7 @@ async fn async_main() -> MainResult {
 
 	let HttpAndCluster { http, cluster, mut events } = setup_http_and_cluster(&env).await?;
 
-	let mut modules: Vec<Box<dyn modules::Module>> = modules();
+	let mut modules: Vec<Box<dyn Module>> = modules();
 
 	let current_user = http.current_user()
 		.exec().await?
@@ -128,7 +126,7 @@ async fn setup_http_and_cluster(env: &Env) -> MainResult<HttpAndCluster> {
 
 #[inline]
 #[cfg(debug_assertions)]
-fn modules() -> Vec<Box<dyn modules::Module>> {
+fn modules() -> Vec<Box<dyn Module>> {
 	vec![
 		Box::new(Status()),
 		Box::new(ReactionRole {
@@ -146,7 +144,7 @@ fn modules() -> Vec<Box<dyn modules::Module>> {
 
 #[inline]
 #[cfg(not(debug_assertions))]
-fn modules() -> Vec<Box<dyn modules::Module>> {
+fn modules() -> Vec<Box<dyn Module>> {
 	let guild_id = guild_id(602434888880095242);
 	let channel_id = channel_id(823351439279259648);
 	let server_role_message = message_id(839966718071406652);

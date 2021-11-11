@@ -1005,18 +1005,7 @@ checksum = "ef703b7cb59335eae2eb93ceb664c0eb7ea6bf567079d843e09420219668e072"
 name = "sani"
 version = "0.1.0"
 dependencies = [
- "async-trait",
- "chrono",
- "dotenv",
- "futures",
- "tokio",
- "twilight-cache-inmemory",
- "twilight-gateway",
- "twilight-http",
- "twilight-mention",
- "twilight-model",
- "twilight-standby",
- "twilight-util",
+ "twilight-bot-utils",
  "warp",
 ]
 
@@ -1441,6 +1430,25 @@ dependencies = [
  "utf-8",
  "webpki",
  "webpki-roots",
+]
+
+[[package]]
+name = "twilight-bot-utils"
+version = "0.1.0"
+source = "git+https://github.com/autumnblazey/twilight-bot-utils.git?rev=687e0b68cf6c616a9dc98ec1de75427097f99ec2#687e0b68cf6c616a9dc98ec1de75427097f99ec2"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "dotenv",
+ "futures",
+ "tokio",
+ "twilight-cache-inmemory",
+ "twilight-gateway",
+ "twilight-http",
+ "twilight-mention",
+ "twilight-model",
+ "twilight-standby",
+ "twilight-util",
 ]
 
 [[package]]
