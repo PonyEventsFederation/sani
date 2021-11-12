@@ -1,15 +1,85 @@
+use std::convert::Infallible;
 use std::error::Error;
 use std::fmt::Error as FmtError;
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::str::FromStr;
+use twilight_bot_utils::env::Env;
 use warp::Filter;
 use warp::header;
+use warp::http::StatusCode;
 use warp::path;
 use warp::post;
 use warp::Rejection;
+use warp::reject;
+use warp::reject::MethodNotAllowed;
+use warp::Reply;
+use warp::reply;
+use warp::reply::Response;
 use warp::serve;
 use warp::Server;
+
+pub async fn loyalty_server(env: &Env) {
+	let port = env.port();
+	let action_header = header::<String>("action").and_then(|header: String| async move {
+		// header::<UserAndAction>() is going to discard the error we want so do it manually
+		header.parse::<UserAndAction>().map_err(|e| reject::custom(e))
+	});
+
+	let loyalty = path("loyalty-role")
+		.and(post())
+		.and(action_header)
+		.map(|action| {
+			let action = format!("action: {:?}", action);
+			action
+		})
+		.recover(handle_loyalty_rejection);
+
+	serve(loyalty).run(([0, 0, 0, 0], 7079)).await;
+}
+
+async fn handle_loyalty_rejection(rejection: Rejection) -> Result<Box<dyn Reply>, Infallible> {
+	// #[inline]
+	// fn ok(reply: impl Reply + 'static) -> Result<Box<dyn Reply>, Infallible> {
+	// 	Ok(Box::new(reply))
+	// }
+	macro_rules! ok {
+		($reply:expr) => {
+			Ok(Box::new($reply))
+		}
+	}
+
+	// to handle errors from incorrect action header
+	if let Some(rejection) = rejection.find::<UserAndActionError>() {
+		let r_str = rejection.to_string();
+
+		let status_code = if let UserAndActionError::WeirdError = rejection {
+			StatusCode::INTERNAL_SERVER_ERROR
+		} else {
+			StatusCode::BAD_REQUEST
+		};
+
+		// return Ok(Box::new(reply::with_status(r_str, status_code)))
+		return ok!(reply::with_status(r_str, status_code))
+	}
+
+
+	if rejection.is_not_found() {
+		// Ok(reply::with_status("".into(), StatusCode::NOT_FOUND))
+		// return Ok(rejection.into())
+		// return ok(rejection)
+		return ok!(StatusCode::NOT_FOUND)
+	}
+
+	if rejection.find::<MethodNotAllowed>().is_some() {
+		return ok!(StatusCode::NOT_FOUND)
+	}
+
+	// Ok(reply::with_status(UserAndActionError::WeirdError.to_string(), StatusCode::INTERNAL_SERVER_ERROR))
+	// Ok(Box::new(reply::html::<String>(r#"<!DOCTYPE html>"#.into())))
+	// ok!(reply::with_status(reply::html::<String>(r#"<!DOCTYPE html>"#.into()), StatusCode::INTERNAL_SERVER_ERROR))
+	ok!(StatusCode::INTERNAL_SERVER_ERROR)
+}
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 enum Action {
@@ -132,6 +202,7 @@ impl Display for UserAndActionError {
 }
 
 impl Error for UserAndActionError {}
+impl reject::Reject for UserAndActionError {}
 
 #[cfg(test)]
 mod tests {
