@@ -146,6 +146,7 @@ export const reactionroles: ReadonlyArray<ReactionRole> = [
    cosplayerrole,
    memerole,
    rprole,
+   nobottagsrole,
    movienightrole,
    newsrole,
    year2012,
