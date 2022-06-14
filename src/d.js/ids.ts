@@ -62,19 +62,26 @@ export const rprole: ReactionRole = {
    messageid: serverrolemessage,
    roleid: "755487852720291851"
 };
+export const nobottagsrole: ReactionRole = {
+   // no bot tags
+   channelid,
+   emoji: "605462086788710575", // :gc_stop:
+   messageid: serverrolemessage,
+   roleid: "962689871305121813"
+};
+export const movienightrole: ReactionRole = {
+   // movie night
+   channelid,
+   emoji: "606565381288493077", // :gc_bizaam:
+   messageid: serverrolemessage,
+   roleid: "839970021803556905"
+};
 export const newsrole: ReactionRole = {
    // news
    channelid,
    emoji: "823482395202158633", // :Scroll
    messageid: serverrolemessage,
    roleid: "784873956363599912"
-};
-export const movienightrole: ReactionRole = {
-   // movie night
-   channelid,
-   emoji: "606565381288493077",
-   messageid: serverrolemessage,
-   roleid: "839970021803556905"
 };
 export const year2012: ReactionRole = {
    // 2012
@@ -139,8 +146,8 @@ export const reactionroles: ReadonlyArray<ReactionRole> = [
    cosplayerrole,
    memerole,
    rprole,
-   newsrole,
    movienightrole,
+   newsrole,
    year2012,
    year2013,
    year2014,
