@@ -46,7 +46,7 @@ void (async function() {
          y2017: year2017.roleid,
          y2018: year2018.roleid,
          y2019: year2019.roleid
-      }), help]
+      })]
    });
 
    sani.bot.on("messageReactionAdd", await createreactionrole({
