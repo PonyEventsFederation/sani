@@ -146,23 +146,3 @@ export const year2022: ReactionRole = {
    messageid: yearrolemessage,
    roleid: "1001441291281891359"
 };
-
-export const reactionroles: ReadonlyArray<ReactionRole> = [
-   artistrole,
-   musicianrole,
-   cosplayerrole,
-   memerole,
-   rprole,
-   nobottagsrole,
-   movienightrole,
-   newsrole,
-   year2012,
-   year2013,
-   year2014,
-   year2015,
-   year2016,
-   year2017,
-   year2018,
-   year2019,
-   year2022
-];
