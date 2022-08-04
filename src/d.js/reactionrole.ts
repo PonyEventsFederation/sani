@@ -58,6 +58,8 @@ export async function createreactionrole(opts: ReactionRoleOpts) {
    const internalstore = makeinternal(opts.roles);
 
    return async function(reaction: MessageReaction, user: User | PartialUser) {
+      if (user.bot) return;
+
       reaction = reaction.partial ? await reaction.fetch() : reaction;
       const emoji = reaction.emoji;
       const guildmember = await reaction.message.guild?.members.fetch(user.id);
