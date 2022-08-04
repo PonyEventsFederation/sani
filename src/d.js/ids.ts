@@ -139,6 +139,13 @@ export const year2019: ReactionRole = {
    messageid: yearrolemessage,
    roleid: "628136797095854100"
 };
+export const year2022: ReactionRole = {
+   // 2022
+   channelid,
+   emoji: "1004612959080816640",
+   messageid: yearrolemessage,
+   roleid: "1001441291281891359"
+};
 
 export const reactionroles: ReadonlyArray<ReactionRole> = [
    artistrole,
@@ -156,5 +163,6 @@ export const reactionroles: ReadonlyArray<ReactionRole> = [
    year2016,
    year2017,
    year2018,
-   year2019
+   year2019,
+   year2022
 ];
