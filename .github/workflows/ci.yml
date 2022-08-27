@@ -74,5 +74,5 @@ jobs:
 
     - name: push container to ghcr
       run: |
-        # podman tag sani ghcr.io/sani/sani:latest
+        podman tag sani ghcr.io/sani/sani:latest
         podman push ghcr.io/sani/sani
