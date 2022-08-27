@@ -37,9 +37,7 @@
       "droff": "^0.17.11",
       "droff-helpers": "^0.2.13",
       "droff-interactions": "^0.2.12",
-      "erlpack": "^0.1.4",
-      "utf-8-validate": "^5.0.9",
-      "zlib-sync": "^0.1.7"
+      "utf-8-validate": "^5.0.9"
    },
    "devDependencies": {
       "@autumnblaze/eslint-config-h": "^1.0.0",
