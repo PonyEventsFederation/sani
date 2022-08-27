@@ -70,7 +70,7 @@ jobs:
       run: podman build . -t sani --squash
 
     - name: authenticate to ghcr
-      run: podman login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+      run: podman login -u ${{ github.repository_owner }} -p ${{ secrets.GH_TOKEN_FOR_GHCR }} ghcr.io
 
     - name: push container to ghcr
       run: |
