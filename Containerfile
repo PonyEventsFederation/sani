@@ -27,14 +27,12 @@ RUN pnpm i --frozen-lockfile
 COPY tsconfig.json tsconfig.json
 COPY src src
 
-RUN pnpm build \
-	# cleanup
-	&& rm tsconfig.json
+RUN pnpm build
 
 COPY .eslintrc.js .eslintrc.js
 RUN pnpm lint \
 	# cleanup
-	&& rm .eslintrc.js
+	&& rm .eslintrc.js tsconfig.json
 
 RUN pnpm prune --prod && pnpm store prune
 
