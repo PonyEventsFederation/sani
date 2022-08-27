@@ -9,7 +9,7 @@
       "dev": "tsc -p tsconfig.json -w --preserveWatchOutput",
       "start": "node build/d.js",
       "buildandstart": "npm run build && npm start",
-      "lint": "eslint --ext .ts src/",
+      "lint": "eslint --ext .ts src/d.js",
       "docs": "typedoc --out docs src",
       "start:droff": "node build/droff"
    },
