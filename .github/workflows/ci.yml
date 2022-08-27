@@ -1,36 +1,78 @@
 ---
 on:
   push:
-    branches-ignore:
-    - "deploy"
-    - "deploy2"
+    branches:
+    - "**"
   pull_request:
 
-name: ci
 jobs:
   build:
-    name: build/lint
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        node:
-          - 14
-          - 16
+    name: build
+    runs-on: ubuntu-22.04
+
     steps:
     - name: checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # 3.0.2
 
-    - name: setup node
-      uses: actions/setup-node@v1
+    - name: install pnpm
+      uses: pnpm/action-setup@35ab4267a1a21c8e8cb1c087cf1642e891ff57bd # v2.2.1
+
+    - name: install node
+      uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # 3.3.0
       with:
-        node-version: ${{ matrix.node }}
+        node-version: v18.7.0
+        cache: pnpm
 
     - name: install dependencies
-      run: npm ci
+      run: pnpm i
 
-    - name: build typescript
-      run: npm run build
+    - name: build
+      run: pnpm run build
 
-    - name: lint typescript
-      run: npm run lint
+
+  lint:
+    name: lint
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # 3.0.2
+
+    - name: install pnpm
+      uses: pnpm/action-setup@35ab4267a1a21c8e8cb1c087cf1642e891ff57bd # v2.2.1
+
+    - name: install node
+      uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # 3.3.0
+      with:
+        node-version: v18.7.0
+        cache: pnpm
+
+    - name: install dependencies
+      run: pnpm i
+
+    - name: lint
+      run: pnpm run lint
+
+  push-container:
+    name: push container to ghcr
+    runs-on: ubuntu-22.04
+    needs:
+    - build
+    - lint
+    if: ${{ github.event_name != 'pull_request' }}
+    # if: ${{ github.ref == 'refs/heads/master' }}
+
+    steps:
+    - name: checkout code
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # 3.0.2
+
+    - name: build container
+      run: podman build . -t sani --squash
+
+    - name: authenticate to ghcr
+      run: podman login -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+
+    - name: push container to ghcr
+      run: |
+        podman tag sani ghcr.io/sani/sani:latest
+        podman push ghcr.io/sani/sani
