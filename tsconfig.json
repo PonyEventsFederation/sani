@@ -73,7 +73,7 @@
       "noEmitOnError": true                        /* don't emit output if any errors were reported */
    },
    "include": ["src/**/*.ts"],
-   "exclude": ["**/GITIGNORE-*"],
+   "exclude": ["**/GITIGNORE-*", "src/droff/**/*.ts"],
    "typeAcquisition": {
       "enable": true
    }

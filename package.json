@@ -9,7 +9,7 @@
       "dev": "tsc -p tsconfig.json -w --preserveWatchOutput",
       "start": "node build/d.js",
       "buildandstart": "npm run build && npm start",
-      "lint": "eslint --ext .ts src/",
+      "lint": "eslint --ext .ts src/d.js",
       "docs": "typedoc --out docs src",
       "start:droff": "node build/droff"
    },
@@ -26,9 +26,9 @@
       "url": "https://github.com/PCelestia/sani/issues"
    },
    "engines": {
-      "node": "14.x",
-      "npm": "8.x"
+      "node": "18.x"
    },
+   "packageManager": "pnpm@7.9.5",
    "homepage": "https://github.com/PCelestia/sani#readme",
    "dependencies": {
       "bufferutil": "^4.0.3",
@@ -37,9 +37,7 @@
       "droff": "^0.17.11",
       "droff-helpers": "^0.2.13",
       "droff-interactions": "^0.2.12",
-      "erlpack": "^0.1.4",
-      "utf-8-validate": "^5.0.9",
-      "zlib-sync": "^0.1.7"
+      "utf-8-validate": "^5.0.9"
    },
    "devDependencies": {
       "@autumnblaze/eslint-config-h": "^1.0.0",
