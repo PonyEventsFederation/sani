@@ -16,7 +16,7 @@ export type ReactionRole = {
    roleid: string;
 };
 
-export type ReactionRoleOpts = {
+type ReactionRoleOpts = {
    bot: Client;
    roles: ReadonlyArray<ReactionRole>;
 };

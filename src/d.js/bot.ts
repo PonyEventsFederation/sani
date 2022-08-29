@@ -1,15 +1,13 @@
 import { Client } from "discord.js";
-import { Commandish } from "./commandish";
 
 // poor man's logger
-export type Logger = (...args: any) => void;
+type Logger = (...args: any) => void;
 
 type SaniOpts = Readonly<{
    token: string;
    events: ReadonlyArray<string>;
    stdout?: Logger;
    stderr?: Logger;
-   commandishes: ReadonlyArray<Commandish>;
 }>;
 
 export type Sani = {
@@ -21,7 +19,6 @@ export type Sani = {
 export async function createsani(opts: SaniOpts): Promise<Sani> {
    // create some vars and stuff
    const bot = new Client();
-   const commandishes: Array<ReturnType<Commandish>> = [];
 
    const sani: Sani = {
       get bot() {
@@ -31,23 +28,12 @@ export async function createsani(opts: SaniOpts): Promise<Sani> {
       stop() {}
    };
 
-   opts.commandishes.forEach(cmdish => commandishes.push(cmdish({
-      sani,
-      stdout: opts.stdout ?? console.log,
-      stderr: opts.stderr ?? console.error
-   })));
-
    // initialise the commandishes and stuffs
    bot.on("message", async msg => {
       // if no bot user, ignore all bots to prevent endless loop
       if (!bot.user && msg.author.bot) return;
       // else ignore self
       if (bot.user === msg.author) return;
-
-      for (const cmd of commandishes) {
-         const res = await cmd(msg);
-         if (res === false) break;
-      }
    });
 
    await bot.login(opts.token);

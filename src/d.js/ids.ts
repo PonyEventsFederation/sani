@@ -2,21 +2,21 @@ import { ReactionRole } from "./reactionrole";
 
 /** id for galacon server */
 export const galaconid: string = "602434888880095242";
-/** id for galacon #server-support */
-export const serversupportchannel: string = "613024393425059981";
+// /** id for galacon #server-support */
+// export const serversupportchannel: string = "613024393425059981";
 
-/** id for galacon mlem emoji */
-export const mlememoji: string = ":Mlem:758757084299788298";
+// /** id for galacon mlem emoji */
+// export const mlememoji: string = ":Mlem:758757084299788298";
 
 //
 // export const serversupportchannel: string = "578740813912211457";
 
-/**
- * id for the author of the bot (user to ping when something goes horribly wrong)
- *
- * see {@link Lang.roleassign.horriblywrongauthor} and {@link Lang_en.roleassign.horriblywrongauthor}
- */
-export const botauthor = "379800645571575810";
+// /**
+//  * id for the author of the bot (user to ping when something goes horribly wrong)
+//  *
+//  * see {@link Lang.roleassign.horriblywrongauthor} and {@link Lang_en.roleassign.horriblywrongauthor}
+//  */
+// export const botauthor = "379800645571575810";
 
 /**
  * loyalty role ID

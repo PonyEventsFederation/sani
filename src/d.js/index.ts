@@ -35,39 +35,7 @@ void (async function() {
       token: process.env.TOKEN,
       stdout: console.log,
       stderr: console.error,
-      events,
-      commandishes: [
-         // out of date (no 2022 role)! removing this for now
-         // otherroleassign({
-         //    // TODO MAKE THIS BETTERERRER LUL
-         //    artist: artistrole.roleid,
-         //    musician: musicianrole.roleid,
-         //    cosplayer: cosplayerrole.roleid,
-         //    meme: memerole.roleid,
-         //    rp: rprole.roleid,
-         //    news: newsrole.roleid,
-         //    y2012: year2012.roleid,
-         //    y2013: year2013.roleid,
-         //    y2014: year2014.roleid,
-         //    y2015: year2015.roleid,
-         //    y2016: year2016.roleid,
-         //    y2017: year2017.roleid,
-         //    y2018: year2018.roleid,
-         //    y2019: year2019.roleid
-
-         // }),
-         // yearassign({
-         //    // TODO ALSO MAKE THIS BETTERERRERIERRER LULULUL
-         //    y2012: year2012.roleid,
-         //    y2013: year2013.roleid,
-         //    y2014: year2014.roleid,
-         //    y2015: year2015.roleid,
-         //    y2016: year2016.roleid,
-         //    y2017: year2017.roleid,
-         //    y2018: year2018.roleid,
-         //    y2019: year2019.roleid
-         // })
-      ]
+      events
    });
 
    sani.bot.on("messageReactionAdd", await createreactionrole({
