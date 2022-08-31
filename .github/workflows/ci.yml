@@ -53,8 +53,8 @@ jobs:
     - name: lint
       run: pnpm run lint
 
-  push-container:
-    name: push container to fly.io
+  deploy:
+    name: deploy to fly.io
     runs-on: ubuntu-22.04
     needs:
     - build
