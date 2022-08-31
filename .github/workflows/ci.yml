@@ -59,8 +59,8 @@ jobs:
     needs:
     - build
     - lint
-    if: ${{ github.event_name != 'pull_request' }}
-    # if: ${{ github.ref == 'refs/heads/master' }}
+    # update branch name to default branch when it changes
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/ts-dev' }}
 
     steps:
     - name: checkout code
