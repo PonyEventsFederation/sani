@@ -87,6 +87,8 @@ export async function createreactionrole(opts: ReactionRoleOpts) {
 
       // wait 30s, arbitrary, long enough that it probably looks more like
       // cleanup instead of discord being bad (like it always does tbh)
-      await wait(30).then(() => reaction.users.remove(user.id));
+      await wait(10)
+         .then(() => reaction.users.remove(user.id))
+         .catch(() => { /* ignore error */ });
    };
 }
