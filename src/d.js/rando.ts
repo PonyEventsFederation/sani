@@ -81,4 +81,5 @@ export function envisdev(): boolean {
 //    return randarr;
 // }
 
-// export const wait = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
+/* returns a promise that resolves after `s` seconds */
+export const wait = (s: number) => new Promise<void>(res => setTimeout(res, s * 1000));

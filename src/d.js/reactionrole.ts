@@ -1,6 +1,7 @@
 // mostly copy/paste from autumnblazey/kiwin-bot for now
 
 import { Client, GuildEmoji, GuildMember, MessageReaction, PartialUser, ReactionEmoji, Role, User } from "discord.js";
+import { wait } from "./rando";
 
 export type ReactionRole = {
    /** probably not needed, i think can fetch it from the channel */
@@ -84,6 +85,8 @@ export async function createreactionrole(opts: ReactionRoleOpts) {
          log("removed role", { guildmember, role, emoji });
       }
 
-      await reaction.users.remove(user.id);
+      // wait 30s, arbitrary, long enough that it probably looks more like
+      // cleanup instead of discord being bad (like it always does tbh)
+      await wait(30).then(() => reaction.users.remove(user.id));
    };
 }
