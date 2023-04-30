@@ -28,16 +28,16 @@ const serverrolemessage = "839966718071406652";
 const yearrolemessage = "839966718507221013";
 const ee_yearrole_message = "// TODO";
 
-const message_1 = "1102158911647260714";
-const message_2 = "1102158920375607377";
-const message_3 = "1102158921898135582";
-const message_4 = "1102158923387129916";
-const message_5 = "1102158924775424040";
-const message_6 = "1102158926088245289";
-const message_7 = "1102158928390930452";
-const message_8 = "1102158929376587797";
-const message_9 = "1102158953422540831";
-const message_10 = "1102158955230269480";
+const message_1 = "// TODO";
+const message_2 = "// TODO";
+const message_3 = "// TODO";
+const message_4 = "// TODO";
+const message_5 = "// TODO";
+const message_6 = "// TODO";
+const message_7 = "// TODO";
+const message_8 = "// TODO";
+const message_9 = "// TODO";
+const message_10 = "// TODO";
 
 const emoji_gc_artist = "823502121487958016";
 const emoji_gc_dj = "823503291027161128";
