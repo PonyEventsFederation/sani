@@ -26,6 +26,18 @@ export const loyaltyrole = "865372668618735636";
 const channelid = "823351439279259648";
 const serverrolemessage = "839966718071406652";
 const yearrolemessage = "839966718507221013";
+const ee_yearrole_message = "// TODO";
+
+const message_1 = "1102158911647260714";
+const message_2 = "1102158920375607377";
+const message_3 = "1102158921898135582";
+const message_4 = "1102158923387129916";
+const message_5 = "1102158924775424040";
+const message_6 = "1102158926088245289";
+const message_7 = "1102158928390930452";
+const message_8 = "1102158929376587797";
+const message_9 = "1102158953422540831";
+const message_10 = "1102158955230269480";
 
 const emoji_gc_artist = "823502121487958016";
 const emoji_gc_dj = "823503291027161128";
@@ -98,6 +110,8 @@ export const newsrole: ReactionRole = {
    messageid: serverrolemessage,
    roleid: "784873956363599912"
 };
+
+
 export const gala_year2012: ReactionRole = {
    channelid,
    emoji: emoji_12,
@@ -151,4 +165,30 @@ export const gala_year2022: ReactionRole = {
    emoji: emoji_22,
    messageid: yearrolemessage,
    roleid: "1001441291281891359"
+};
+
+
+export const ee_year_2018: ReactionRole = {
+   channelid,
+   emoji: emoji_18,
+   messageid: ee_yearrole_message,
+   roleid: "1101264862711136276"
+};
+export const ee_year_2019: ReactionRole = {
+   channelid,
+   emoji: emoji_19,
+   messageid: ee_yearrole_message,
+   roleid: "1101264895648997386"
+};
+export const ee_year_2021: ReactionRole = {
+   channelid,
+   emoji: emoji_21,
+   messageid: ee_yearrole_message,
+   roleid: "1101264943191437443"
+};
+export const ee_year_2023: ReactionRole = {
+   channelid,
+   emoji: emoji_23,
+   messageid: ee_yearrole_message,
+   roleid: "1101265440161931265"
 };
