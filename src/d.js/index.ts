@@ -12,15 +12,15 @@ import {
    nobottagsrole,
    movienightrole,
    newsrole,
-   year2012,
-   year2013,
-   year2014,
-   year2015,
-   year2016,
-   year2017,
-   year2018,
-   year2019,
-   year2022
+   gala_year2012,
+   gala_year2013,
+   gala_year2014,
+   gala_year2015,
+   gala_year2016,
+   gala_year2017,
+   gala_year2018,
+   gala_year2019,
+   gala_year2022
 } from "./ids";
 import { killswitch } from "./killswitch";
 import { startServer } from "./loyaltyserver";
@@ -49,15 +49,15 @@ void (async function() {
          nobottagsrole,
          movienightrole,
          newsrole,
-         year2012,
-         year2013,
-         year2014,
-         year2015,
-         year2016,
-         year2017,
-         year2018,
-         year2019,
-         year2022
+         gala_year2012,
+         gala_year2013,
+         gala_year2014,
+         gala_year2015,
+         gala_year2016,
+         gala_year2017,
+         gala_year2018,
+         gala_year2019,
+         gala_year2022
       ]
    }));
 
