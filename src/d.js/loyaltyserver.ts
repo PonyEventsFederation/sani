@@ -149,8 +149,8 @@ async function createServer(port: number, cb: (user: UserAndAction) => Promise<m
 
          if (checked.method === "OPTIONS") return handlePreflight(req, res) || finaliserequest({ code: 400 }, req, res);
 
-         if (!req.headers.action) return finaliserequest({ code: 400, data: "Missing action header" }, req, res);
-         const user = getUserAndAction(Array.isArray(req.headers.action) ? req.headers.action.join("") : req.headers.action);
+         if (!req.headers["action"]) return finaliserequest({ code: 400, data: "Missing action header" }, req, res);
+         const user = getUserAndAction(Array.isArray(req.headers["action"]) ? req.headers["action"].join("") : req.headers["action"]);
          if ("code" in user) return finaliserequest(user, req, res); // user isn't a user lol
          const cbres = await cb(user);
 

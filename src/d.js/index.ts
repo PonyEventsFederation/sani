@@ -27,12 +27,12 @@ import { startServer } from "./loyaltyserver";
 
 void (async function() {
    if (envisdev()) (await import("dotenv")).config();
-   if (!process.env.TOKEN) throw "NO TOKEN IN THE ENV LOL";
+   if (!process.env["TOKEN"]) throw "NO TOKEN IN THE ENV LOL";
 
    const events = ["exit", "SIGINT", "SIGTERM"];
 
    const sani = await createsani({
-      token: process.env.TOKEN,
+      token: process.env["TOKEN"],
       stdout: console.log,
       stderr: console.error,
       events
@@ -61,11 +61,11 @@ void (async function() {
       ]
    }));
 
-   let port = process.env.PORT && !isNaN(Number(process.env.PORT)) ? Number(process.env.PORT) : 7079;
+   let port = process.env["PORT"] && !isNaN(Number(process.env["PORT"])) ? Number(process.env["PORT"]) : 7079;
    const { stop: stopLoyaltyServer } = await startServer(port, sani);
    events.forEach(e => process.on(e, stopLoyaltyServer));
    // kill switch
-   sani.bot.on("message", killswitch(sani, process.env.KILL_WHITELIST?.split(",") ?? ["379800645571575810"]));
+   sani.bot.on("message", killswitch(sani, process.env["KILL_WHITELIST"]?.split(",") ?? ["379800645571575810"]));
 
    process.on("unhandledRejection", (r) => {
       console.error("UNHANDLED REJECTION");

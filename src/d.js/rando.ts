@@ -31,7 +31,7 @@ export function envisdev(): boolean {
    // if NODE_ENV doesnt exist, assume development
    // if it does, check for mode "dev" or "development"
    // then configure using dotenv
-   return !checkenv("NODE_ENV") || process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "development";
+   return !checkenv("NODE_ENV") || process.env["NODE_ENV"] === "dev" || process.env["NODE_ENV"] === "development";
 }
 
 // /**
