@@ -20,7 +20,11 @@ import {
    gala_year2017,
    gala_year2018,
    gala_year2019,
-   gala_year2022
+   gala_year2022,
+   ee_year_2018,
+   ee_year_2019,
+   ee_year_2021,
+   ee_year_2023
 } from "./ids";
 import { killswitch } from "./killswitch";
 import { startServer } from "./loyaltyserver";
@@ -57,7 +61,11 @@ void (async function() {
          gala_year2017,
          gala_year2018,
          gala_year2019,
-         gala_year2022
+         gala_year2022,
+         ee_year_2018,
+         ee_year_2019,
+         ee_year_2021,
+         ee_year_2023
       ]
    }));
 
