@@ -29,10 +29,11 @@ COPY src src
 
 RUN pnpm build
 
-COPY .eslintrc.js .eslintrc.js
-RUN pnpm lint \
-	# cleanup
-	&& rm .eslintrc.js tsconfig.json
+# COPY .eslintrc.js .eslintrc.js
+# RUN pnpm lint \
+# 	# cleanup
+# 	&& rm .eslintrc.js tsconfig.json
+RUN rm tsconfig.json
 
 RUN pnpm prune --prod && pnpm store prune
 
