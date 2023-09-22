@@ -41,7 +41,7 @@
    },
    "devDependencies": {
       "@autumnblaze/eslint-config-h": "^1.0.0",
-      "@types/node": "^17.0.42",
+      "@types/node": "^18.17.18",
       "@types/ws": "^7.4.7",
       "@typescript-eslint/eslint-plugin": "^4.33.0",
       "@typescript-eslint/parser": "^4.33.0",
