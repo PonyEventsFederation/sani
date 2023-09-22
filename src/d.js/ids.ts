@@ -163,6 +163,12 @@ export const gala_year2022: ReactionRole = {
    messageid: message_2,
    roleid: "1001441291281891359"
 };
+export const gala_year2023: ReactionRole = {
+   channelid,
+   emoji: emoji_23,
+   messageid: message_2,
+   roleid: "1152346287631515709"
+};
 
 
 export const ee_year_2018: ReactionRole = {
