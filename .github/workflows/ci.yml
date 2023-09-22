@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
     - build
-    - lint
+    # - lint
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
 
     steps:
