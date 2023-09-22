@@ -33,22 +33,22 @@
    "dependencies": {
       "bufferutil": "^4.0.3",
       "discord.js": "^12.5.3",
-      "dotenv": "^16.0.1",
+      "dotenv": "^16.3.1",
       "droff": "^0.17.11",
       "droff-helpers": "^0.2.13",
       "droff-interactions": "^0.2.12",
-      "utf-8-validate": "^5.0.9"
+      "utf-8-validate": "^5.0.10"
    },
    "devDependencies": {
       "@autumnblaze/eslint-config-h": "^1.0.0",
       "@types/node": "^18.17.18",
       "@types/ws": "^7.4.7",
-      "@typescript-eslint/eslint-plugin": "^4.33.0",
-      "@typescript-eslint/parser": "^4.33.0",
-      "eslint": "^7.32.0",
-      "eslint-plugin-functional": "^3.7.2",
+      "@typescript-eslint/eslint-plugin": "^6.7.2",
+      "@typescript-eslint/parser": "^6.7.2",
+      "eslint": "^8.49.0",
+      "eslint-plugin-functional": "^6.0.0",
       "ts-prune": "^0.10.3",
-      "typedoc": "^0.22.17",
-      "typescript": "^5.0.4"
+      "typedoc": "^0.25.1",
+      "typescript": "^5.2.2"
    }
 }
