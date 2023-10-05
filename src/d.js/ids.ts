@@ -42,7 +42,8 @@ const emoji_gc_canniinnkeep = "639189237400469517";
 const emoji_gc_cannisalute = "667481831293190174";
 const emoji_gc_cannidab = "745824076940968077";
 const emoji_gc_cannibizaam = "606565381288493077";
-const emoji_gc_canniscroll = "823482395202158633";
+const emoji_gc_scroll = "823482395202158633";
+const emoji_gc_scrollblue = "823482395202158633";
 const emoji_gc_stop = "605462086788710575";
 const emoji_12 = "1102150211037573170";
 const emoji_13 = "1102150223675019374";
@@ -101,11 +102,17 @@ export const movienightrole: ReactionRole = {
    messageid: message_1,
    roleid: "839970021803556905"
 };
-export const newsrole: ReactionRole = {
+export const newsrole_gc: ReactionRole = {
    channelid,
-   emoji: emoji_gc_canniscroll,
+   emoji: emoji_gc_scroll,
    messageid: message_1,
    roleid: "784873956363599912"
+};
+export const newsrole_ee: ReactionRole = {
+   channelid,
+   emoji: emoji_gc_scrollblue,
+   messageid: message_1,
+   roleid: "1152345014693797969"
 };
 
 
