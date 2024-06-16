@@ -202,3 +202,9 @@ export const ee_year_2023: ReactionRole = {
    messageid: message_3,
    roleid: "1101265440161931265"
 };
+export const ee_year_2024: ReactionRole = {
+   channelid,
+   emoji: emoji_24,
+   messageid: message_3,
+   roleid: "1251923096060035144"
+};
