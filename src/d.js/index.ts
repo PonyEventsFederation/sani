@@ -1,5 +1,3 @@
-// error creation (ie new Error()) is expensive, apparently
-
 import { createsani } from "./bot";
 import { envisdev } from "./rando";
 import { createreactionrole } from "./reactionrole";
@@ -23,6 +21,7 @@ import {
    gala_year2019,
    gala_year2022,
    gala_year2023,
+   gala_year2024,
    ee_year_2018,
    ee_year_2019,
    ee_year_2021,
@@ -67,6 +66,7 @@ void (async function() {
          gala_year2019,
          gala_year2022,
          gala_year2023,
+         gala_year2024,
          ee_year_2018,
          ee_year_2019,
          ee_year_2021,
