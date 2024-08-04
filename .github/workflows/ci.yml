@@ -20,7 +20,7 @@ jobs:
     - name: install node
       uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # 4.0.3
       with:
-        node-version: v18.7.0
+        node-version: v18.20.4
         cache: pnpm
 
     - name: install dependencies
@@ -44,7 +44,7 @@ jobs:
     - name: install node
       uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # 4.0.3
       with:
-        node-version: v18.7.0
+        node-version: v18.20.4
         cache: pnpm
 
     - name: install dependencies
