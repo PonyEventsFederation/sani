@@ -12,13 +12,13 @@ jobs:
 
     steps:
     - name: checkout code
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # 3.0.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # 4.1.7
 
     - name: install pnpm
-      uses: pnpm/action-setup@35ab4267a1a21c8e8cb1c087cf1642e891ff57bd # v2.2.1
+      uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # 4.0.0
 
     - name: install node
-      uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # 3.3.0
+      uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # 4.0.3
       with:
         node-version: v18.7.0
         cache: pnpm
@@ -36,13 +36,13 @@ jobs:
 
     steps:
     - name: checkout code
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # 3.0.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # 4.1.7
 
     - name: install pnpm
-      uses: pnpm/action-setup@35ab4267a1a21c8e8cb1c087cf1642e891ff57bd # v2.2.1
+      uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # 4.0.0
 
     - name: install node
-      uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # 3.3.0
+      uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # 4.0.3
       with:
         node-version: v18.7.0
         cache: pnpm
@@ -63,10 +63,10 @@ jobs:
 
     steps:
     - name: checkout code
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # 3.0.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # 4.1.7
 
     - name: setup flyctl
-      uses: superfly/flyctl-actions/setup-flyctl@master
+      uses: superfly/flyctl-actions/setup-flyctl@fc53c09e1bc3be6f54706524e3b82c4f462f77be # 1.5
 
     - name: deploy
       run: flyctl deploy --remote-only --no-cache
