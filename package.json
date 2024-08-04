@@ -28,7 +28,7 @@
    "engines": {
       "node": "18.x"
    },
-   "packageManager": "pnpm@7.9.5",
+   "packageManager": "pnpm@9.6.0",
    "homepage": "https://github.com/PCelestia/sani#readme",
    "dependencies": {
       "bufferutil": "^4.0.3",
